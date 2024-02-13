@@ -22,7 +22,7 @@ class Event
     #[Assert\Regex(
         pattern: "/^[a-zA-Z]+$/",
         message: "Event Name should contain only letters"
-    )]#[Assert\NotBlank(message: "Event Name should not be blank")]
+    )]
     #[Assert\Length(max: 10, maxMessage: "Event Name should not be longer than 10 characters")]
     #[ORM\Column(length: 10)]
     private ?string $name = null;
@@ -51,6 +51,10 @@ class Event
 
     #[Assert\NotBlank(message: "Event Budget should not be blank")]
     #[Assert\PositiveOrZero(message: "Event Budget should be a positive number or zero")]
+    #[Assert\Regex(
+        pattern: '/^\d*\.?\d*$/',
+        message: "Event Budget should contain only numbers"
+    )]
     #[ORM\Column(type: 'float')]
     private ?float $budget_allocated = null;
 
@@ -109,6 +113,7 @@ class Event
     public function setDateDebut(DateTime $date_debut): static
     {
         $this->date_debut = $date_debut;
+        $this->setDuree();
 
         return $this;
     }
@@ -116,7 +121,6 @@ class Event
     public function getDateFin(): ?DateTime
     {
         return $this->date_fin;
-        $this->setDuree();
     }
 
     public function setDateFin(DateTime $date_fin): static
@@ -126,7 +130,13 @@ class Event
 
         return $this;
     }
-
+  /**
+     * @Assert\IsTrue(message="End date must be greater than start date")
+     */
+    public function isEndDateGreaterThanStartDate(): bool
+    {
+        return $this->date_fin > $this->date_debut;
+    }
     public function getEventLocation(): ?string
     {
         return $this->event_location;
@@ -263,6 +273,7 @@ class Event
 
         return $this;
     }
+
 
     public function removeParticipant(User $participant): static
     {
