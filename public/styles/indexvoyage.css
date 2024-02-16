@@ -1,0 +1,39 @@
+#elements-container{
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: wrap;
+    
+}
+.destination-image{
+    height: auto !important;
+    width:100% !important;
+}
+#main-container{
+    margin-top: 200px;
+}
+.voyage{
+    height: 43vh;
+    width: 24%; /* Adjust as needed */
+    margin-bottom: 20px; /* Adjust as needed */
+    text-align: center;
+    margin-left: 10px;
+    
+}
+
+.trip-infos{
+background-color: rgb(96, 12, 96);
+height: 32%;
+opacity: 0.5 ;
+display: flex;
+}
+#left{
+display: flex;
+flex-direction: column;
+float: left;
+width: 50%;
+}
+#right{
+    float: right;
+
+}
+

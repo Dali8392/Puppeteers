@@ -1,0 +1,89 @@
+{% extends 'base.html.twig' %}
+
+
+ {% block stylesheets %}
+            {{ encore_entry_link_tags('app') }}
+       
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href={{ asset("styles/bootstrap4/bootstrap.min.css") }}
+    />
+    <link
+      href={{ asset("plugins/font-awesome-4.7.0/css/font-awesome.min.css") }}
+      rel="stylesheet"
+      type="text/css"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href={{ asset("plugins/OwlCarousel2-2.2.1/owl.carousel.css") }}
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href={{ asset("plugins/OwlCarousel2-2.2.1/owl.theme.default.css") }}
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href={{ asset("plugins/OwlCarousel2-2.2.1/animate.css") }}
+    />
+    <link rel="stylesheet" type="text/css" href={{ asset("styles/main_styles.css") }} />
+    <link rel="stylesheet" type="text/css" href={{ asset("styles/responsive.css" ) }}/>
+    <link rel="stylesheet" href="styles/indexvoyage.css"/>
+     {% endblock %}
+
+
+
+
+
+
+
+
+{% block body %}
+<div id="main-container">
+<div id="tendances">
+
+
+</div>
+
+<div id="voyages-container">
+<h1> Travel with us </h1>
+<div id="elements-container">
+{% if response is empty %}
+<h2> Our trips will be available soon. Stay Tuned !!</h2>
+{% else %}
+{% for t in response %}
+<div class="voyage">
+<img class="destination-image" src="{{ asset('assets/images/destinations/' ~ t.destination ~'/voyage.jpeg') }}">
+
+
+
+</div>
+<div class="voyage">
+<img class="destination-image" src="{{ asset('assets/images/destinations/' ~ t.destination ~'/voyage.jpeg') }}">
+
+
+
+</div>
+<div class="voyage">
+<img class="destination-image" src="{{ asset('assets/images/destinations/' ~ t.destination ~'/voyage.jpeg') }}">
+
+<div class="trip-infos">
+<div id="left">
+<span>Departure :  {{t.depart}}</span>
+<span>Destination :  {{t.destination}}</span>
+<span>Departure Date :  {{t.DateDep ? t.DateDep|date('Y-m-d') : ''}} </span>
+</div>
+<div id="right">
+<h2> {{t.prix}} TND </h2>
+</div>
+</div>
+</div>
+{% endfor %}
+{% endif %}
+</div>
+</div>
+</div>
+{% endblock %}

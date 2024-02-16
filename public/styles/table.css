@@ -1,0 +1,64 @@
+td, th{
+    white-space: nowrap;
+
+}
+th{
+    justify-content: center;
+    font-size: 18px;
+}
+h1 , h2{
+    margin-top: 20px;
+    margin-bottom: 25px;
+}
+h2{
+    color: red;
+}
+
+.container{
+    position: relative;
+    right: 195px;
+}
+
+td{
+    font-size: 16px;
+}
+
+#addimg{
+    width: 25px;
+    height: 20px;
+}
+#updateimg{
+    width: 33px;
+    height: 17px;  
+}
+#delimg{
+    height: 26px;
+    width: 27px;
+}
+
+.btn.btn-danger{
+height: 44px;
+align-items: center;
+width: 125px;
+transition: height 0.5s;
+}
+
+#updatebtn{
+    width: 125px;
+    margin-bottom: 5px;
+    transition: padding 0.5s;
+}
+#updatebtn:hover{
+    padding: 15px 10px}
+
+.btn.btn-danger:hover{
+        height: 50px;
+    }
+
+.voyages-row:hover{
+    background-color: #c8d6e5 !important;
+    
+}
+.voyages-row {
+    transition: background-color 0.7s !important; 
+}

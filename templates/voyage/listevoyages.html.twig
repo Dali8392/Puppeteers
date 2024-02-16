@@ -1,0 +1,72 @@
+{% extends 'baseAdmin.html.twig' %}
+
+
+
+
+{% block stylesheets %}
+            <link
+      rel="shortcut icon"
+      type="image/png"
+      href={{ asset("assets/images/icon/favicon.ico") }}
+    />
+       
+    <link
+      rel="shortcut icon"
+      type="image/png"
+      href={{ asset("assets/images/icon/favicon.ico") }}
+    />
+    <link rel="stylesheet" href={{ asset("assets/css/bootstrap.min.css") }} />
+    <link rel="stylesheet" href={{ asset("assets/css/font-awesome.min.css") }} />
+    <link rel="stylesheet" href={{ asset("assets/css/themify-icons.css") }} />
+    <link rel="stylesheet" href={{ asset("assets/css/metisMenu.css") }} />
+    <link rel="stylesheet" href={{ asset("assets/css/owl.carousel.min.css") }} />
+    <link rel="stylesheet" href={{ asset("assets/css/slicknav.min.css") }} />
+    <!-- amchart css -->
+    <link
+      rel="stylesheet"
+      href="https://www.amcharts.com/lib/3/plugins/export/export.css"
+      type="text/css"
+      media="all"
+    />
+    <!-- others css -->
+    <link rel="stylesheet" href={{ asset("assets/css/typography.css") }} />
+    <link rel="stylesheet" href={{ asset("assets/css/default-css.css") }} />
+    <link rel="stylesheet" href={{ asset("assets/css/styles.css") }} />
+    <link rel="stylesheet" href={{ asset("assets/css/responsive.css") }} />
+    <script src="assets/js/vendor/modernizr-2.8.3.min.js"></script>
+    <!-- modernizr css -->
+
+    <link rel="stylesheet" href={{ asset("styles/table.css") }} />
+     {% endblock %}
+{% block body %}
+<div class="container">
+<h1>Liste des Voyages</h1>
+
+
+<form method="POST" action="/searchvoyage">
+<label> Search by Departure / Destination </label>
+<input type="text" name="depart" placeholder="departure"/>
+<input type="text" name="destination" placeholder="destination"/>
+<input type="submit" value="search">
+</form>
+
+<table class="table table-striped">
+<thead>
+<tr> <th> ID</th> <th> Departure </th> <th> Destination </th> <th> Departure date </th> <th> Arrival date </th> <th> Departure time </th> <th> Arrival time </th> <th> Price </th> <th> Available Seats </th> <th> Transportation </th><th> Accomodation </th> <th> Actions</th> </tr>
+</thead>
+<tbody>
+{% if response is empty %}
+<h2> No Result Found !!</h2>
+{% endif %}
+
+{% for t in response %}
+<tr class="voyages-row">
+<td>{{t.id}} </td><td>{{t.depart}} </td> <td>{{t.destination}} </td><td>{{t.DateDep ? t.DateDep|date('Y-m-d') : ''}} </td><td>{{t.DateArr ? t.DateArr|date('Y-m-d') : ''}} </td><td>{{t.HeureDep ? t.HeureDep|date('H:i') : ''}} </td><td>{{t.HeureArr ? t.HeureArr|date('H:i') : ''}} </td> <td>{{t.prix}} </td><td>{{t.NombrePlaceDispo}} </td><td>{{t.moyenTransport}} </td><td>{{t.hebergement}} </td><td><a href={{ path('updateVoyage',  {'id' : t.id}) }}> <button id="updatebtn" class="btn btn-primary"><img id="updateimg" src="{{ asset('images/UpdateIcon.png') }}"/>Update</button></a> <br> <a href={{ path('removeVoyage',  {'id' : t.id}) }} ><button class="btn btn-danger"> <img id="delimg" src="{{ asset('images/DeleteIcon.png') }}"/>Delete </button></a></td>
+</tr>
+{% endfor %}
+</tbody>
+</table>
+
+<a href={{ path('addVoyage') }}><button class="btn btn-success"> <img id="addimg" src="{{ asset('images/AddIcon.png') }}"/>    Add </button> </a>
+</div>
+{% endblock %}
