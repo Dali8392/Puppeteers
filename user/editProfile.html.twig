@@ -1,0 +1,163 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<div class="container">
+    <div class="row">
+        <div class="col-lg-4">
+            <div class="card profile-card contact">
+                <div class="card-body">
+                    <div class="user-profile">
+                        <div class="user-avatar">
+                            <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="User Avatar" class="img-fluid">
+                        </div>
+                        <br>
+                        <br>
+                        <h5 class="user-name">{{ user.getName() }} {{ user.getLastName() }}</h5>
+                        <h6 class="user-email">{{ user.getEmail() }}</h6>
+                    </div>
+                    <div class="about">
+                        <h5>About</h5>
+                        <p>I'm {{ user.getName() }}. Member in HawesBiya family .</p>
+                        <input id='code' value='' readonly hidden  >
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-8">
+            <div class="card profile-edit-card">
+                <div class="card-body contact_form_container">
+                    <h6 class="text-primary contact_title">Personal Details</h6>
+ 
+                    {{ form_start(form, {'attr': {'id': 'SignupForm','class': 'contact_form','novalidate':'novalidate'}}) }}
+                    <div class="form-group row">
+                        <div class="col-6">
+                            <input id='idUser' name='idUser' value={{ user.getId() }} class='contact_form_subject input_field' placeholder='ID' readonly>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-6">
+                            {{ form_row(form.name, {'attr': {'class': 'contact_form_subject input_field', 'placeholder': 'Name'}}) }}
+                            {{ form_errors(form.name)|join }}
+                        </div>
+                        <div class="col-6">
+                            {{ form_row(form.lastName, {'attr': {'class': 'contact_form_subject input_field', 'placeholder': 'Last Name'}}) }}
+                            {{ form_errors(form.lastName)|join }}
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-6">
+                            {{ form_row(form.email, {'attr': {'class': 'contact_form_subject input_field', 'placeholder': 'E-mail'}}) }}
+                            {{ form_errors(form.email)|join }}
+                        </div>
+                        <div class="col-6">
+                            {{ form_row(form.cin, {'attr': {'class': 'contact_form_subject input_field', 'placeholder': 'CIN'}}) }}
+                            {{ form_errors(form.cin)|join }}
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-6">
+                            <input name='roleUser' value={{ user.getRole() }} class='contact_form_subject input_field' placeholder='Role' readonly>
+                        </div>
+                        <div class="col-6">
+                            <input name='DateInscrUser' value={{ user.getDateInscri().format('Y-m-d H:i:s') }} class='contact_form_subject input_field' placeholder='Date Inscri' readonly>
+                        </div>
+                    </div>
+                    
+                    <!-- Password Fields -->
+                    <span id="passwordFields" hidden >
+                    <div class="form-group row" >
+                        <div class="col-6">
+                            {{ form_row(form.password.first, {'attr': {'class': 'contact_form_subject input_field', 'placeholder': 'Password','value': user.getPassword()  }}) }}
+                            {{ form_errors(form.password.first)|join }}
+                        </div>
+                        <div class="col-6">
+                            {{ form_row(form.password.second, {'attr': {'class': 'contact_form_subject input_field', 'placeholder': 'Confirm Password','value': user.getPassword() }}) }}
+                           
+                        </div>
+                    </div>
+                    <div class="form-group row" >
+                        <div class="col-6">
+                      <input id='codeCheck' value='' class='contact_form_subject input_field' placeholder='Code check' >
+
+                        </div>
+                        
+                    </div>
+                    </span>
+                    
+                    
+                    
+                    <!-- Submit Button -->
+                    <div class="form-group row">
+                        <div class="col-6">
+                            {{ form_row(form.sign_up, {'attr': {'class': 'form_submit_button button'}}) }}
+                        </div>
+                         <div class="col-16">
+                         <button type="button" id="resetPassword" class='form_submit_button button'>Reset Password</button>
+                        </div>
+                    </div>
+                     
+                    {{ form_end(form) }}
+                           
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }} 
+    
+    <script>
+        // Toggle password fields visibility
+       $('#resetPassword').click(function(e) {
+    var userId = $('#idUser').val();
+   
+    $.ajax({
+        url: '{{ path('reset_password') }}',
+        type: 'POST',
+        data: {userId: userId}, 
+        success: function(response){
+           if (response.success) {
+
+
+      $('#passwordFields').removeAttr('hidden');
+        $('#code').val(response.code);
+
+                } 
+                else {
+        alert("Server mail error!!!");
+    }
+        },
+        error: function(xhr, status, error) {
+            console.log(xhr.responseText); 
+            alert('Error occurred while processing the request!');
+        }
+    });
+     });
+
+////////////////////////////
+$('form').on('submit', function(e) {
+    e.preventDefault();
+    
+    
+    
+    if (!$('#passwordFields').prop('hidden')) {
+        var codeValue = $('#code').val().trim();
+        var validationCode = $('#codeCheck').val().trim();
+
+        if (codeValue === validationCode) { 
+            $(this).unbind('submit').submit();
+        } else {
+           
+            alert('The code is incorrect. Try again.');
+        }
+    } else {
+       
+        $(this).unbind('submit').submit();
+    }
+});
+    </script>
+
+{% endblock %}
