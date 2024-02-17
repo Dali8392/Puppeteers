@@ -40,21 +40,21 @@
      {% endblock %}
 {% block body %}
 <div class="container">
-<h1>Liste des Voyages</h1>
+<h1>Transportation List</h1>
 
-<div id="searchsection">
-<form method="POST" action="/searchvoyage">
+
+{# <form method="POST" action="/searchvoyage">
 <label> Search by Departure / Destination </label>
-<input type="text" name="depart" placeholder="Departure"/>
-<input type="text" name="destination" placeholder="Destination"/>
-<button id="searchbtn" type="submit"> <img id="searchicon" src="{{ asset('images/SearchIcon.png') }}"/>  Search </button>
-</form>
-</div>
-<a href={{ path('addVoyage') }}><button class="btn btn-success"> <img id="addimg" src="{{ asset('images/AddIcon.png') }}"/>    Add </button> </a>
+<input type="text" name="depart" placeholder="departure"/>
+<input type="text" name="destination" placeholder="destination"/>
+<input type="submit" value="search">
+</form> #}
+<a href={{ path('addMoyen') }}><button class="btn btn-success"> <img id="addimg" src="{{ asset('images/AddIcon.png') }}"/>    Add </button> </a>
+
 
 <table class="table table-striped">
 <thead>
-<tr> <th> ID</th> <th> Departure </th> <th> Destination </th> <th> Departure date </th> <th> Arrival date </th> <th> Departure time </th> <th> Arrival time </th> <th> Price </th> <th> Available Seats </th> <th> Description </th> <th> Transportation </th><th> Accomodation </th> <th> Actions</th> </tr>
+<tr> <th> ID </th> <th> Category </th> <th> Type </th> <th> Model </th>  <th> Actions</th> </tr>
 </thead>
 <tbody>
 {% if response is empty %}
@@ -63,13 +63,16 @@
 
 {% for t in response %}
 <tr class="voyages-row">
-<td>{{t.id}} </td><td>{{t.depart}} </td> <td>{{t.destination}} </td><td>{{t.DateDep ? t.DateDep|date('Y-m-d') : ''}} </td><td>{{t.DateArr ? t.DateArr|date('Y-m-d') : ''}} </td><td>{{t.HeureDep ? t.HeureDep|date('H:i') : ''}} </td><td>{{t.HeureArr ? t.HeureArr|date('H:i') : ''}} </td> <td>{{t.prix}} </td><td>{{t.NombrePlaceDispo}} </td><td>{{t.description}} </td><td>{{t.moyenTransport}} </td><td>{{t.hebergement}} </td><td><a href={{ path('updateVoyage',  {'id' : t.id}) }}> <button id="updatebtn" class="btn btn-primary"><img id="updateimg" src="{{ asset('images/UpdateIcon.png') }}"/>Update</button></a> <br> <a href={{ path('removeVoyage',  {'id' : t.id}) }} ><button class="btn btn-danger deletebutton" data="{{ {'ID': t.id , 'Departure': t.depart , 'Destination': t.destination , 'Dep Date': t.DateDep ? t.DateDep|date('Y-m-d') : '' , 'Arr Date': t.DateArr ? t.DateArr|date('Y-m-d') : '' } | json_encode}}"> <img id="delimg" src="{{ asset('images/DeleteIcon.png') }}"/>Delete </button></a></td>
+<td>{{t.id}} </td><td>{{t.categorieMoyen}} </td> <td>{{t.typeMoyen}} </td> <td>{{t.idModele}} </td><td><a href={{ path('updateMoyen',  {'id' : t.id}) }}> <button id="updatebtn" class="btn btn-primary"><img id="updateimg" src="{{ asset('images/UpdateIcon.png') }}"/>Update</button></a> <br> <a href={{ path('removeMoyen',  {'id' : t.id}) }} ><button class="btn btn-danger deletebutton" data="{{ {'Category': t.categorieMoyen, 'Type': t.typeMoyen, 'Model': t.idModele} | json_encode}} "> <img id="delimg" src="{{ asset('images/DeleteIcon.png') }}"/>Delete </button></a></td>
 </tr>
 {% endfor %}
 </tbody>
 </table>
 
 </div>
+
+
+
 
 {# javascript for delete button  #}
  <script>

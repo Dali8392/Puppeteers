@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20240216123633 extends AbstractMigration
+final class Version20240217142735 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -29,9 +29,9 @@ final class Version20240216123633 extends AbstractMigration
         $this->addSql('ALTER TABLE event_user ADD CONSTRAINT FK_92589AE2A76ED395 FOREIGN KEY (user_id) REFERENCES user (id) ON DELETE CASCADE');
         $this->addSql('ALTER TABLE hebergement ADD CONSTRAINT FK_4852DD9C757826F2 FOREIGN KEY (type_hebergement_id) REFERENCES type_hebergement (id)');
         $this->addSql('ALTER TABLE hebergement ADD CONSTRAINT FK_4852DD9CA76ED395 FOREIGN KEY (user_id) REFERENCES user (id)');
+        $this->addSql('CREATE UNIQUE INDEX UNIQ_F42537D8363530B5 ON moyen_transport (id_modele)');
         $this->addSql('ALTER TABLE reservation_hebergement ADD CONSTRAINT FK_843E00C02A4C4478 FOREIGN KEY (paiement_id) REFERENCES paiement (id)');
         $this->addSql('ALTER TABLE reservation_voyage ADD CONSTRAINT FK_776CC0CE2A4C4478 FOREIGN KEY (paiement_id) REFERENCES paiement (id)');
-        $this->addSql('ALTER TABLE voyage ADD description VARCHAR(255) DEFAULT NULL');
         $this->addSql('ALTER TABLE voyage ADD CONSTRAINT FK_3F9D89553ED8D53F FOREIGN KEY (moyen_transport_id) REFERENCES moyen_transport (id)');
         $this->addSql('ALTER TABLE voyage ADD CONSTRAINT FK_3F9D895523BB0F66 FOREIGN KEY (hebergement_id) REFERENCES hebergement (id)');
     }
@@ -48,10 +48,10 @@ final class Version20240216123633 extends AbstractMigration
         $this->addSql('ALTER TABLE event_user DROP FOREIGN KEY FK_92589AE2A76ED395');
         $this->addSql('ALTER TABLE hebergement DROP FOREIGN KEY FK_4852DD9C757826F2');
         $this->addSql('ALTER TABLE hebergement DROP FOREIGN KEY FK_4852DD9CA76ED395');
+        $this->addSql('DROP INDEX UNIQ_F42537D8363530B5 ON moyen_transport');
         $this->addSql('ALTER TABLE reservation_hebergement DROP FOREIGN KEY FK_843E00C02A4C4478');
         $this->addSql('ALTER TABLE reservation_voyage DROP FOREIGN KEY FK_776CC0CE2A4C4478');
         $this->addSql('ALTER TABLE voyage DROP FOREIGN KEY FK_3F9D89553ED8D53F');
         $this->addSql('ALTER TABLE voyage DROP FOREIGN KEY FK_3F9D895523BB0F66');
-        $this->addSql('ALTER TABLE voyage DROP description');
     }
 }

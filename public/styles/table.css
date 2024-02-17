@@ -62,3 +62,51 @@ transition: height 0.5s;
 .voyages-row {
     transition: background-color 0.7s !important; 
 }
+
+.btn.btn-success{
+    margin-left: 900px;
+    margin-bottom: 20px;
+    width: 140px;
+    height: 55px ;
+    font-size: 18px;
+    font-weight: 600;
+    transition: height 0.5s;
+}
+.btn.btn-success:hover{
+    height: 60px;
+}
+
+#searchsection input[type="text"]{
+        margin-left: 10px;
+        height: 35px;
+        width: 200px;
+        border: none;
+        border-bottom: 1px solid;
+}
+
+#searchsection label{
+    font-size: 16px;
+}
+
+
+
+#searchicon{
+    height: 35px;
+}
+#searchbtn{
+    margin-left: 25px;
+    height: 45px;
+    width: 120px;
+    border: none;
+    background-color: rgb(155, 35, 247);
+    border-radius: 5px;
+    color: white;
+    font-size: 15px;
+    transition: height 0.5s;
+}
+
+#searchbtn:hover{
+    height: 50px;
+    font-weight: 700;
+    background-color: rgb(121, 20, 199);
+}

@@ -17,14 +17,14 @@ class MoyenTransportFormeType extends AbstractType
         $builder
             ->add('categorieMoyen', ChoiceType::class, [
                 'choices' => [
-                    'Terrestre' => 'Terrestre',
-                    'Aérien' => 'Aérien',
+                    'Land' => 'Land',
+                    'Air' => 'Air',
                 ],
                 'placeholder' => 'Choose an option',
             ])
             ->add('typeMoyen', ChoiceType::class, [
                 'choices' => [
-                    'Avion' => 'Avion',
+                    'Plane' => 'Plane',
                     'Bus' => 'Bus',
                 ],
                 'placeholder' => 'Choose an option',

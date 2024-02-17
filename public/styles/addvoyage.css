@@ -13,6 +13,7 @@ h3{
 }
 .form-control{
   border-bottom: 2px solid;
+  height: auto !important;
 }
 .form-label{
   font-size: larger;

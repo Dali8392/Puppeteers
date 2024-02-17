@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\MoyenTransport;
 use App\Form\MoyenTransportFormeType;
+use App\Repository\MoyenTransportRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -37,9 +38,54 @@ class MoyenTransportController extends AbstractController
         $em->flush();
     
         
-         return $this->redirectToRoute('moyensListe');}
+         return $this->redirectToRoute('moyensList');}
         return $this->render('moyen_transport/addmoyen.html.twig', [
             'f'=>$form->createView()]);
     }
+
+
+
+    #[Route('/moyenslist', name:'moyensList')]
+    public function fetch( MoyenTransportRepository $repo): Response
+    {
+            $result=$repo->findAll();
+            return $this->render('moyen_transport/listemoyens.html.twig', [
+                'response' => $result,
+            ]);
+        }
+
+
+
+        #[Route('/removemoyen/{id}', name:'removeMoyen')]
+    public function remove(int $id, MoyenTransportRepository $repo, \Doctrine\Persistence\ManagerRegistry $mr): Response
+    {
+       $s=$repo->find($id);
+       $em=$mr->getManager();
+        $em->remove($s);
+        $em->flush();
+
+
+        
+        return $this->redirectToRoute('moyensList');
+    }
+
+    #[Route('/updateMoyen/{id}', name:'updateMoyen')]
+    public function updateVoyage(\Doctrine\Persistence\ManagerRegistry $mr, MoyenTransportRepository $moyenrepo,MoyenTransportRepository $repo, Request $req, int $id): Response
+    {
+        $em=$mr->getManager();
+          $s=$repo->find($id);
+        $form=$this->createForm( MoyenTransportFormeType::class, $s);
+        $form->handleRequest($req);
+
+
+    if ($form->isSubmitted() && $form->isValid() ){
+        
+        $em->flush();
+       
+         return $this->redirectToRoute('moyensList');}
+        return $this->render('moyen_transport/updatemoyen.html.twig', [
+            'f'=>$form->createView()]);
+    }
+
 
 }

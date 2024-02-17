@@ -57,6 +57,7 @@ class Voyage
     private ?int $NombrePlaceDispo = null;
     
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+    #[ORM\JoinColumn(name:'moyen_transport_id', referencedColumnName:'id')]
     #[Assert\NotNull(message:"This field is mandatory.")]
     private ?MoyenTransport $moyenTransport = null;
 

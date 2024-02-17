@@ -1,5 +1,5 @@
 {% extends 'baseAdmin.html.twig' %}
-{% block headertitle %} Add transportation {% endblock %}
+{% block headertitle %} Update Transportation {% endblock %}
 {% block namespan %} Transportation Management {% endblock %}
 
 {% block stylesheets %}
@@ -32,7 +32,7 @@
     <link rel="stylesheet" href={{ asset("assets/css/default-css.css") }} />
     <link rel="stylesheet" href={{ asset("assets/css/styles.css") }} />
     <link rel="stylesheet" href={{ asset("assets/css/responsive.css") }} />
-    <script src="assets/js/vendor/modernizr-2.8.3.min.js"></script>
+    <script src="../assets/js/vendor/modernizr-2.8.3.min.js"></script>
     <!-- modernizr css -->
 
     <link rel="stylesheet" href={{ asset("styles/addmoyen.css") }} />
@@ -41,12 +41,11 @@
 
 
 
-
 {% block body %}
 <div id="main-container" style="margin-bottom : 45px; max-height : 134vh ">
 <div id="form-container" >
 <div class="text-center">
-<h3 style="font-weight : bold ;  margin-bottom : 35px"> Add Transportation </h3>
+<h3 style="font-weight : bold ;  margin-bottom : 35px"> Update Transportation </h3>
 </div>
 
 <div class="row justify-content-center">
@@ -84,7 +83,7 @@
 
 
   <div class="text-center">
-                     {{ form_widget(f.submit, {'attr': {'class': 'btn btn-primary' , 'style': 'width : 400px ; margin-top: 30px;margin-bottom: 50px; height : 52px ; font-size : 21px;font-weight : bold; '}}) }}
+                     {{ form_widget(f.submit, {'label': 'Update','attr': {'class': 'btn btn-primary' , 'style': 'width : 400px ; margin-top: 30px;margin-bottom: 50px; height : 52px ; font-size : 21px;font-weight : bold; '}}) }}
                     </div>
 
 {{ form_end(f) }}
@@ -94,3 +93,41 @@
 
 
  {% endblock %}
+
+
+
+ 
+ {% block javascripts %}
+            {{ encore_entry_script_tags('app') }}
+        
+    <!-- jquery latest version -->
+    <script src="../assets/js/vendor/jquery-2.2.4.min.js"></script>
+    <!-- bootstrap 4 js -->
+    <script src="../assets/js/popper.min.js"></script>
+    <script src="../assets/js/bootstrap.min.js"></script>
+    <script src="../assets/js/owl.carousel.min.js"></script>
+    <script src="../assets/js/metisMenu.min.js"></script>
+    <script src="../assets/js/jquery.slimscroll.min.js"></script>
+    <script src="../assets/js/jquery.slicknav.min.js"></script>
+
+    <!-- start chart js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.min.js"></script>
+    <!-- start highcharts js -->
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <!-- start zingchart js -->
+    <script src="https://cdn.zingchart.com/zingchart.min.js"></script>
+    <script>
+      zingchart.MODULESDIR = "https://cdn.zingchart.com/modules/";
+      ZC.LICENSE = [
+        "569d52cefae586f634c54f86dc99e6a9",
+        "ee6b7db5b51705a13dc2339db3edaf6d",
+      ];
+    </script>
+    <!-- all line chart activation -->
+    <script src={{ asset("../assets/js/line-chart.js") }}></script>
+    <!-- all pie chart -->
+    <script src={{ asset("../assets/js/pie-chart.js") }}></script>
+    <!-- others plugins -->
+    <script src={{ asset("../assets/js/plugins.js") }}></script>
+    <script src={{ asset("../assets/js/scripts.js") }}></script>
+    {% endblock %}
