@@ -56,12 +56,12 @@
     {% set hours = duree|date('H') |trim('0')%}
     {% set minutes = duree|date('i') %}
     
-    {{ years > 0 ? years ~ ' year' ~ (years > 1 ? 's' : '') ~ ' ' : '' }}
-    {{ months > 0 ? months ~ ' month' ~ (months > 1 ? 's' : '') ~ ' ' : '' }}
-    {{ days > 0 ? days ~ ' day' ~ (days > 1 ? 's' : '') ~ ' ' : '' }}
-    {{ hours > 0 ? hours ~ ' hour' ~ (hours > 1 ? 's' : '') ~ ' ' : '' }}
-    {{ minutes > 0 ? minutes ~ ' minute' ~ (minutes > 1 ? 's' : '') : '' }}
-{% else %}
+{{ years > 0 ? years ~ ' Year(s)' ~ (years > 1 ? 's' : '') ~ ' ' : '' }}
+    {{ months > 0 ? months ~ ' Month(s)' ~ (months > 1 ? 's' : '') ~ ' ' : '' }}
+    {{ days > 0 ? days ~ ' Day(s)' ~ (days > 1 ? 's' : '') ~ ' ' : '' }}
+    {{ hours > 0 ? hours ~ ' Hour(s)' ~ (hours > 1 ? 's' : '') ~ ' ' : '' }}
+    {{ minutes > 0 ? minutes ~ ' Minute(s)' ~ (minutes > 1 ? 's' : '') : '' }}
+    {% else %}
     No duration available
 {% endif %}</small>
                                 <small class="flex-fill text-center py-2"><i class="fa fa-user me-2"></i>{{ event.getMaxParticipants() }} Person</small>
@@ -79,8 +79,6 @@
                                     <small class="fa fa-star text-primary"></small>
                                     <small class="fa fa-star text-primary"></small>
                                 </div>
-                <a href="{{ path('event_edit', {'id': event.id}) }}">Edit</a>
-                <a href="{{ path('event_delete', {'id': event.id}) }}">Delete</a>
                                 <p class="mb-4">
                                 From :{{ event.getDateDebut() ? event.getDateDebut()|date('Y-m-d') : '' }}
                                 To :{{ event.getDateFin() ? event.getDateFin()|date('Y-m-d') : '' }}

@@ -227,7 +227,7 @@ class Event
         return $this;
     }
 
-    /**
+/**
      * @return Collection<int, Comment>
      */
     public function getComments(): Collection
@@ -274,7 +274,6 @@ class Event
         return $this;
     }
 
-
     public function removeParticipant(User $participant): static
     {
         $this->participants->removeElement($participant);
@@ -288,9 +287,9 @@ class Event
     }
 
     public function setUserCreator(string $userCreator): static
-    {
-        $this->userCreator = $userCreator;
+{
+    $this->userCreator = $userCreator;
 
-        return $this;
-    }
+    return $this;
+}
 }

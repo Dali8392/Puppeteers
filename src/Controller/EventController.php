@@ -20,10 +20,12 @@ use Doctrine\Persistence\ManagerRegistry;
 class EventController extends AbstractController
 {
     private $entityManager;
+    private $managerRegistry;
 
-    public function __construct(EntityManagerInterface $entityManager)
+    public function __construct(EntityManagerInterface $entityManager,ManagerRegistry $managerRegistry)
     {
         $this->entityManager = $entityManager;
+        $this->managerRegistry = $managerRegistry;
     }
 
     #[Route('/event', name: 'event_index', methods: ['GET', 'POST'])]
@@ -35,8 +37,9 @@ class EventController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            
-            $event->addParticipant();
+            $userRepository = $this->managerRegistry->getRepository(User::class);
+            $user = $userRepository->find($event->getUserCreator());
+            $event->addParticipant($user);
             $this->entityManager->persist($event);
             $this->entityManager->flush();
 
@@ -48,10 +51,13 @@ class EventController extends AbstractController
             'form' => $form->createView()
         ]);
     }
+    #[Route('/back', name: 'back')]
+    public function back()
+    {  return $this->render('baseAdmin.html.twig');
+    }
 
-
-    #[Route('/event/show', name: 'event_show_all')]
-    public function showAll(EventRepository $eventRepository): Response
+    #[Route('/event/showF', name: 'event_show_front')]
+    public function showFront(EventRepository $eventRepository): Response
     {
         $events = $eventRepository->findAll();
         $form = $this->createForm(EventFormeType::class); // Create form without data
@@ -61,7 +67,14 @@ class EventController extends AbstractController
             'form' => $form->createView(), // Pass the form variable to the template
         ]);
     }
-    
+    #[Route('/event/showB', name: 'event_show_back')]
+    public function showBack(EventRepository $eventRepository): Response
+    {
+        $events = $eventRepository->findAll();
+        return $this->render('event/back.html.twig', [
+            'events' => $events,
+        ]);
+    }
 
     #[Route('/event/{id}/edit', name: 'event_edit')]
     public function edit(Request $request, Event $event = null): Response
@@ -77,7 +90,7 @@ class EventController extends AbstractController
             $this->entityManager->persist($event); // Corrected variable name from $events to $event
             $this->entityManager->flush();
     
-            return $this->redirectToRoute('event_index');
+            return $this->redirectToRoute('event_show_back');
         }
     
         return $this->render('event/edit.html.twig', [
@@ -100,32 +113,8 @@ public function delete(Event $event, EntityManagerInterface $entityManager): Res
     $entityManager->remove($event);
     $entityManager->flush();
 
-    return $this->redirectToRoute('event_show_all');
+    return $this->redirectToRoute('event_show_back');
 }
-#[Route('/add-participant/{eventId}', name: 'add_participant')]
-    public function addParticipant(EventRepository $eventRepository, EntityManagerInterface $entityManager, $eventId): Response
-    {
-        // Retrieve an instance of Event
-        $event = $eventRepository->find($eventId);
-
-        // Check if the event exists
-        if (!$event) {
-            throw $this->createNotFoundException('Event not found');
-        }
-
-        // Get the user creator from the event
-        $userCreator = $event->getUserCreator();
-
-        // Add the user creator as a participant to the event
-        $event->addParticipant($userCreator);
-
-        // Persist and flush the changes
-        $entityManager->persist($event);
-        $entityManager->flush();
-
-        // Redirect to a success page or wherever appropriate
-        return $this->redirectToRoute('event_show_all', ['id' => $eventId]);
-    }
 
     #[Route('/comment/{id}', name: 'comment_index', methods: ['GET', 'POST'])]
 public function indexComment(CommentRepository $commentRepository, Request $request, $id, EntityManagerInterface $entityManager): Response
