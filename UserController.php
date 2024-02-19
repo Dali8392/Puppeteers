@@ -8,8 +8,6 @@ use DateTime;
 use DateTimeZone;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
-use phpDocumentor\Reflection\Types\Boolean;
-use PHPUnit\Util\Type;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -22,9 +20,26 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Regex;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class UserController extends AbstractController
+{  
+    private $session;
+
+public function __construct(SessionInterface $session)
 {
+    $this->session = $session;
+}
+
+    #[Route('/', name: 'app_home')]
+    public function home():Response {
+            return $this->render('base.html.twig');
+    }
+    #[Route('/dashboard', name: 'app_homeAdmine')]
+    public function homeAdmine():Response {
+            return $this->render('baseAdmin.html.twig');
+    }
+
     ////////thez li inscription wa fi nafes wa9et ta3mel add fel base wa tab3eth mail welcom
     #[Route('/inscription', name: 'app_inscription')]
     public function addUser(Request $request,EntityManagerInterface $entityManager): Response
@@ -47,7 +62,13 @@ class UserController extends AbstractController
                $message=str_replace("20id20",$user->getId(),$message);
                $this->sendMail($message,'Welcome to our website',$user);
 
-                 return $this->redirectToRoute('app_inscription');
+               ///////
+               $this->session->set('id', $user->getId());
+               $this->session->set('name', $user->getName());
+               $this->session->set('lastName', $user->getLastName());
+               $this->session->set('email', $user->getEmail());
+
+                 return $this->redirectToRoute('app_home');
 
        
         }else{
@@ -57,7 +78,7 @@ class UserController extends AbstractController
     }
     /////////////valide form wa ken valid tab3eth mail fih code validation
     #[Route('/validate/user/form', name: 'validate_user_form')]
-    public function validateUserForm(Request $request,EntityManagerInterface $entityManager)
+    public function validateUserForm(Request $request,ManagerRegistry $managerRegistry)
     {  
         $maVariable = $request->request->get('ma_variable');
         $user= new User(); 
@@ -72,6 +93,10 @@ class UserController extends AbstractController
        
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
+            $userEx = $managerRegistry->getManager()->getRepository(User::class)->findOneBy(['email' => $user->getEmail()]);
+              if($userEx){
+                $form->get('email')->addError(new FormError('this mail is already exists try again with other mail'));
+              }else{
         $randomCode = $this->generateRandomCode();
         $templatePath = $this->getParameter('kernel.project_dir') . '/templates/emails/email.html.twig';
         $message = file_get_contents($templatePath);
@@ -82,7 +107,7 @@ class UserController extends AbstractController
         $this->sendMail($message,'Mail confirmation',$user);
 
           return new JsonResponse(['success' => true,'code' => $randomCode]);
-
+        }
         }
         
         $formView = $form->createView();
@@ -239,7 +264,14 @@ class UserController extends AbstractController
             $form->get('id')->addError(new FormError('ID does not exist. Try again.'));
             }else{
                 if($user->getPassword()==$formData['password']){
-                return $this->render('base.html.twig');
+                    $this->session->set('id', $user->getId());
+                    $this->session->set('name', $user->getName());
+                    $this->session->set('lastName', $user->getLastName());
+                    $this->session->set('email', $user->getEmail());
+                    $this->session->set('role', $user->getRole());
+                    if($user->getRole() == "user"){return $this->redirectToRoute('app_home');}
+                    else if ($user->getRole() == "admin"){return $this->redirectToRoute('app_homeAdmine');}
+                 
             }else{
                 $form->get('id')->addError(new FormError('Something is wrong!! Incorrect ID or password'));
   
@@ -254,19 +286,25 @@ class UserController extends AbstractController
     }
 
     /////////////////profile 
-    #[Route('/user/profile/{id}', name: 'delete_admin')]
+    #[Route('/user/profile/{id}', name: 'profile_user')]
     public function profileUser($id,Request $request,ManagerRegistry $managerRegistry): Response
             {
-
-
-
-
-
+             
                 return $this->render('user/profile.html.twig', [
                 'user' => $managerRegistry->getManager()->getRepository(User::class)->findOneBy(['id' => $id]),
             ]);
             }
 
+             /////////////////logout
+       #[Route('/logout', name: 'logout_user')]
+        public function logoutUser(): Response
+            {
+                $this->session->clear(); 
+             
+                return $this->redirectToRoute('app_home');
+           
+            }
+            
 
 
 

@@ -125,6 +125,7 @@
                     </thead>
                     <tbody>
                         {% for user in list %}
+                        {% if user.getId() != app.session.get('id') %}
                             <tr id="user_{{ user.getId() }}">
                                 <td>{{ user.getId() }}</td>
                                 <td>{{ user.getName() }}</td>
@@ -144,6 +145,8 @@
                                  </td>
                                 <td><a href="#" onclick="deleteUser('{{ user.getId() }}')"><i class="ti-trash"></i></a></td>
                             </tr>
+                        {% endif %}
+                            
                         {% endfor %}
                     </tbody>
                 </table>

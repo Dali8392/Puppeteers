@@ -110,7 +110,7 @@
  {% extends 'base.html.twig' %}
 
 {% block body %}
-<div class="container">
+<div class="container" style="margin: 300px;">
     <div class="row">
         <div class="col-lg-4">
             <div class="card profile-card contact">
@@ -127,6 +127,10 @@
                     <div class="about">
                         <h5>About</h5>
                         <p>I'm {{ user.getName() }}. Member in HawesBiya family .</p>
+
+                        {# QR code #}
+                   <div id="qrcode"></div>
+
                         <input id='code' value='' readonly hidden  >
                     </div>
                 </div>
@@ -182,4 +186,14 @@
     </div>
 </div>
 {% endblock %}
+{% block js %}
+<script>
+    // Définir le contenu du code QR
+    var qrCodeContent = "id: {{ user.getId() }}, Nom: {{ user.getName() }}, Email: {{ user.getEmail() }}";
+    
+    // Générer le code QR en utilisant qrcode.js
+    new QRCode(document.getElementById("qrcode"), qrCodeContent);
+</script>
+{% endblock %}
+
 
