@@ -9,12 +9,19 @@ use DateTimeZone;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use phpDocumentor\Reflection\Types\Boolean;
+use PHPUnit\Util\Type;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-
+use Symfony\Component\Validator\Constraints\Length;
+use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\Regex;
 
 class UserController extends AbstractController
 {
@@ -190,6 +197,75 @@ class UserController extends AbstractController
         
     }
 
+//////////Login user
+#[Route('/login', name: 'login_user')]
+    public function loginUser(Request $request,ManagerRegistry $managerRegistry): Response
+    {
+        
+        
+       
+        $form = $this->createFormBuilder()
+        ->add('id', TextType::class, [
+            'constraints' => [
+                new NotBlank(['message' => 'ID is required.']),
+                new Regex([
+                    'pattern' => '/^\d{3}[A-Z]{3}\d{4}$/',
+                    'message' => 'ID must match  pattern.'
+                ])
+            ]
+        ])
+        ->add('password', PasswordType::class ,[
+            'constraints' => [
+                new NotBlank(['message' => 'Password is required.']),
+                new Length(['min' => 8, 'minMessage' => 'Password must be at least {{ limit }} characters long.']),
+                new Regex([
+                    'pattern' => '/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/',
+                    'message' => 'Password must contain at least one lowercase letter, one uppercase letter, one number, and one special character.'
+                ]),
+            ],
+        ])
+        ->add('sign_up', SubmitType::class, [
+            'label' => 'Sign in'
+        ])
+        ->getForm();
+        $form->handleRequest($request);
+       
+         if ($form->isSubmitted() && $form->isValid()) {
+
+            $formData = $form->getData();
+            $id = $formData['id'];
+           $user = $managerRegistry->getManager()->getRepository(User::class)->findOneBy(['id' => $id]);
+           if(!$user){
+            $form->get('id')->addError(new FormError('ID does not exist. Try again.'));
+            }else{
+                if($user->getPassword()==$formData['password']){
+                return $this->render('base.html.twig');
+            }else{
+                $form->get('id')->addError(new FormError('Something is wrong!! Incorrect ID or password'));
+  
+            }
+            }
+
+         }
+
+         return $this->render('user/login.html.twig', [
+            'form' => $form->createView(),
+        ]);
+    }
+
+    /////////////////profile 
+    #[Route('/user/profile/{id}', name: 'delete_admin')]
+    public function profileUser($id,Request $request,ManagerRegistry $managerRegistry): Response
+            {
+
+
+
+
+
+                return $this->render('user/profile.html.twig', [
+                'user' => $managerRegistry->getManager()->getRepository(User::class)->findOneBy(['id' => $id]),
+            ]);
+            }
 
 
 
