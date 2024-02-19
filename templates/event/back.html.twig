@@ -78,7 +78,7 @@
                                     <small class="fa fa-star text-primary"></small>
                                     <small class="fa fa-star text-primary"></small>
                                 </div>
-                <a href="{{ path('event_edit', {'id': event.id}) }}">Edit</a>
+                <a href="{{ path('event_edit', {'id': event.id, 'loc': event.getEventLocation}) }}">Edit</a>
                 <a href="{{ path('event_delete', {'id': event.id}) }}">Delete</a>
                                 <p class="mb-4">
                                 From :{{ event.getDateDebut() ? event.getDateDebut()|date('Y-m-d') : '' }}

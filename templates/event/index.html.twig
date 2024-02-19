@@ -108,10 +108,10 @@
                 </div>
             </div>
         </div> 
-        <!-- Packages End -->
 
-        <!-- Tour Booking Start -->
-{{ form_start(form, {'action': path('event_index'), 'method': 'POST', 'attr': {'novalidate': 'novalidate'}}) }}
+<!-- Tour Booking Start -->
+{{ form_start(form, {'id': 'eventForm', 'method': 'POST', 'attr': {'novalidate': 'novalidate'}}) }}
+
 <div class="container-fluid booking py-5">
     <div class="container py-5">
         <div class="row g-5 align-items-center">
@@ -154,8 +154,16 @@
                             </tr>
                             <tr>
                                 <td>
+                                    
+                                </td>
+                                <td>
+                                    <a href="{{ path('map') }}" class="btn btn-primary">Choose Location</a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
                                     <div class="form-floating">
-                                        {{ form_row(form.event_location, {'label': 'Event Location', 'attr': {'class': 'form-control bg-white border-0', 'placeholder': 'Event Location'}}) }}
+                                        {{ form_row(form.budget_allocated, {'label': 'Event Budget', 'attr': {'class': 'form-control bg-white border-0', 'placeholder': 'Event Budget'}}) }}
                                     </div>
                                 </td>
                                 <td>
@@ -165,11 +173,6 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td>
-                                    <div class="form-floating">
-                                        {{ form_row(form.budget_allocated, {'label': 'Event Budget', 'attr': {'class': 'form-control bg-white border-0', 'placeholder': 'Event Budget'}}) }}
-                                    </div>
-                                </td>
                                 <td colspan="2">
                                     <div class="form-floating">
                                         {{ form_row(form.userCreator, {'label': 'Event Creator', 'attr': {'class': 'form-control bg-white border-0', 'placeholder': 'Event Creator'}}) }}
