@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Add note
+{% endblock %}
+
+{% block body %}
+<style>
+	.card {
+		margin: 300px auto 40px;
+	}
+</style>
+
+<div class="container">
+	<div class="card">
+		<h1 style="margin-bottom: 35px; text-align: center;">Add note</h1>
+		{{ form_start(form) }}
+		{{ form_row(form.note) }}
+		{{ form_row(form.commentaire) }}
+		{{ form_widget(form.submit, {'label': 'Ajouter l\'avis', 'attr': {'class': 'btn btn-primary'}}) }}
+	</div>	
+    </div>
+{% endblock %}

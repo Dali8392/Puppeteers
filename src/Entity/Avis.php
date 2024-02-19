@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use App\Repository\AvisRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+
 
 #[ORM\Entity(repositoryClass: AvisRepository::class)]
 class Avis
@@ -21,6 +23,10 @@ class Avis
 
     #[ORM\ManyToOne(inversedBy: 'avis')]
     private ?Hebergement $hebergement = null;
+
+    #[ORM\ManyToOne(inversedBy: 'avis')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $owner = null;
 
     public function getId(): ?int
     {
@@ -59,6 +65,18 @@ class Avis
     public function setHebergement(?Hebergement $hebergement): static
     {
         $this->hebergement = $hebergement;
+
+        return $this;
+    }
+
+    public function getOwner(): ?User
+    {
+        return $this->owner;
+    }
+
+    public function setOwner(?User $owner): static
+    {
+        $this->owner = $owner;
 
         return $this;
     }

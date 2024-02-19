@@ -1,0 +1,147 @@
+{% extends 'baseAdmin.html.twig' %}
+
+{% block title %}Add Accommodation
+{% endblock %}
+
+{% block body %}
+	<style>
+		.container {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			height: 150%;
+			width: 100%;
+		}
+
+		.testbox {
+			width: 50%;
+			padding: 20px;
+			background-color: #DFE9F2;
+			border: 1px solid #ccc;
+			border-radius: 5px;
+			justify-content: center;
+			align-items: center;
+			margin: auto;
+		}
+
+		.input-block {
+			margin-bottom: 20px;
+		}
+
+		.input-block label {
+			display: block;
+			margin-bottom: 5px;
+			font-weight: bold;
+		}
+
+		.input-block input {
+			width: 100%;
+			padding: 10px;
+			border: 1px solid #ccc;
+			border-radius: 5px;
+		}
+
+		.form-error-message {
+			color: red;
+			font-size: 14px;
+			margin-top: 5px;
+		}
+
+		button {
+			width: 150px;
+			height: 60px;
+			border: 3px solid #315cfd;
+			border-radius: 45px;
+			transition: all 0.3s;
+			cursor: pointer;
+			background: white;
+			font-size: 1.2em;
+			font-weight: 550;
+			font-family: 'Montserrat', sans-serif;
+			align-items: center;
+		}
+
+
+		button:hover {
+			background-color: #4b6599;
+		}
+	</style>
+
+	<h1 style="text-align: center; margin-bottom: 20px;">Add Accommodation</h1>
+	<div class="container">
+		<div class="testbox">
+			{% if form_errors(form) %}
+				<div class="alert alert-danger">
+					{{ form_errors(form) }}
+				</div>
+			{% endif %}
+			{{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
+			<div class="input-block">
+				<label for="name">Name</label>
+				{{ form_widget(form.name) }}
+
+				<div class="form-error-message">
+					{{ form_errors(form.name) }}
+				</div>
+			</div>
+			<div class="input-block">
+				<label for="adresse">Address</label>
+				{{ form_widget(form.adresse) }}
+				<div class="form-error-message">
+					{{ form_errors(form.adresse) }}
+				</div>
+			</div>
+			<div class="input-block">
+				<label for="typeHebergement">Type</label>
+				{{ form_widget(form.typeHebergement) }}
+				<div class="form-error-message">
+					{{ form_errors(form.typeHebergement) }}
+				</div>
+			</div>
+			<div class="input-block">
+				<label for="description">Description</label>
+				{{ form_widget(form.description) }}
+				<div class="form-error-message">
+					{{ form_errors(form.description) }}
+				</div>
+			</div>
+			<div class="input-block">
+				<label for="tarif">Price</label>
+				{{ form_widget(form.tarif) }}
+				<div class="form-error-message">
+					{{ form_errors(form.tarif) }}
+				</div>
+			</div>
+			<div class="input-block">
+				<label for="dateDisponibilte">Date</label>
+				{{ form_widget(form.dateDisponibilte) }}
+				<div class="form-error-message">
+					{{ form_errors(form.dateDisponibilte) }}
+				</div>
+			</div>
+			<div class="input-block">
+				<label for="etat">State</label>
+				{{ form_widget(form.etat) }}
+				<div class="form-error-message">
+					{{ form_errors(form.etat) }}
+				</div>
+			</div>
+			<div class="input-block">
+				<label for="capacite">Capacity</label>
+				{{ form_widget(form.capacite) }}
+				<div class="form-error-message">
+					{{ form_errors(form.capacite) }}
+				</div>
+			</div>
+			<div class="input-block">
+				<label for="image">Image</label>
+				{{ form_widget(form.image) }}
+				<div class="form-error-message">
+					{{ form_errors(form.image) }}
+				</div>
+			</div>
+			<button class"button">Add</button>
+
+		</div>
+	</div>
+{% endblock %}

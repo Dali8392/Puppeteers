@@ -1,0 +1,63 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Avis pour {{ hebergement.id }}{% endblock %}
+
+{% block body %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+    header {
+            margin-bottom: 150px;
+        }
+        
+        footer {
+            margin-top: 150px;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: auto;
+            padding: 20px;
+        }
+
+        .avis-list {
+            margin-top: 20px;
+        }
+
+        .avis-item {
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 10px;
+            margin-bottom: 20px;
+        }
+
+        .note {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .commentaire {
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Avis pour {{ hebergement.id }}</h1>
+        <div class="avis-list">
+            {% for avis in avis %}
+                <div class="avis-item">
+                    <div class="note">{{ avis.note }} sur 5</div>
+                    <div class="commentaire">{{ avis.commentaire }}</div>
+                    <a href="{{ path('avis_modifier', {'id': avis.id}) }}">Modifier</a> |
+                    <a href="{{ path('avis_supprimer', {'id': avis.id}) }}">Supprimer</a>
+                </div>
+            {% endfor %}
+        </div>
+        <a href="{{ path('hebergement_ajouter_avis', {'id': hebergement.id}) }}" class="btn btn-success">Ajouter un avis</a>
+    </div>
+</body>
+</html>
+{% endblock %}

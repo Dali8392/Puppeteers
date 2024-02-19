@@ -1,0 +1,16 @@
+{# templates/hebergement/deleteavis.html.twig #}
+
+{% extends 'base.html.twig' %}
+
+{% block title %}Delete opinion
+{% endblock %}
+
+{% block body %}
+	<h1 style="margin-bottom: 35px; text-align: center;">Delete opinion</h1>
+	<p>Are you sure to delete?</p>
+	<form action="{{ path('avis_supprimer', {'id': avis.id}) }}" method="post">
+		<input type="hidden" name="_method" value="DELETE">
+		<button type="submit">Confirm deletion</button>
+	</form>
+	<a href="{{ path('avis', {'id': hebergement.id}) }}">Cancel</a>
+{% endblock %}

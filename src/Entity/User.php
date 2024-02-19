@@ -39,14 +39,18 @@ class User
     #[ORM\ManyToMany(targetEntity: Activite::class, mappedBy: 'participants')]
     private Collection $activites;
 
+    #[ORM\OneToMany(targetEntity: Avis::class, mappedBy: 'owner', orphanRemoval: true)]
+    private Collection $avis;
+
     public function __construct()
     {
         $this->hebergements = new ArrayCollection();
         $this->events = new ArrayCollection();
         $this->activites = new ArrayCollection();
+        $this->avis = new ArrayCollection();
     }
 
-    public function getId(): ?int
+    public function getId(): ?string
     {
         return $this->id;
     }
@@ -195,6 +199,36 @@ class User
     {
         if ($this->activites->removeElement($activite)) {
             $activite->removeParticipant($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Avis>
+     */
+    public function getAvis(): Collection
+    {
+        return $this->avis;
+    }
+
+    public function addAvi(Avis $avi): static
+    {
+        if (!$this->avis->contains($avi)) {
+            $this->avis->add($avi);
+            $avi->setOwner($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAvi(Avis $avi): static
+    {
+        if ($this->avis->removeElement($avi)) {
+            // set the owning side to null (unless already changed)
+            if ($avi->getOwner() === $this) {
+                $avi->setOwner(null);
+            }
         }
 
         return $this;

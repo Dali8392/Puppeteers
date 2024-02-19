@@ -1,0 +1,98 @@
+{# templates/hebergement/type.html.twig #}
+
+{% extends 'baseAdmin.html.twig' %}
+
+{% block body %}
+	<div class="custom-button-container">
+
+		<a href="choice" class="button">Back</a>
+		<a href="addtype" class="button">Create New</a>
+	</div>
+
+	<h2 style="margin-bottom: 35px; text-align: center;">List of Types of Accommodation</h2>
+
+	<table>
+		<tr>
+			<th>ID</th>
+			<th>Type</th>
+			<th>Description</th>
+			<th>Actions</th>
+		</tr>
+		{% for typeHebergement in typesHebergement %}
+			<tr>
+				<td class="hebergement-id">{{ typeHebergement.id }}</td>
+				<td class="hebergement-type">{{ typeHebergement.type }}</td>
+				<td class="hebergement-description">{{ typeHebergement.description }}</td>
+				<td>
+					<div class="custom-button-container1">
+						<a href="{{ path('updatetype', {'id': typeHebergement.id}) }}" class="button">Update</a>
+						<a href="{{ path('deletetype', {'id': typeHebergement.id}) }}" class="button">Delete</a>
+					</div>
+				</td>
+			</tr>
+		{% endfor %}
+	</table>
+
+	<style>
+		table {
+			border-collapse: collapse;
+			width: 100%;
+		}
+
+		th,
+		td {
+			padding: 8px;
+			text-align: left;
+			border-bottom: 1px solid #ddd;
+			text-align: center;
+
+		}
+		.custom-button {
+			background-color: #007bff;
+			color: white;
+			padding: 15px 30px;
+			border: none;
+			border-radius: 5px;
+			text-align: center;
+			text-decoration: none;
+			display: inline-block;
+			font-size: 18px;
+			margin-bottom: 20px;
+		}
+		.custom-button-container1 {
+			text-align: center;
+			margin-bottom: 20px;
+			margin-right: 30px;
+		}
+		.custom-button-container {
+			display: flex;
+			justify-content: space-between;
+			margin-bottom: 20px;
+		}
+		.left-button {
+			margin-right: auto;
+		}
+
+		.right-button {
+			margin-left: auto;
+		}
+
+		.button {
+			font-size: 18px;
+			display: inline-block;
+			outline: 0;
+			border: 0;
+			cursor: pointer;
+			will-change: box-shadow, transform;
+			background: radial-gradient(100% 100% at 100% 0%, #89E5FF 0%, #5468FF 100%);
+			box-shadow: 0 0.01em 0.01em rgb(45 35 66 / 40%), 0 0.3em 0.7em -0.01em rgb(45 35 66 / 30%), inset 0 -0.01em 0 rgb(58 65 111 / 50%);
+			padding: 15px 30px; /* Increased button size */
+			border-radius: 0.3em;
+			color: #fff;
+			height: 2.6em;
+			text-shadow: 0 1px 0 rgb(0 0 0 / 40%);
+			transition: box-shadow 0.15s ease, transform 0.15s ease;
+		}
+	</style>
+
+{% endblock %}

@@ -1,0 +1,109 @@
+{% extends 'baseAdmin.html.twig' %}
+
+{% block body %}
+
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+th, td {
+  padding: 8px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+.custom-button {
+  background-color: #007bff;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin-bottom: 100px;
+}
+.custom-button-container {
+  text-align: right; 
+  margin-bottom: 20px; 
+}
+.button {
+   font-size: 18px;
+  display: inline-block;
+  outline: 0;
+  border: 0;
+  cursor: pointer;
+  will-change: box-shadow,transform;
+  background: radial-gradient( 100% 100% at 100% 0%, #89E5FF 0%, #5468FF 100% );
+  box-shadow: 0px 0.01em 0.01em rgb(45 35 66 / 40%), 0px 0.3em 0.7em -0.01em rgb(45 35 66 / 30%), inset 0px -0.01em 0px rgb(58 65 111 / 50%);
+  padding: 0 2em;
+  border-radius: 0.3em;
+  color: #fff;
+  height: 2.6em;
+  text-shadow: 0 1px 0 rgb(0 0 0 / 40%);
+  transition: box-shadow 0.15s ease, transform 0.15s ease;
+}
+.left-button {
+    margin-right: auto; 
+}
+
+.right-button {
+    margin-left: auto; 
+}
+.custom-button-container{
+   display: flex;
+    justify-content: space-between; 
+    margin-bottom: 20px;
+}
+</style>
+</head>
+<body>
+<div class="custom-button-container">
+<a href="{{ path('choice') }}" class="button">Back</a>
+<a href="{{ path('addhebergement') }}" class="button">Create New</a>
+</div>
+<h2>List of Accommodations</h2>
+<table>
+  <tr>
+    <th>ID</th>
+    <th>Name</th>
+    <th>Adresse</th>
+    <th>Description</th>
+    <th>Price</th>
+    <th>Date</th>
+    <th>Capacite</th>
+    <th>Etat</th>
+  </tr>
+  <tr>
+    {% for hebergement in hebergements %}
+      <tr>
+      <td class="hebergement-id">{{ hebergement.Id }}</td>
+        <td class="hebergement-name">{{ hebergement.name }}</td>
+
+        <td class="hebergement-adresse">{{ hebergement.adresse }}</td>
+        <td class="hebergement-description">{{ hebergement.description }}</td>
+        <td class="hebergement-price">${{ hebergement.tarif }} per night</td>
+        <td class="hebergement-Date">{{ hebergement.dateDisponibilte|date('d/m/Y') }}</td>
+        <td class="hebergement-Capacite">{{ hebergement.Capacite }}people 
+        <td class="hebergement-Etat">{{ hebergement.etat }}</td>
+
+        <td><a href="{{ path('updatehebergement', {'id': hebergement.id}) }}" class="button">Update</a> 
+           <form action="{{ path('deletehebergement', {'id': hebergement.id}) }}" method="POST">
+    <!-- Include CSRF token field -->
+    
+    <!-- Delete button -->
+    <button type="submit" class="button">Delete</button>
+</form></td>           
+      </tr>   
+    {% endfor %}
+  </tr>
+</table>
+
+</body>
+</html>
+{% endblock %}

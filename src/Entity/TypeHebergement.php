@@ -6,6 +6,7 @@ use App\Repository\TypeHebergementRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: TypeHebergementRepository::class)]
 class TypeHebergement
@@ -16,9 +17,11 @@ class TypeHebergement
     private ?int $id = null;
 
     #[ORM\Column(length: 10)]
+    #[Assert\NotBlank(message: 'type should not be empty')]
     private ?string $type = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: 'Description should not be empty')]
     private ?string $description = null;
 
     #[ORM\OneToMany(targetEntity: Hebergement::class, mappedBy: 'typeHebergement')]
@@ -87,4 +90,9 @@ class TypeHebergement
 
         return $this;
     }
+    public function __toString(): string
+    {
+        return (string) $this->getId();
+    }
+
 }
