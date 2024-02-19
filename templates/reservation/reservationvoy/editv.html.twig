@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Editer la réservation de voyage{% endblock %}
+
+{% block body %}
+    <h1>Editer la réservation de voyage</h1>
+    {{ form_start(form) }}
+    {# Si vous ne souhaitez pas afficher le champ paiement_id, vous pouvez le retirer ici #}
+    {{ form_row(form.paiement) }}
+    {{ form_row(form.max) }}
+    {# Ajoutez d'autres champs du formulaire si nécessaire #}
+    <button type="submit" class="btn btn-primary">Enregistrer</button>
+    {{ form_end(form) }}
+{% endblock %}

@@ -1,0 +1,59 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Payment{% endblock %}
+
+{% block body %}
+    <!-- Header -->
+    <header class="w3-display-container w3-content" style="max-width:1500px; position: relative;">
+        <!-- You can replace the image source below with your own hotel image -->
+        <img src="{{ asset('images/home_slider.jpg') }}" alt="hotel" width="1500" height="800"> 
+        <div class="w3-display-middle w3-padding" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: rgba(0, 0, 0, 0.8); padding: 20px; border-radius: 10px;">
+            <div class="w3-container">
+                <h2 class="w3-center" style="color: white;">Welcome </h2>
+                {{ form_start(form,{'attr':{'novalidate':'novalidate'}}) }}
+                <div class="form-group row">
+                    <label class="col-sm-4 col-form-label" style="color: white;">Amount</label>
+                    <div class="col-sm-8">
+                        {{ form_widget(form.montant, {'attr': {'class': 'form-control'}}) }}
+                        {{ form_errors(form.montant) }}
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-4 col-form-label" style="color: white;">Date</label>
+                    <div class="col-sm-8">
+                        {{ form_widget(form.date, {'attr': {'class': 'form-control'}}) }}
+                        {{ form_errors(form.date) }}
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-4 col-form-label" style="color: white;">Payment Method</label>
+                    <div class="col-sm-8">
+                        {{ form_widget(form.methode, {'attr': {'class': 'form-control'}}) }}
+                        {{ form_errors(form.methode) }}
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary" style="background-color: purple; color: white;">Pay Now</button>
+                 
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </header>
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,46 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Booking Details{% endblock %}
+
+{% block body %}
+<div style="position: relative;">
+    <img src="{{ asset('images/home_slider.jpg') }}" class="img-fluid" alt="Reservation Image">
+    <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: white;">
+        <div class="container">
+            <div class="row justify-content-center mt-5">
+                <div class="col-md-10">
+                    <div class="card" style="background-color: rgba(0, 0, 0, 0.5);">
+                        <div class="card-header" style="background-color: #8a2be2; color: white; padding: 5px 20px;">
+                            <h1 class="card-title" style="font-size: 20px; margin-bottom: 0;">Details</h1>
+                        </div>
+                        <div class="card-body">
+                            <dl class="row">
+                                <dt class="col-sm-4">ID</dt>
+                                <dd class="col-sm-8">{{ paiement.id }}</dd>
+
+                                <dt class="col-sm-4">Amount</dt>
+                                <dd class="col-sm-8">{{ paiement.montant }}</dd>
+
+                                <dt class="col-sm-4">Date</dt>
+                                <dd class="col-sm-8">{{ paiement.date ? paiement.date|date('Y-m-d') : '' }}</dd>
+
+                                <dt class="col-sm-4">Payment Method</dt>
+                                <dd class="col-sm-8">{{ paiement.methode }}</dd>
+                            </dl>
+                            <div class="btn-group" role="group" aria-label="Actions">
+                                <a href="#" class="btn btn-primary" style="background-color: purple; color: white;">Edit</a>
+                                <a href="#" class="btn btn-secondary" style="background-color: #8a2be2; color: white;">Back</a>
+                                <a href="#" class="btn btn-secondary" style="background-color: #8a2be2; color: white;">Print</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+
+
+

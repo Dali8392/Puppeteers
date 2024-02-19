@@ -1,0 +1,17 @@
+
+{% extends 'base.html.twig' %}
+
+{% block title %}Détails de la réservation d'hébergement{% endblock %}
+
+{% block body %}
+    <h1>Détails de la réservation d'hébergement</h1>
+    <dl>
+        <dt>Date de début :</dt>
+        <dd>{{ reservation.date|date('d/m/Y') }}</dd>
+        <dt>Date de fin :</dt>
+        <dd>{{ reservation.duree|date('d/m/Y') }}</dd>
+        <dt>Nombre de passagers :</dt>
+        <dd>{{ reservation.max }}</dd>
+        {# Ajoutez d'autres détails de réservation au besoin #}
+    </dl>
+{% endblock %}

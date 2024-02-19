@@ -1,0 +1,39 @@
+{% extends 'baseAdmin.html.twig' %}
+
+{% block title %}Liste des réservations d'hébergement{% endblock %}
+
+{% block body %}
+    <h1>Liste des réservations d'hébergement</h1>
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">User</th>
+                <th scope="col">Date de début</th>
+                <th scope="col">Date de fin</th>
+                <th scope="col">Nombre de personnes</th>
+                <th scope="col">Paiement</th>
+                <th scope="col">Hebergement</th>
+                <th scope="col">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for reservation in reservations %}
+                <tr>
+                    <th scope="row">{{ reservation.id }}</th>
+                    <td>{{ reservation.idUser }}</td>
+                    <td>{{ reservation.date|date('Y-m-d H:i:s') }}</td>
+                    <td>{{ reservation.duree|date('Y-m-d H:i:s') }}</td>
+                    <td>{{ reservation.max }}</td>
+                    <td>
+                        <a href="{{ path('reservation_hebergement_editer', {'id': reservation.id}) }}">Editer</a>
+                        <form method="post" action="{{ path('reservation_hebergement_supprimer', {'id': reservation.id}) }}" style="display: inline-block;">
+                            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ reservation.id) }}">
+                            <button type="submit" class="btn btn-link">Supprimer</button>
+                        </form>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

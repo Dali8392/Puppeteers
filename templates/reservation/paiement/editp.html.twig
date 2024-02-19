@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Éditer le paiement{% endblock %}
+
+{% block body %}
+    <h1>Éditer le paiement</h1>
+    {{ form_start(form) }}
+    {{ form_row(form.montant) }}
+    {{ form_row(form.date) }}
+    {{ form_row(form.methode) }}
+    <button type="submit" class="btn btn-primary">Enregistrer</button>
+    {{ form_end(form) }}
+{% endblock %}
