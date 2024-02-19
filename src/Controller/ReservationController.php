@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Paiement;
+<<<<<<< HEAD
 use App\Form\PaiementFormeType;
 use App\Entity\ReservationHebergement;
 use App\Form\ReservationHebergementFormeType;
@@ -13,6 +14,13 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 
+=======
+use App\Entity\ReservationHebergement;
+use App\Entity\ReservationVoyage;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
+>>>>>>> 42a7833db9154d776e467dfb64612089dc7ce596
 
 class ReservationController extends AbstractController
 {
@@ -23,6 +31,7 @@ class ReservationController extends AbstractController
             'controller_name' => 'ReservationController',
         ]);
     }
+<<<<<<< HEAD
 
     //-------------------------//partie réservation voyage-----------------------------//
 
@@ -131,4 +140,6 @@ class ReservationController extends AbstractController
     }
     
 
+=======
+>>>>>>> 42a7833db9154d776e467dfb64612089dc7ce596
 }

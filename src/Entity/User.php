@@ -46,7 +46,11 @@ class User
         $this->activites = new ArrayCollection();
     }
 
+<<<<<<< HEAD
     public function getId(): ?string
+=======
+    public function getId(): ?int
+>>>>>>> 42a7833db9154d776e467dfb64612089dc7ce596
     {
         return $this->id;
     }

@@ -20,10 +20,13 @@ class ReservationVoyage
 
     #[ORM\Column(length: 10)]
     private ?string $idUser = null;
+<<<<<<< HEAD
 
     #[ORM\ManyToOne(inversedBy: 'reservationvoyage')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Voyage $voyage = null;
+=======
+>>>>>>> 42a7833db9154d776e467dfb64612089dc7ce596
     public function getId(): ?int
     {
         return $this->id;
@@ -63,6 +66,7 @@ class ReservationVoyage
 
         return $this;
     }
+<<<<<<< HEAD
 
     public function getVoyage(): ?Voyage
     {
@@ -77,4 +81,6 @@ class ReservationVoyage
     }
 
    
+=======
+>>>>>>> 42a7833db9154d776e467dfb64612089dc7ce596
 }

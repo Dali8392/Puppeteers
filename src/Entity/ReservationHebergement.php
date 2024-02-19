@@ -29,10 +29,13 @@ class ReservationHebergement
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
     private ?Paiement $paiement = null;
 
+<<<<<<< HEAD
     #[ORM\ManyToOne(inversedBy: 'reservationhebergement')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Hebergement $hebergement = null;
 
+=======
+>>>>>>> 42a7833db9154d776e467dfb64612089dc7ce596
     public function getId(): ?int
     {
         return $this->id;
@@ -97,6 +100,7 @@ class ReservationHebergement
 
         return $this;
     }
+<<<<<<< HEAD
 
     public function getHebergement(): ?Hebergement
     {
@@ -109,4 +113,6 @@ class ReservationHebergement
 
         return $this;
     }
+=======
+>>>>>>> 42a7833db9154d776e467dfb64612089dc7ce596
 }
