@@ -1,0 +1,124 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Activite index{% endblock %}
+
+
+{% block body %}
+<style>
+  .grid-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* Adjust columns as needed */
+    grid-gap: 10px;
+  }
+
+  .grid-item {
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin-bottom: 10px;
+    display: flex;
+    flex-direction: column; /* Stack elements vertically */
+    align-items: center; /* Center horizontally */
+    justify-content: flex-end; /* Align buttons at bottom */
+  }
+
+  .grid-item a {
+    display: inline-block; /* Allow buttons to shrink */
+    margin: 5px; /* Add some spacing around buttons */
+    /*color: inherit;  Remove grey color */
+  }
+
+  /* Remove specific grey color properties if needed */
+  .grid-item a, .grid-item h3 {
+  /*   color: gray; Remove this line if present */
+  }
+
+ .button-delete {
+  background-color: red;
+  color: white; /* Set text color explicitly */
+  padding: 5px 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+
+  .button-update {
+  background-color: blue;
+  color: white; /* Set text color explicitly */
+  padding: 5px 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+  /* Optional media query for wider screens (adjust as needed) */
+  @media (min-width: 768px) {
+    .grid-item {
+      align-items: flex-start; /* Align buttons at top in wider screens */
+      justify-content: space-between; /* Spread buttons horizontally */
+    }
+  }
+
+    .search-container {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .search-input {
+            padding: 8px 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            height: 30px;
+        }
+
+        .search-button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 5px 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+</style>
+
+
+    <div class="container" style="margin-top: 200px;">
+        <h1>Liste des activités</h1>
+
+        <div class="search-container">
+            <form action="{{ path('app_activite_index') }}" method="GET">
+                <input type="text" class="search-input" name="search" placeholder="Rechercher par ville">
+                <button type="submit" class="search-button">Rechercher</button>
+            </form>
+        </div>
+
+        <div class="grid-container">
+            {% if app.request.query.search is defined %}
+                {% set searchTerm = app.request.query.search %}
+                {% set filteredActivities = activites|filter(activity => activity.ville ~ searchTerm) %}
+            {% else %}
+                {% set filteredActivities = activites %}
+            {% endif %}
+
+            {% for activite in filteredActivities %}
+                {% if activite.etat == 1 %}
+        <div class="grid-item">
+            <img src="{{ asset('/images/footer_blog_3.jpg') }}" alt="Activity Image">
+            <a href="{{ path('app_activite_show', {'id': activite.id}) }}">
+                <h3>{{ activite.ville }}</h3>
+                <p>Prix: {{ activite.prix }}</p>
+                <p>Heure: {{ activite.heure }}</p>
+            </a>
+
+            <a href="{{ path('app_activite_edit', {'id': activite.id}) }}" class="button-update">Modifier</a>
+            <a href="{{ path('app_activite_delete', {'id': activite.id}) }}" class="button-delete">Supprimer</a>
+        </div>
+    {% endif %}
+{% endfor %}
+        </div>
+
+        <a href="{{ path('app_activite_new') }}">Créer une nouvelle activité</a>
+        <a href="{{ path('app_activite_accepter') }}">Activités en attente</a>
+    </div>
+{% endblock %}

@@ -1,0 +1,51 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Activite{% endblock %}
+
+{% block body %}
+<div class="container" style="margin-top: 200px;">
+
+    <h1>Activite</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ activite.id }}</td>
+            </tr>
+            <tr>
+                <th>Ville</th>
+                <td>{{ activite.ville }}</td>
+            </tr>
+            <tr>
+                <th>Prix</th>
+                <td>{{ activite.prix }}</td>
+            </tr>
+            <tr>
+                <th>Details</th>
+                <td>{{ activite.details }}</td>
+            </tr>
+            <tr>
+                <th>Heure</th>
+                <td>{{ activite.heure }}</td>
+            </tr>
+            <tr>
+                <th>Guides disponibles</th>
+                <td>
+                    <select class="form-control">
+                        <option value="">Sélectionnez un guide</option>
+                        {% for guide in guides %}
+                            {% if guide.ville == activite.ville %}
+                                <option value="{{ guide.id }}">{{ guide.name }} {{ guide.lastname }} ({{ guide.langue }})</option>
+                            {% endif %}
+                        {% endfor %}
+                    </select>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_activite_index') }}">Retour à la liste</a>
+
+</div>
+{% endblock %}

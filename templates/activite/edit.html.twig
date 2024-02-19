@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Activite{% endblock %}
+
+{% block body %}
+    <div class="container" style="margin-top: 200px;">
+
+    <h1>Edit Activite</h1>
+                     {{ form_start(form, { 'attr':{'novalidate':'novalidate'  }}) }}
+
+                               {{ form_end(form) }}
+    
+    <a href="{{ path('app_activite_index') }}">back to list</a>
+
+    </div>
+{% endblock %}
