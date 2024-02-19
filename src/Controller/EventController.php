@@ -31,7 +31,7 @@ class EventController extends AbstractController
     #[Route('/event', name: 'event_index', methods: ['GET', 'POST'])]
     public function index(EventRepository $eventRepository, Request $request): Response
     {
-        $events = $eventRepository->findAll();
+        $events = $eventRepository->findBy(['status' => 'Active']);
         $event = new Event();
         $form = $this->createForm(EventFormeType::class, $event);
         $form->handleRequest($request);
@@ -42,7 +42,7 @@ class EventController extends AbstractController
             $event->addParticipant($user);
             $this->entityManager->persist($event);
             $this->entityManager->flush();
-
+            $event->setStatus('Pending');
             return $this->redirectToRoute('event_index');
         }
 
@@ -51,22 +51,34 @@ class EventController extends AbstractController
             'form' => $form->createView()
         ]);
     }
+    #[Route('/event/{id}/validate', name: 'event_validate', methods: ['GET', 'POST'])]
+public function validate(Event $event, EntityManagerInterface $entityManager): Response
+{
+    $event->setStatus('Active');
+    $entityManager->flush();
+
+    $this->addFlash('success', 'Event validated successfully!');
+
+    return $this->redirectToRoute('event_show_back');
+}
+
     #[Route('/back', name: 'back')]
     public function back()
-    {  return $this->render('baseAdmin.html.twig');
+    {  return $this->render('back.html.twig');
     }
 
     #[Route('/event/showF', name: 'event_show_front')]
-    public function showFront(EventRepository $eventRepository): Response
-    {
-        $events = $eventRepository->findAll();
-        $form = $this->createForm(EventFormeType::class); // Create form without data
-        
-        return $this->render('event/index.html.twig', [
-            'events' => $events,
-            'form' => $form->createView(), // Pass the form variable to the template
-        ]);
-    }
+public function showFront(EventRepository $eventRepository, Request $request): Response
+{
+    $activeEvents = $eventRepository->findBy(['status' => 'Active']);
+    $form = $this->createForm(EventFormeType::class);
+
+    return $this->render('event/index.html.twig', [
+        'events' => $activeEvents,
+        'form' => $form->createView(),
+    ]);
+}
+
     #[Route('/event/showB', name: 'event_show_back')]
     public function showBack(EventRepository $eventRepository): Response
     {
@@ -75,7 +87,6 @@ class EventController extends AbstractController
             'events' => $events,
         ]);
     }
-
     #[Route('/event/{id}/edit', name: 'event_edit')]
     public function edit(Request $request, Event $event = null): Response
     {

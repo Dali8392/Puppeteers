@@ -99,6 +99,11 @@
 
 
                                 </div>
+                                <div class="col-6 text-end px-0">
+                                <form action="{{ path('event_validate', {'id': event.getId() }) }}" method="POST">
+                                    <button type="submit"  class="btn-hover btn text-white py-2 px-4">Validate</a>
+                                    </form>
+                                </div>
                             </div>
                         </div>
                     </div>

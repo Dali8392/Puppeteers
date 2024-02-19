@@ -59,7 +59,7 @@ class Event
     private ?float $budget_allocated = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $status = null;
+    private $status = 'Permission';
 
     #[ORM\OneToMany(targetEntity: Comment::class, mappedBy: 'event')]
     private Collection $comments;
@@ -220,7 +220,7 @@ class Event
         return $this->status;
     }
 
-    public function setStatus(string $status): static
+    public function setStatus(string $status): self
     {
         $this->status = $status;
 
