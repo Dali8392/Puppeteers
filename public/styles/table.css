@@ -98,7 +98,7 @@ transition: height 0.5s;
     height: 45px;
     width: 120px;
     border: none;
-    background-color: rgb(155, 35, 247);
+    background: linear-gradient(to right, #8914fe 0%, #8063f5 100%);
     border-radius: 5px;
     color: white;
     font-size: 15px;
@@ -109,4 +109,10 @@ transition: height 0.5s;
     height: 50px;
     font-weight: 700;
     background-color: rgb(121, 20, 199);
+}
+
+#typeselect{
+    margin-left: 10px;
+    height: 35px;
+    width: 200px;
 }

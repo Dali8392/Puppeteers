@@ -43,12 +43,19 @@
 <h1>Transportation List</h1>
 
 
-{# <form method="POST" action="/searchvoyage">
-<label> Search by Departure / Destination </label>
-<input type="text" name="depart" placeholder="departure"/>
-<input type="text" name="destination" placeholder="destination"/>
-<input type="submit" value="search">
-</form> #}
+
+<div id="searchsection">
+<form method="POST" action="/searchmoyen">
+<label> Search by Model / Type </label>
+<input type="text" name="idmodele" placeholder="Model"/>
+<select name="typeMoyen" id="typeselect" >
+    <option value="" selected disabled>Choose a type</option>
+    <option value="Plane">Plane</option>
+    <option value="Bus">Bus</option>
+</select>
+<button id="searchbtn" type="submit"> <img id="searchicon" src="{{ asset('images/SearchIcon.png') }}"/>  Search </button>
+</form>
+</div>
 <a href={{ path('addMoyen') }}><button class="btn btn-success"> <img id="addimg" src="{{ asset('images/AddIcon.png') }}"/>    Add </button> </a>
 
 

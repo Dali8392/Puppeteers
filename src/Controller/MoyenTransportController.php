@@ -9,6 +9,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Doctrine\ORM\EntityManagerInterface;
 
 
 class MoyenTransportController extends AbstractController
@@ -87,5 +88,29 @@ class MoyenTransportController extends AbstractController
             'f'=>$form->createView()]);
     }
 
+
+
+    #[Route('/searchmoyen', name:'searchmoyen')]
+    public function SearchMoyen(EntityManagerInterface $em, Request $request, MoyenTransportRepository $repo): Response{
+        $result=$repo->findAll();
+    //     $req= $em->createQuery(" select s.nom from App\Entity\Student s where s.nom=:n");
+    // //select * from student
+    // if ($request->isMethod("post")){
+    // $value=$request->get('test') ;   
+    // $req->setParameter('n',$value);
+    // $result=$req->getResult();
+    // }
+    if ($request->isMethod('post')){
+        $model=$request->get('idmodele') ; 
+        $type=$request->get('typeMoyen') ; 
+        $result=$repo->SearchMoyenByModelOrType($model,$type);
+        
+    }
+    
+        // dd($result);
+        return $this->render('moyen_transport/listemoyens.html.twig', [
+            'response'=>$result]);
+
+    }
 
 }

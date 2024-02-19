@@ -45,4 +45,28 @@ class MoyenTransportRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
+
+
+public function searchMoyenByModelOrType($model, $type) {
+    $em = $this->getEntityManager();
+    $qb = $em->createQueryBuilder();
+
+    $qb->select('v')
+       ->from('App\Entity\MoyenTransport', 'v');
+
+    if ($model !== null) {
+        $qb->andWhere('v.idModele LIKE :model')
+           ->setParameter('model', $model . '%');
+    }
+
+    if ($type !== null) {
+        $qb->andWhere('v.typeMoyen = :type')
+           ->setParameter('type', $type);
+    }
+
+    $query = $qb->getQuery();
+    $result = $query->getResult();
+
+    return $result;
+}
 }

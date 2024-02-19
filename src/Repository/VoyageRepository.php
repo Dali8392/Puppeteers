@@ -50,16 +50,20 @@ public function SearchVoyageByDepDes($dep,$des) {
     $em=$this->getEntityManager ();
     if($dep === null){
        $sql="select v from App\Entity\Voyage v where v.destination LIKE :des ";
+       $req=$em->createQuery($sql);
+       $req->setParameter("des", $des ."%");
     }
     else if($des === null){
         $sql= "select v from App\Entity\Voyage v where v.depart LIKE :dep";
+        $req=$em->createQuery($sql);
+        $req->setParameter("dep", $dep . "%");
     }
     else {
         $sql= "select v from App\Entity\Voyage v where v.depart LIKE :dep AND v.destination LIKE :des";
+        $req=$em->createQuery($sql);
+        $req->setParameter("dep", $dep . "%");
+        $req->setParameter("des", $des ."%");
     }
-    $req=$em->createQuery($sql);
-    $req->setParameter("dep", $dep . "%");
-    $req->setParameter("des", $des ."%");
     $result=$req->getResult();
     return $result;
 
