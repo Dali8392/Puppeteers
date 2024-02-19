@@ -37,21 +37,23 @@
                     <div class="form-group row">
                         <div class="col-6">
                             {{ form_row(form.name, {'attr': {'class': 'contact_form_subject input_field', 'placeholder': 'Name'}}) }}
-                            {{ form_errors(form.name)|join }}
+                            <p class="text-danger">{{ form_errors(form.name)|join|striptags }}</p>
                         </div>
                         <div class="col-6">
                             {{ form_row(form.lastName, {'attr': {'class': 'contact_form_subject input_field', 'placeholder': 'Last Name'}}) }}
-                            {{ form_errors(form.lastName)|join }}
+                            <p class="text-danger">{{ form_errors(form.lastName)|join|striptags }}</p>
                         </div>
                     </div>
                     <div class="form-group row">
                         <div class="col-6">
                             {{ form_row(form.email, {'attr': {'class': 'contact_form_subject input_field', 'placeholder': 'E-mail'}}) }}
-                            {{ form_errors(form.email)|join }}
+                            <p class="text-danger">{{ form_errors(form.email)|join|striptags }}</p>
                         </div>
                         <div class="col-6">
                             {{ form_row(form.cin, {'attr': {'class': 'contact_form_subject input_field', 'placeholder': 'CIN'}}) }}
-                            {{ form_errors(form.cin)|join }}
+                            <p class="text-danger">{{ form_errors(form.cin)|join|striptags }}</p>
+
+
                         </div>
                     </div>
                     <div class="form-group row">
@@ -68,7 +70,7 @@
                     <div class="form-group row" >
                         <div class="col-6">
                             {{ form_row(form.password.first, {'attr': {'class': 'contact_form_subject input_field', 'placeholder': 'Password','value': user.getPassword()  }}) }}
-                            {{ form_errors(form.password.first)|join }}
+                            <p class="text-danger">{{ form_errors(form.password.first)|join|striptags }}</p>
                         </div>
                         <div class="col-6">
                             {{ form_row(form.password.second, {'attr': {'class': 'contact_form_subject input_field', 'placeholder': 'Confirm Password','value': user.getPassword() }}) }}
