@@ -87,7 +87,6 @@ class VoyageController extends AbstractController
         $em->flush();
        
 
-        // return new Response('added');
          return $this->redirectToRoute('VoyagesList');}
         return $this->render('voyage/updatevoyage.html.twig', [
             'f'=>$form->createView()]);

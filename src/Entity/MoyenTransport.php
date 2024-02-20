@@ -99,6 +99,6 @@ class MoyenTransport
     public function __toString()
     {
         // Return a string representation of your entity
-        return "ID :".$this->id."Type :".$this->getTypeMoyen()."Model :".$this->getIdModele();
+        return "ID :".$this->id."; Type :".$this->getTypeMoyen()."; Model :".$this->getIdModele();
     }
 }

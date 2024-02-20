@@ -7,6 +7,7 @@ use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 #[ORM\Entity(repositoryClass: VoyageRepository::class)]
 class Voyage
@@ -37,12 +38,12 @@ class Voyage
     
     #[ORM\Column(type: 'time')]
     #[Assert\NotBlank(message:"This field is mandatory.")]
-    #[Assert\LessThan(propertyPath: 'heure_arr' , message:"Departure Time must be < Arrival Time.")]
+    // #[Assert\LessThan(propertyPath: 'heure_arr' , message:"Departure Time must be < Arrival Time.")]
     private ?\DateTimeInterface $HeureDep = null;
     
     #[ORM\Column(type: 'time')]
     #[Assert\NotBlank(message:"This field is mandatory.")]
-    #[Assert\GreaterThan(propertyPath: 'heure_dep' , message:"Departure Time must be < Arrival Time.")]
+    // #[Assert\GreaterThan(propertyPath: 'heure_dep' , message:"Departure Time must be < Arrival Time.")]
     private ?\DateTimeInterface $HeureArr = null;
 
     #[ORM\Column(length: 255)]
@@ -56,18 +57,38 @@ class Voyage
 
     private ?int $NombrePlaceDispo = null;
     
-    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+    #[ORM\ManyToOne (targetEntity:MoyenTransport::class)]
     #[ORM\JoinColumn(name:'moyen_transport_id', referencedColumnName:'id')]
     #[Assert\NotNull(message:"This field is mandatory.")]
     private ?MoyenTransport $moyenTransport = null;
 
     #[ORM\ManyToOne(inversedBy: 'voyages')]
-    #[Assert\NotNull(message:"This field is mandatory.")]
+    // #[Assert\NotNull(message:"This field is mandatory.")]
     private ?Hebergement $hebergement = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[Assert\NotBlank(message:"This field is mandatory.")]
     private ?string $description = null;
 
+
+/**
+     * @Assert\Callback
+     */
+    public function validate(ExecutionContextInterface $context, $payload)
+    {
+
+        $dateDep= $this ->getDateDep();
+        $heureDep=$this->getHeureDep();
+        $dateArr= $this ->getDateArr();
+        $heureArr=$this->getHeureArr();
+        $datetimeDep = new \DateTime($dateDep->format('Y-m-d') . ' ' . $heureDep->format('H:i:s'));
+        $datetimeArr = new \DateTime($dateArr->format('Y-m-d') . ' ' . $heureArr->format('H:i:s'));       
+        
+        if ($datetimeArr < $datetimeDep) {
+        $context->buildViolation('Departure and arrival dates and times are not compatible')->atPath('HeureDep')->addViolation();
+    }
+
+    }
     public function getId(): ?int
     {
         return $this->id;

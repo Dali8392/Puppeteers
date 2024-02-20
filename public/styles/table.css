@@ -16,11 +16,12 @@ h2{
 
 .container{
     position: relative;
-    right: 195px;
+    right: 215px;
 }
 
 td{
     font-size: 16px;
+    
 }
 
 #addimg{

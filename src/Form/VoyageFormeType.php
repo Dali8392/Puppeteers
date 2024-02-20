@@ -3,7 +3,9 @@
 namespace App\Form;
 
 use App\Entity\Voyage;
+use IntlCalendar;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -15,8 +17,18 @@ class VoyageFormeType extends AbstractType
         $builder
             ->add('depart')
             ->add('destination')
-            ->add('DateDep')
-            ->add('DateArr')
+            ->add('DateDep', DateType::class, array(
+                'widget' => 'single_text',
+                'format' => 'yyyy-MM-dd',
+                'data' => new \DateTime(),
+                'attr' => array('class' => 'form-control', 'style' => 'line-height: 20px;')
+            ))
+            ->add('DateArr', DateType::class, array(
+                'widget' => 'single_text',
+                'format' => 'yyyy-MM-dd',
+                'data' => new \DateTime(),
+                'attr' => array('class' => 'form-control', 'style' => 'line-height: 20px;')
+            ))
             ->add('HeureDep')
             ->add('HeureArr')
             ->add('prix')

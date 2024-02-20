@@ -178,10 +178,13 @@
 </div> <!--end of section-->
 </div> <!--end of section container-->
                     <div class="text-center">
-                     {{ form_widget(f.submit, {'attr': {'class': 'btn btn-primary' , 'style': 'width : 400px ; margin-top: 30px;margin-bottom: 50px; height : 52px ; font-size : 21px;font-weight : bold; '}}) }}
+                     {{ form_widget(f.submit, {'attr': {'class': 'btn btn-primary' , 'style': 'width : 400px ; margin-top: 30px;margin-bottom: 20px; height : 52px ; font-size : 21px;font-weight : bold; '}}) }}
                     </div>
 
 {{ form_end(f) }}
+
+<div class="text-center" style="margin-bottom: 30px;">
+<a id="cancel-link" href={{ path('VoyagesList') }} > Cancel </a>                   </div>
 </div>
 </div>
 </div>
