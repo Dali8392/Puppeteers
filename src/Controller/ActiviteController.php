@@ -16,21 +16,36 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/activite')]
 class ActiviteController extends AbstractController
 {
+    #[Route('/userindex', name: 'app_activite_user_index', methods: ['GET'])]
+    public function userindex(ActiviteRepository $activiteRepository, Request $request)
+{
+    $searchTerm = $request->query->get('search');
+
+    $activities = $activiteRepository->findAll();
+
+    $filteredActivities = array_filter($activities, function ($activity) use ($searchTerm) {
+        return strpos($activity->getVille(), $searchTerm) !== false;
+    });
+
+    $totalActivities = count($activities);
+
+    return $this->render('activite/index_user.html.twig', [
+        'activites' => $filteredActivities,
+        'search' => $searchTerm,
+        'totalActivities' => $totalActivities,
+    ]);
+}
     #[Route('/', name: 'app_activite_index', methods: ['GET'])]
     public function index(ActiviteRepository $activiteRepository, Request $request)
 {
     $searchTerm = $request->query->get('search');
 
-    // Fetch all activities from the repository
     $activities = $activiteRepository->findAll();
 
-    // Filter activities based on search term
     $filteredActivities = array_filter($activities, function ($activity) use ($searchTerm) {
-        // Use the getter method to access ville safely
         return strpos($activity->getVille(), $searchTerm) !== false;
     });
 
-    // Calculate total activities (optional)
     $totalActivities = count($activities);
 
     return $this->render('activite/index.html.twig', [
@@ -54,22 +69,38 @@ class ActiviteController extends AbstractController
         $activite = $this->getDoctrine()->getRepository(Activite::class)->find($id);
     
         if (!$activite) {
-            // Handle error: Activite not found
             return new Response('Activite not found', Response::HTTP_NOT_FOUND);
         }
     
-        $activite->setEtat(1); // Set etat to 1
+        $activite->setEtat(1); 
         $em = $this->getDoctrine()->getManager();
         $em->persist($activite);
         $em->flush();
     
-        // Add flash message if needed
         $this->addFlash('success', 'Activite accepted successfully!');
     
-        return $this->redirectToRoute('app_activite_accepter'); // Redirect to the list
+        return $this->redirectToRoute('app_activite_accepter'); 
     }
 
 
+
+    #[Route('/{id}/edit', name: 'app_activite_edit', methods: ['GET', 'POST'])]
+    public function edit(Request $request, Activite $activite, EntityManagerInterface $entityManager): Response
+    {
+        $form = $this->createForm(ActiviteFormeType::class, $activite);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager->flush();
+
+            return $this->redirectToRoute('app_activite_index');
+        }
+
+        return $this->renderForm('activite/edit.html.twig', [
+            'activite' => $activite,
+            'form' => $form,
+        ]);
+    }
 
 
 
@@ -86,7 +117,7 @@ class ActiviteController extends AbstractController
             $entityManager->persist($activite);
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_activite_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_activite_index');
         }
         
 
@@ -111,30 +142,20 @@ class ActiviteController extends AbstractController
         ]);
     }
 
-
-
-
-
-
-    #[Route('/{id}/edit', name: 'app_activite_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Activite $activite, EntityManagerInterface $entityManager): Response
+    #[Route('/{id}/show_user', name: 'app_activite_user_show', methods: ['GET'])]
+    public function show_user(Activite $activite,GuideRepository $guideRepository): Response
     {
-        $form = $this->createForm(ActiviteFormeType::class, $activite);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->flush();
-
-            return $this->redirectToRoute('app_activite_index', [], Response::HTTP_SEE_OTHER);
-        }
-
-        return $this->renderForm('activite/edit.html.twig', [
+        return $this->render('activite/show_user.html.twig', [
             'activite' => $activite,
-            'form' => $form,
+            'guides' => $guideRepository->findAll()
         ]);
     }
 
 
+
+
+
+   
 
 
 
@@ -147,7 +168,7 @@ class ActiviteController extends AbstractController
 
     $this->addFlash('success', 'Activité supprimée avec succès !');
 
-    return $this->redirectToRoute('app_activite_index', [], Response::HTTP_SEE_OTHER);
+    return $this->redirectToRoute('app_activite_index');
 }
     
    

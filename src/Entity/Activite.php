@@ -34,7 +34,10 @@ class Activite
     #[ORM\Column(length: 255)]
     private ?string $details = null;
     #[Assert\NotBlank(message:"heure ne doit pas etre vide")] 
-
+    #[Assert\Regex(
+        pattern: '/^de\s+\d{1,2}h\s+a\s+\d{1,2}h$/i',
+        message: "Le format de l'heure doit être 'de xxh a xxh'"
+    )]  
     #[ORM\Column(length: 25)]
     private ?string $heure = null;
 

@@ -21,7 +21,7 @@ class GuideFormeType extends AbstractType
                     'class' => 'form-control mb-3',
                     'style' => 'color: black;',
                 ],
-                'empty_data' => '', // Transform empty data to an empty string
+                'empty_data' => '',
             ])
             ->add('lastName', TextType::class, [
                 'label' => 'Last Name:',
@@ -29,7 +29,7 @@ class GuideFormeType extends AbstractType
                     'class' => 'form-control mb-3',
                     'style' => 'color: black;',
                 ],
-                'empty_data' => '', // Transform empty data to an empty string
+                'empty_data' => '', 
             ])
             ->add('email', EmailType::class, [
                 'label' => 'Email:',
@@ -37,7 +37,7 @@ class GuideFormeType extends AbstractType
                     'class' => 'form-control mb-3',
                     'style' => 'color: black;',
                 ],
-                'empty_data' => '', // Transform empty data to an empty string
+                'empty_data' => '',
             ])
             ->add('cin', TextType::class, [
                 'label' => 'CIN:',
@@ -45,7 +45,7 @@ class GuideFormeType extends AbstractType
                     'class' => 'form-control mb-3',
                     'style' => 'color: black;',
                 ],
-                'empty_data' => '', // Transform empty data to an empty string
+                'empty_data' => '', 
             ])
             ->add('role', TextType::class, [
                 'label' => 'Role:',
@@ -53,7 +53,7 @@ class GuideFormeType extends AbstractType
                     'class' => 'form-control mb-3',
                     'style' => 'color: black;',
                 ],
-                'empty_data' => '', // Transform empty data to an empty string
+                'empty_data' => '', 
             ])
             ->add('langue', TextType::class, [
                 'label' => 'Language:',
@@ -61,7 +61,7 @@ class GuideFormeType extends AbstractType
                     'class' => 'form-control mb-3',
                     'style' => 'color: black;',
                 ],
-                'empty_data' => '', // Transform empty data to an empty string
+                'empty_data' => '', 
             ])
             ->add('ville', TextType::class, [
                 'label' => 'City:',
@@ -69,13 +69,13 @@ class GuideFormeType extends AbstractType
                     'class' => 'form-control mb-3',
                     'style' => 'color: black;',
                 ],
-                'empty_data' => '', // Transform empty data to an empty string
+                'empty_data' => '', 
             ])
             ->add('submit', SubmitType::class, [
                 'label' => 'Submit',
                 'attr' => [
-                    'class' => 'btn btn-primary btn-lg mb-3', // make the button bigger
-                    'style' => 'padding-left: 30px; padding-right: 33px;', // make the button wider
+                    'class' => 'btn btn-primary btn-lg mb-3', 
+                    'style' => 'padding-left: 30px; padding-right: 33px;', 
                 ],
             ]);
     }

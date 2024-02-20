@@ -53,10 +53,9 @@ class ActiviteFormeType extends AbstractType
             ->add('submit', SubmitType::class, [
                 'label' => 'Submit',
                 'attr' => [
-                    'class' => 'btn btn-primary btn-lg mb-3', // make the button bigger
-                    'style' => 'padding-left: 30px; padding-right: 33px;', // make the button wider
+                    'class' => 'btn btn-primary btn-lg mb-3', 
+                    'style' => 'padding-left: 30px; padding-right: 33px;', 
                 ],
-                'empty_data' => '',
             ]);
     }
 

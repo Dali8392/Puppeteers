@@ -76,25 +76,20 @@ class GuideController extends AbstractController
          #[Route("/guide/make-guide/{userId}", name:"app_guide_make_guide",methods:['POST'])]
          public function makeGuideAction(Request $request, EntityManagerInterface $em, string $userId): Response
          {
-             // Fetch the user based on the provided ID
              $user = $em->getRepository(User::class)->find($userId);
          
-             // Check if the user exists
              if (!$user) {
                  $this->addFlash('error', 'User not found!');
                  return $this->redirectToRoute('app_user_index');
              }
              $user->setRole('guide');
 
-             // Create a new instance of Guide and set its properties
              $guide = new Guide();
              $guide->setCord($user);
          
-             // Persist the guide entity
              $em->persist($guide);
              $em->flush();
          
-             // Redirect to the edit page for the newly created guide
              return $this->redirectToRoute('app_guide_edit', ['id' => $guide->getId()]);
          }
 
