@@ -1,8 +1,6 @@
 <?php
-
 namespace App\Controller;
 
-use DateTime;
 use App\Entity\User;    
 use App\Entity\Event;
 use App\Entity\Comment;
@@ -10,6 +8,7 @@ use App\Form\EventFormeType;
 use App\Form\CommentFormeType;
 use App\Repository\CommentRepository;
 use App\Repository\EventRepository;
+use App\Repository\UserRepository; // Add this line
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -22,7 +21,7 @@ class EventController extends AbstractController
     private $entityManager;
     private $managerRegistry;
 
-    public function __construct(EntityManagerInterface $entityManager,ManagerRegistry $managerRegistry)
+    public function __construct(EntityManagerInterface $entityManager, ManagerRegistry $managerRegistry)
     {
         $this->entityManager = $entityManager;
         $this->managerRegistry = $managerRegistry;
@@ -30,34 +29,34 @@ class EventController extends AbstractController
 
     #[Route('/event/index/{loc}', name: 'event_index', methods: ['GET', 'POST'])]
     public function index(EventRepository $eventRepository, $loc, Request $request): Response
-{
-    $location = (string) $loc;
+    {
+        $location = (string) $loc;
 
-    $events = $eventRepository->findBy(['status' => 'Active']);
+        $events = $eventRepository->findBy(['status' => 'Active']);
 
-    $event = new Event();
-    $form = $this->createForm(EventFormeType::class, $event);
-    $form->handleRequest($request);
+        $event = new Event();
+        $form = $this->createForm(EventFormeType::class, $event);
+        $form->handleRequest($request);
 
-    if ($form->isSubmitted() && $form->isValid()) {
-        $event->setStatus('Pending');
-        $event->setEventLocation($location);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $event->setStatus('Pending');
+            $event->setEventLocation($location);
 
-        $userRepository = $this->managerRegistry->getRepository(User::class);
-        $user = $userRepository->find($event->getUserCreator());
-        $event->addParticipant($user);
+            $userRepository = $this->managerRegistry->getRepository(User::class);
+            $user = $userRepository->find($event->getUserCreator());
+            $event->addParticipant($user);
 
-        $this->entityManager->persist($event);
-        $this->entityManager->flush();
+            $this->entityManager->persist($event);
+            $this->entityManager->flush();
 
-        return $this->redirectToRoute('event_show_front');
+            return $this->redirectToRoute('event_show_front');
+        }
+
+        return $this->render('event/index.html.twig', [
+            'events' => $events,
+            'form' => $form->createView()
+        ]);
     }
-
-    return $this->render('event/index.html.twig', [
-        'events' => $events,
-        'form' => $form->createView()
-    ]);
-}
 
 
     #[Route('/event/validate/{id}', name: 'event_validate', methods: ['GET', 'POST'])]
@@ -93,22 +92,44 @@ public function emap( EventRepository $eventRepository, int $id): Response
         'id' => $id,
     ]);
 }
-
-    #[Route('/event/showF', name: 'event_show_front')]
-public function showFront(EventRepository $eventRepository, Request $request): Response
+#[Route('/event/showF', name: 'event_show_front')]
+public function showFront(EventRepository $eventRepository, Request $request, EntityManagerInterface $entityManager, UserRepository $userRepository): Response
 {
     $events = $eventRepository->findBy(['status' => 'Active']);
+
+    // Fetching country information for each event
+    foreach ($events as $event) {
+        $eventLocation = $event->getEventLocation();
+        $coordinates = explode(',', $eventLocation);
+        $latitude = (float) $coordinates[1];
+        $longitude = (float) $coordinates[0];
+
+        $apiKey = '4e1ba267e158447ba011ec353f86f1a6';
+        $url = "https://api.opencagedata.com/geocode/v1/json?q=$latitude+$longitude&key=$apiKey";
+        $response = file_get_contents($url);
+
+        if ($response !== false) {
+            $data = json_decode($response, true);
+            if (isset($data['results'][0]['components']['country'])) {
+                $country = $data['results'][0]['components']['country'];
+                $event->setEventLocation($country); // Setting country for the event
+            }
+        }
+    }
+
+    // Creating the form
     $event = new Event();
     $form = $this->createForm(EventFormeType::class, $event);
     $form->handleRequest($request);
 
     if ($form->isSubmitted() && $form->isValid()) {
-        $userRepository = $this->managerRegistry->getRepository(User::class);
         $user = $userRepository->find($event->getUserCreator());
         $event->addParticipant($user);
-        $this->entityManager->persist($event);
-        $this->entityManager->flush();
         $event->setStatus('Pending');
+
+        $entityManager->persist($event);
+        $entityManager->flush();
+
         return $this->redirectToRoute('event_show_front');
     }
 
@@ -118,15 +139,35 @@ public function showFront(EventRepository $eventRepository, Request $request): R
     ]);
 }
 
+
     #[Route('/event/showBack', name: 'event_show_back')]
     public function showBack(EventRepository $eventRepository): Response
     {
         $events = $eventRepository->findAll();
+        // Fetching country information for each event
+    foreach ($events as $event) {
+        $eventLocation = $event->getEventLocation();
+        $coordinates = explode(',', $eventLocation);
+        $latitude = (float) $coordinates[1];
+        $longitude = (float) $coordinates[0];
+
+        $apiKey = '4e1ba267e158447ba011ec353f86f1a6';
+        $url = "https://api.opencagedata.com/geocode/v1/json?q=$latitude+$longitude&key=$apiKey";
+        $response = file_get_contents($url);
+
+        if ($response !== false) {
+            $data = json_decode($response, true);
+            if (isset($data['results'][0]['components']['country'])) {
+                $country = $data['results'][0]['components']['country'];
+                $event->setEventLocation($country); // Setting country for the event
+            }
+        }
+    }
         return $this->render('event/back.html.twig', [
             'events' => $events,
+            'country' => $country
         ]);
     }
-
 #[Route('/event/edit/{id}/{loc}', name: 'event_edit')]
 public function edit(Request $request, Event $event, $loc): Response
 {

@@ -55,10 +55,7 @@ class EventFormeType extends AbstractType
                 ],
                 'empty_data' => '',
             ])
-            ->add('submit', SubmitType::class, [
-                'label' => 'Create Event',
-                'attr' => ['class' => 'btn btn-primary'],
-            ]);
+            ;
     }
 
     public function configureOptions(OptionsResolver $resolver): void
