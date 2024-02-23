@@ -7,6 +7,7 @@ use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 
 use Symfony\Component\Validator\Constraints as Assert;
+use App\Validator\Constraints as CustomAssert;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 #[ORM\Entity(repositoryClass: VoyageRepository::class)]
@@ -19,10 +20,12 @@ class Voyage
 
     #[ORM\Column(length: 255)]
     #[Assert\NotBlank(message:"This field is mandatory.")]
+    #[CustomAssert\MyCountryConstraint]
     private ?string $depart = null;
 
     #[ORM\Column(length: 255)]
     #[Assert\NotBlank(message:"This field is mandatory.")]
+    #[CustomAssert\MyCountryConstraint]
     private ?string $destination = null;
 
     #[ORM\Column(type: 'date')]
@@ -81,11 +84,14 @@ class Voyage
         $heureDep=$this->getHeureDep();
         $dateArr= $this ->getDateArr();
         $heureArr=$this->getHeureArr();
+        if ($dateArr&& $dateDep&& $heureDep&& $heureArr){
         $datetimeDep = new \DateTime($dateDep->format('Y-m-d') . ' ' . $heureDep->format('H:i:s'));
         $datetimeArr = new \DateTime($dateArr->format('Y-m-d') . ' ' . $heureArr->format('H:i:s'));       
         
         if ($datetimeArr < $datetimeDep) {
         $context->buildViolation('Departure and arrival dates and times are not compatible')->atPath('HeureDep')->addViolation();
+        $context->buildViolation('Departure and arrival dates and times are not compatible')->atPath('HeureArr')->addViolation();
+        }
     }
 
     }

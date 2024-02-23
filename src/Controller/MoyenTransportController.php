@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\MoyenTransport;
 use App\Form\MoyenTransportFormeType;
 use App\Repository\MoyenTransportRepository;
+use App\Repository\VoyageRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -58,14 +59,18 @@ class MoyenTransportController extends AbstractController
 
 
         #[Route('/removemoyen/{id}', name:'removeMoyen')]
-    public function remove(int $id, MoyenTransportRepository $repo, \Doctrine\Persistence\ManagerRegistry $mr): Response
+    public function remove(int $id, MoyenTransportRepository $repo, VoyageRepository $voyagerepo, \Doctrine\Persistence\ManagerRegistry $mr): Response
     {
        $s=$repo->find($id);
        $em=$mr->getManager();
+       $voyagesset= $voyagerepo->SearchVoyageByTransport($id);
+       
+        foreach($voyagesset as $voyage){
+            $voyage->setMoyenTransport(null);
+            $em->persist($voyage);
+        }
         $em->remove($s);
         $em->flush();
-        
-
         
         return $this->redirectToRoute('moyensList');
     }
@@ -93,13 +98,7 @@ class MoyenTransportController extends AbstractController
     #[Route('/searchmoyen', name:'searchmoyen')]
     public function SearchMoyen(EntityManagerInterface $em, Request $request, MoyenTransportRepository $repo): Response{
         $result=$repo->findAll();
-    //     $req= $em->createQuery(" select s.nom from App\Entity\Student s where s.nom=:n");
-    // //select * from student
-    // if ($request->isMethod("post")){
-    // $value=$request->get('test') ;   
-    // $req->setParameter('n',$value);
-    // $result=$req->getResult();
-    // }
+    
     if ($request->isMethod('post')){
         $model=$request->get('idmodele') ; 
         $type=$request->get('typeMoyen') ; 

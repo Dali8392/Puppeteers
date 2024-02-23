@@ -70,4 +70,12 @@ public function SearchVoyageByDepDes($dep,$des) {
 }
 
 
+public function SearchVoyageByTransport($transport){
+    return $this->createQueryBuilder('v')
+            ->andWhere('v.moyenTransport = :transport')
+            ->setParameter('transport', $transport)
+            ->getQuery()
+            ->getResult();
+}
+
 }

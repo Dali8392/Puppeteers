@@ -69,4 +69,7 @@ public function searchMoyenByModelOrType($model, $type) {
 
     return $result;
 }
+
+
+
 }

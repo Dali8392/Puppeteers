@@ -10,6 +10,7 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\TimeType;
 class VoyageFormeType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
@@ -29,8 +30,16 @@ class VoyageFormeType extends AbstractType
                 'data' => new \DateTime(),
                 'attr' => array('class' => 'form-control', 'style' => 'line-height: 20px;')
             ))
-            ->add('HeureDep')
-            ->add('HeureArr')
+            ->add('HeureDep', TimeType::class, [
+                'label' => 'Time',
+                'input'  => 'datetime',
+                'widget' => 'single_text', 
+            ])
+            ->add('HeureArr', TimeType::class, [
+                'label' => 'Time',
+                'input'  => 'datetime',
+                'widget' => 'single_text', 
+            ])
             ->add('prix')
             ->add('NombrePlaceDispo')
             ->add('description' , TextareaType::class, [
