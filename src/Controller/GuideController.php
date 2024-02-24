@@ -12,6 +12,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\Form\FormError;
 
 #[Route('/guide')]
 class GuideController extends AbstractController
@@ -45,15 +47,21 @@ class GuideController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'app_guide_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Guide $guide, EntityManagerInterface $entityManager): Response
+    public function edit(Request $request, Guide $guide, EntityManagerInterface $entityManager,ManagerRegistry $managerRegistry): Response
     {
         $form = $this->createForm(GuideFormeType::class, $guide);
         $form->handleRequest($request);
 
+        $guideEx = $managerRegistry->getManager()->getRepository(Guide::class)->findOneBy(['email' => $guide->getEmail()]);
+        if($guideEx){
+          $form->get('email')->addError(new FormError('this e-mail is already exists try another e-mail'));
+        }else{
+            
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
 
             return $this->redirectToRoute('app_guide_index', [], Response::HTTP_SEE_OTHER);
+        }
         }
 
         return $this->renderForm('guide/edit.html.twig', [
@@ -70,7 +78,7 @@ class GuideController extends AbstractController
         $entityManager->flush();
     
         $this->addFlash('success', 'guide supprimée avec succès !');
-        return $this->redirectToRoute('app_guide_index', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('app_guide_index');
     }
 
          #[Route("/guide/make-guide/{userId}", name:"app_guide_make_guide",methods:['POST'])]

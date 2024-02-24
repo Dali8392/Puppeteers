@@ -142,6 +142,10 @@ class ActiviteController extends AbstractController
         ]);
     }
 
+
+
+
+    
     #[Route('/{id}/show_user', name: 'app_activite_user_show', methods: ['GET'])]
     public function show_user(Activite $activite,GuideRepository $guideRepository): Response
     {

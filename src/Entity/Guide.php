@@ -28,6 +28,7 @@ class Guide
 
     #[Assert\NotBlank(message: "Email cannot be empty")]
     #[Assert\Email(message: "Invalid email format")]
+
     #[ORM\Column(length: 50)]
     private ?string $email = null;
 
