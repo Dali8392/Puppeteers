@@ -34,11 +34,13 @@ class VoyageFormeType extends AbstractType
                 'label' => 'Time',
                 'input'  => 'datetime',
                 'widget' => 'single_text', 
+                'empty_data' => '00:00'
             ])
             ->add('HeureArr', TimeType::class, [
                 'label' => 'Time',
                 'input'  => 'datetime',
                 'widget' => 'single_text', 
+                'empty_data' => '00:00'
             ])
             ->add('prix')
             ->add('NombrePlaceDispo')

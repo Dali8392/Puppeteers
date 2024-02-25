@@ -41,12 +41,11 @@ class Voyage
     
     #[ORM\Column(type: 'time')]
     #[Assert\NotBlank(message:"This field is mandatory.")]
-    // #[Assert\LessThan(propertyPath: 'heure_arr' , message:"Departure Time must be < Arrival Time.")]
     private ?\DateTimeInterface $HeureDep = null;
     
     #[ORM\Column(type: 'time')]
     #[Assert\NotBlank(message:"This field is mandatory.")]
-    // #[Assert\GreaterThan(propertyPath: 'heure_dep' , message:"Departure Time must be < Arrival Time.")]
+    #[Assert\NotNull(message:"This field is mandatory.")]
     private ?\DateTimeInterface $HeureArr = null;
 
     #[ORM\Column(length: 255)]
@@ -84,15 +83,22 @@ class Voyage
         $heureDep=$this->getHeureDep();
         $dateArr= $this ->getDateArr();
         $heureArr=$this->getHeureArr();
-        if ($dateArr&& $dateDep&& $heureDep&& $heureArr){
+        $dep= $this->getDepart();
+        $des=$this->getDestination();
+        if ($dateArr&& $dateDep&& ($heureDep!==null)&& ($heureArr!==null)){
         $datetimeDep = new \DateTime($dateDep->format('Y-m-d') . ' ' . $heureDep->format('H:i:s'));
         $datetimeArr = new \DateTime($dateArr->format('Y-m-d') . ' ' . $heureArr->format('H:i:s'));       
         
         if ($datetimeArr < $datetimeDep) {
         $context->buildViolation('Departure and arrival dates and times are not compatible')->atPath('HeureDep')->addViolation();
         $context->buildViolation('Departure and arrival dates and times are not compatible')->atPath('HeureArr')->addViolation();
-        }
-    }
+        }}
+
+        if($dep && $des){
+        if($dep===$des){
+            $context->buildViolation('Departure and destination can\'t be the same')->atPath('depart')->addViolation();
+        }}
+    
 
     }
     public function getId(): ?int

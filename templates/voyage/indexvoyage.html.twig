@@ -32,6 +32,7 @@
     <link rel="stylesheet" type="text/css" href={{ asset("styles/main_styles.css") }} />
     <link rel="stylesheet" type="text/css" href={{ asset("styles/responsive.css" ) }}/>
     <link rel="stylesheet" href="styles/indexvoyage.css"/>
+    
      {% endblock %}
 
 
@@ -184,22 +185,26 @@
 <h1> Travel with us !</h1>
 
 <div id="filter-container"> 
-<form id="filterform" method="POST" action="/searchvoyage">
-<input type="text" name="depart" placeholder="Departure"/>
-<input type="text" name="destination" placeholder="Destination"/>
+<form id="filterform" method="POST" action="{{ path('filtervoyage') }}">
+<div class="autocomplete-container" id="auto-complete-depart"></div>
+<div class="autocomplete-container" id="auto-complete-destination"></div>
 <input type="date" name="dateDep"/>
 <label> Budget </label>
-<input type="range" min="200" max="10000" step="100" id="budget-input" name="budget" value="200" />
-<span><span id="budget-output"></span><span>TND</span></span>
+<input type="range" min="0" max="10000" step="100" id="budget-input" name="budget" value="200" />
+<span><span id="budget-output"></span></span>
 <button id="searchbtn" type="submit"> <img id="searchicon" src="{{ asset('images/SearchIcon.png') }}"/>  Filter </button>
 </form>
 </div>
 
 <script> const value = document.querySelector("#budget-output");
 const input = document.querySelector("#budget-input");
-value.textContent = input.value;
+value.textContent = input.value + " TND";
 input.addEventListener("input", (event) => {
-  value.textContent = event.target.value;
+   if (event.target.value == 0) {
+        value.textContent = "none";
+    } else {
+        value.textContent = event.target.value +" TND";
+    }
 }); </script>
 
 
@@ -208,18 +213,7 @@ input.addEventListener("input", (event) => {
 <h2> Our trips will be available soon. Stay Tuned !!</h2>
 {% else %}
 {% for t in response %}
-<div class="voyage">
-<img class="destination-image" src="{{ asset('assets/images/destinations/' ~ t.destination ~'/voyage.jpeg') }}">
 
-
-
-</div>
-<div class="voyage">
-<img class="destination-image" src="{{ asset('assets/images/destinations/' ~ t.destination ~'/voyage.jpeg') }}">
-
-
-
-</div>
 <div class="voyage">
 <img class="destination-image" src="{{ asset('assets/images/destinations/' ~ t.destination ~'/voyage.jpeg') }}">
 
@@ -234,16 +228,46 @@ input.addEventListener("input", (event) => {
 </div>
 </div>
 </div>
-
-<div class="voyage">
-<img class="destination-image" src="{{ asset('assets/images/destinations/' ~ t.destination ~'/voyage.jpeg') }}">
-
-
-
-</div>
 {% endfor %}
 {% endif %}
 </div>
 </div>
 </div>
+
+
+<script>
+    document.getElementById("filterform").addEventListener("submit", function(event) {
+        event.preventDefault(); // Prevent the form from submitting normally
+
+        // Get the form data
+        const formData = new FormData(event.target);
+
+        // Send an AJAX request
+        fetch("/filtervoyage", {
+            method: "POST",
+            body: formData
+        })
+        .then(response => response.text())
+        .then(html => {
+            // Update the elements-container with the filtered data
+            document.getElementById("elements-container").innerHTML = html;
+        })
+        .catch(error => {
+            console.error("Error:", error);
+        });
+    });
+</script>
+
 {% endblock %}
+
+{% block javascripts %}
+            
+       
+    <script src={{ asset("js/jquery-3.2.1.min.js") }}></script>
+    <script src={{ asset("styles/bootstrap4/popper.js") }}></script>
+    <script src={{ asset("styles/bootstrap4/bootstrap.min.js") }}></script>
+    <script src={{ asset("plugins/OwlCarousel2-2.2.1/owl.carousel.js") }}></script>
+    <script src={{ asset("plugins/easing/easing.js") }}></script>
+    <script src={{ asset("js/custom.js") }}></script>
+     <script src={{ asset("js/autocomplete.js") }}></script>
+     {% endblock %}

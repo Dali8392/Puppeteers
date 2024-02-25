@@ -117,3 +117,8 @@ transition: height 0.5s;
     height: 35px;
     width: 200px;
 }
+
+#inputs-container{
+    display: flex;
+    flex-direction: row;
+}

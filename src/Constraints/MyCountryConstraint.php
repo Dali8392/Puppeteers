@@ -9,7 +9,7 @@ use Symfony\Component\Validator\Constraint;
 #[\Attribute]
 class MyCountryConstraint extends Constraint
 {
-    public $message = 'This string should represent either an existing country or state Cities. are not accepted';
+    public $message = 'This string should represent either an existing country or state. Cities are not accepted';
 
     /**
      * @return

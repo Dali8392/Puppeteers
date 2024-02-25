@@ -13,6 +13,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 
 class VoyageController extends AbstractController
@@ -97,13 +98,7 @@ class VoyageController extends AbstractController
     #[Route('/searchvoyage', name:'searchvoyage')]
     public function SearchVoyage(EntityManagerInterface $em, Request $request, VoyageRepository $repo): Response{
         $result=$repo->findAll();
-    //     $req= $em->createQuery(" select s.nom from App\Entity\Student s where s.nom=:n");
-    // //select * from student
-    // if ($request->isMethod("post")){
-    // $value=$request->get('test') ;   
-    // $req->setParameter('n',$value);
-    // $result=$req->getResult();
-    // }
+   
     if ($request->isMethod('post')){
         $dep=$request->get('depart') ; 
         $des=$request->get('destination') ; 
@@ -128,4 +123,29 @@ class VoyageController extends AbstractController
         }
     
 
+        
+    #[Route('/filtervoyage', name:'filtervoyage')]
+    public function FilterVoyage(EntityManagerInterface $em, Request $request, VoyageRepository $repo): Response{
+        $result=$repo->findAll();
+   
+    if ($request->isMethod('post')){
+        $dep=$request->get('depart') ; 
+        $des=$request->get('destination') ;
+        $datedep= $request->get('dateDep');
+        $budget= $request->get('budget');
+        $result=$repo->FilterVoyages($dep,$des,$datedep, $budget);
+       
+    }
+    
+       // Render the Twig template as a string
+    $html = $this->renderView('voyage/Voyagesfiltrés.html.twig', [
+        'response' => $result
+    ]);
+
+    // Return the HTML as a response
+    return new Response($html);
 }
+
+
+    }
+
