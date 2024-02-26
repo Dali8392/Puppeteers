@@ -72,6 +72,11 @@
 </tbody>
 </table>
 
+
+
+<div id="calendar-container">
+<div style='width:80% ; margin:auto;' id='calendar'></div>
+</div>
 </div>
 
 {# javascript for delete button  #}
@@ -84,6 +89,35 @@
             });
         });
     </script>
+{# javascript for Calendar display  #}
+<script>
+    window.onload = () => {
+        let calendarElt = document.querySelector("#calendar")
+
+        let calendar = new FullCalendar.Calendar(calendarElt, {
+            initialView: 'dayGridMonth',
+            locale: 'fr',
+            timeZone: 'Europe/Paris',
+            headerToolbar: {
+                start: 'prev,next today',
+                center: 'title',
+                end: 'dayGridMonth,timeGridWeek'
+            },
+            events: {{ data|raw }},
+            eventClick: function(info) {
+              var eventId = info.event.id;
+               window.location.href = "/updateVoyage/" + eventId;
+            },
+            editable: false,
+            eventResizableFromStart: true
+        })
+
+       
+
+        calendar.render()
+    }
+</script>
+
 
 
     
@@ -122,4 +156,5 @@
     <script src={{ asset("assets/js/plugins.js") }}></script>
     <script src={{ asset("assets/js/scripts.js") }}></script>
      <script src={{ asset("js/autocomplete.js") }}></script>
+      <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js'></script>
     {% endblock %}

@@ -32,8 +32,23 @@ class VoyageController extends AbstractController
     public function fetch( VoyageRepository $repo): Response
     {
             $result=$repo->findAll();
+            $events=$repo->findAll();
+            $calvoyages=[];
+            foreach( $events as $event ) {
+                $start=new \DateTime($event->getDateDep()->format('Y-m-d') . ' ' . $event->getHeureDep()->format('H:i:s'));
+                $title=$event->getDepart()."->".$event->getDestination();
+                $end=new \DateTime($event->getDateArr()->format('Y-m-d') . ' ' . $event->getHeureArr()->format('H:i:s'));
+                $calvoyages[]=[
+                    'id'=> $event->getId(),
+                    'start'=> $start->format('Y-m-d H:i:s'),
+                    'end'=> $end->format('Y-m-d H:i:s'),
+                    'title'=> $title,
+                ];
+            }
+            $data=json_encode($calvoyages);
             return $this->render('voyage/listevoyages.html.twig', [
                 'response' => $result,
+                'data' => $data 
             ]);
         }
     
@@ -105,10 +120,25 @@ class VoyageController extends AbstractController
         $result=$repo->SearchVoyageByDepDes($dep,$des);
         // dd($result);
     }
+    $events=$repo->findAll();
+    $calvoyages=[];
+    foreach( $events as $event ) {
+        $start=new \DateTime($event->getDateDep()->format('Y-m-d') . ' ' . $event->getHeureDep()->format('H:i:s'));
+        $title=$event->getDepart()."->".$event->getDestination();
+        $end=new \DateTime($event->getDateArr()->format('Y-m-d') . ' ' . $event->getHeureArr()->format('H:i:s'));
+        $calvoyages[]=[
+            'id'=> $event->getId(),
+            'start'=> $start->format('Y-m-d H:i:s'),
+            'end'=> $end->format('Y-m-d H:i:s'),
+            'title'=> $title,
+        ];
+    }
+    $data=json_encode($calvoyages);
     
         // dd($result);
         return $this->render('voyage/listevoyages.html.twig', [
-            'response'=>$result]);
+            'response'=>$result,
+            'data' => $data ]);
 
     }
 
@@ -145,6 +175,7 @@ class VoyageController extends AbstractController
     // Return the HTML as a response
     return new Response($html);
 }
+
 
 
     }
