@@ -30,10 +30,30 @@ class EventController extends AbstractController
     #[Route('/event/index/{loc}', name: 'event_index', methods: ['GET', 'POST'])]
     public function index(EventRepository $eventRepository, $loc, Request $request): Response
     {
+        $country=null;
         $location = (string) $loc;
 
         $events = $eventRepository->findBy(['status' => 'Active']);
+ // Fetching country information for each event
+ foreach ($events as $event) {
+    $eventLocation = $event->getEventLocation();
+    $coordinates = explode(',', $eventLocation);
+    $latitude = (float) $coordinates[1];
+    $longitude = (float) $coordinates[0];
 
+    $apiKey = '4e1ba267e158447ba011ec353f86f1a6';
+    $url = "https://api.opencagedata.com/geocode/v1/json?q=$latitude+$longitude&key=$apiKey";
+    $response = file_get_contents($url);
+
+    if ($response !== false) {
+        $data = json_decode($response, true);
+        if (isset($data['results'][0]['components']['country'])) {
+            $country = $data['results'][0]['components']['country'];
+        }
+    }
+}
+
+// Creating the form
         $event = new Event();
         $form = $this->createForm(EventFormeType::class, $event);
         $form->handleRequest($request);
@@ -54,6 +74,7 @@ class EventController extends AbstractController
 
         return $this->render('event/index.html.twig', [
             'events' => $events,
+            'country' => $country,
             'form' => $form->createView()
         ]);
     }
@@ -97,7 +118,7 @@ public function showFront(EventRepository $eventRepository, Request $request, En
 {
     $events = $eventRepository->findBy(['status' => 'Active']);
 
-    // Fetching country information for each event
+    $country=null;
     foreach ($events as $event) {
         $eventLocation = $event->getEventLocation();
         $coordinates = explode(',', $eventLocation);
@@ -112,7 +133,6 @@ public function showFront(EventRepository $eventRepository, Request $request, En
             $data = json_decode($response, true);
             if (isset($data['results'][0]['components']['country'])) {
                 $country = $data['results'][0]['components']['country'];
-                $event->setEventLocation($country); // Setting country for the event
             }
         }
     }
@@ -134,60 +154,74 @@ public function showFront(EventRepository $eventRepository, Request $request, En
     }
 
     return $this->render('event/index.html.twig', [
+        'country' => $country,
         'events' => $events,
         'form' => $form->createView()
     ]);
 }
 
 
-    #[Route('/event/showBack', name: 'event_show_back')]
-    public function showBack(EventRepository $eventRepository): Response
-    {
-        $events = $eventRepository->findAll();
-        // Fetching country information for each event
+#[Route('/event/showBack', name: 'event_show_back')]
+public function showBack(EventRepository $eventRepository): Response
+{
+    $country=null;
+    $events = $eventRepository->findAll();
+    // Fetching country information for each event
     foreach ($events as $event) {
         $eventLocation = $event->getEventLocation();
         $coordinates = explode(',', $eventLocation);
-        $latitude = (float) $coordinates[1];
-        $longitude = (float) $coordinates[0];
 
-        $apiKey = '4e1ba267e158447ba011ec353f86f1a6';
-        $url = "https://api.opencagedata.com/geocode/v1/json?q=$latitude+$longitude&key=$apiKey";
-        $response = file_get_contents($url);
+        // Check if coordinates are valid before accessing
+        if (count($coordinates) >= 2) {
+            $latitude = (float) $coordinates[1];
+            $longitude = (float) $coordinates[0];
 
-        if ($response !== false) {
-            $data = json_decode($response, true);
-            if (isset($data['results'][0]['components']['country'])) {
-                $country = $data['results'][0]['components']['country'];
-                $event->setEventLocation($country); // Setting country for the event
+            $apiKey = '4e1ba267e158447ba011ec353f86f1a6';
+            $url = "https://api.opencagedata.com/geocode/v1/json?q=$latitude+$longitude&key=$apiKey";
+            $response = file_get_contents($url);
+
+            if ($response !== false) {
+                $data = json_decode($response, true);
+                if (isset($data['results'][0]['components']['country'])) {
+                    $country = $data['results'][0]['components']['country'];
+                }
             }
         }
     }
-        return $this->render('event/back.html.twig', [
-            'events' => $events,
-            'country' => $country
-        ]);
-    }
-#[Route('/event/edit/{id}/{loc}', name: 'event_edit')]
-public function edit(Request $request, Event $event, $loc): Response
-{
-    $form = $this->createForm(EventFormeType::class, $event);
 
-    $location = (string) $loc;
-    $form->handleRequest($request);
-    if ($form->isSubmitted() && $form->isValid()) {
-        $event->setEventLocation($location);
-        $this->getDoctrine()->getManager()->flush();
-
-        return $this->redirectToRoute('event_show_back');
-    }
-
-    return $this->render('event/edit.html.twig', [
-        'events' => $event,
-        'form' => $form->createView(),
-        'loc' => $loc
+    return $this->render('event/back.html.twig', [
+        'events' => $events,
+        'country' => $country ?? null // Initialize country in case no valid data is found
     ]);
 }
+
+    #[Route('/event/edit/{id}/{loc}', name: 'event_edit')]
+    public function edit(Request $request, Event $event, $loc): Response
+    {
+        $form = $this->createForm(EventFormeType::class, $event);
+    
+        $location = (string) $loc;
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $event->setEventLocation($location);
+            $this->getDoctrine()->getManager()->flush();
+    
+            return $this->redirectToRoute('event_show_back');
+        }
+    
+        // Add condition for handling null $loc
+        if ($loc === null) {
+            // Handle the case where $loc is null, for example, setting a default location
+            $location = "Default Location";
+        }
+    
+        return $this->render('event/edit.html.twig', [
+            'events' => $event,
+            'form' => $form->createView(),
+            'loc' => $loc
+        ]);
+    }
+    
 
 
     
