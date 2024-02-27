@@ -51,6 +51,10 @@
 
                 <div class="clear"></div>
                 
+                <div class="clear"></div>
+                <p>
+                    <button type="button" id="loginface" class="btn btn-primary btn-lg " >face login</button>
+                </p>
                 {{ form_widget(form.sign_up, {
                      'attr': {
                       'class': 'btn btn-primary btn-lg submit',
@@ -74,6 +78,10 @@
 <script src="{{ asset('js/jquery-3.2.1.min.js') }}"></script>
 <script>
     jQuery(document).ready(function($) {
+        
+
+        
+        
         $('#SignupForm').on('submit', function(e){
             e.preventDefault();
 
@@ -83,6 +91,40 @@
                         $('#SignupForm')[0].submit();
                     });
                 });
+            });
+        });
+        ///////////////////////
+        $('#loginface').click(function(){
+          
+               
+            $.ajax({
+                url: '{{ path('app_loginFace') }}',
+                type: 'POST',
+                data: { },
+                success: function(response){
+                   
+                 if(!response.success){
+                    alert("Facial recognition not detected. Please try again.");
+                  }else{
+                    console.log(response);
+                    $('#form_id').val(response.id);
+                    $('#form_password').val(response.password);
+                 
+                  $('#progress-complete').animate({ width: '25%' }, 200, function() {
+                    $('#progress-complete').animate({ width: '50%' }, 200, function() {
+                        $('#progress-complete').animate({ width: '80%' }, 200, function() {
+                            $('#SignupForm')[0].submit();
+                        });
+                    });
+                });
+                }
+               
+                   
+                },
+                error: function(xhr, status, error) {
+                    console.log(xhr.responseText); 
+                    alert('Error occurred while processing the request!');
+                }
             });
         });
     });

@@ -3,11 +3,15 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Entity\Visitor;
 use App\Form\UserFormeType;
+use DateInterval;
+use DatePeriod;
 use DateTime;
 use DateTimeZone;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
+use GeoIp2\Database\Reader;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -21,19 +25,33 @@ use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Regex;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\Process\Process;
 
 class UserController extends AbstractController
 {  
     private $session;
+    
 
-public function __construct(SessionInterface $session)
+public function __construct(SessionInterface $session,)
 {
     $this->session = $session;
+   
 }
 
     #[Route('/', name: 'app_home')]
-    public function home():Response {
-            return $this->render('base.html.twig');
+    public function home(Request $request,EntityManagerInterface $entityManager):Response {
+        
+         
+         $vistor= new Visitor();
+         $vistor->setIpAddress($request->getClientIp());
+         $vistor->setDateInscri(new DateTime('now', new DateTimeZone(date_default_timezone_get())));
+         $entityManager->persist($vistor);
+         $entityManager->flush();
+
+
+       
+         return $this->render('base.html.twig');
+       
     }
     #[Route('/dashboard', name: 'app_homeAdmine')]
     public function homeAdmine():Response {
@@ -52,6 +70,7 @@ public function __construct(SessionInterface $session)
        $user->setDateInscri(new DateTime('now', new DateTimeZone(date_default_timezone_get())));
       
        if ($form->isSubmitted() && $form->isValid()) { 
+        $user->setPassword($this->crypterMotDePasse($user->getPassword()));
         $entityManager->persist($user);
             $entityManager->flush();
 
@@ -67,8 +86,9 @@ public function __construct(SessionInterface $session)
                $this->session->set('name', $user->getName());
                $this->session->set('lastName', $user->getLastName());
                $this->session->set('email', $user->getEmail());
+              
+               return $this->redirectToRoute('recognition_app', ['id' => $user->getId()]);
 
-                 return $this->redirectToRoute('app_home');
 
        
         }else{
@@ -188,14 +208,17 @@ public function __construct(SessionInterface $session)
     {
         
         $user = $managerRegistry->getManager()->getRepository(User::class)->findOneBy(['id' => $id]);
+        $user->setPassword($this->decrypterMotDePasse($user->getPassword()));
         $form = $this->createForm(UserFormeType::class, $user);
 
        $form->handleRequest($request);
        
          if ($form->isSubmitted() && $form->isValid()) {
+            $user->setPassword($this->crypterMotDePasse($user->getPassword()));
            $managerRegistry->getManager()->persist($user);
             $managerRegistry->getManager()->flush();
-             return $this->redirectToRoute('fetch_UserAdmin');
+            return $this->redirectToRoute('profile_user', ['id' => $user->getId()]);
+             
         }
         return $this->render('user/editProfile.html.twig', [
             'form' => $form->createView(),
@@ -263,7 +286,7 @@ public function __construct(SessionInterface $session)
            if(!$user){
             $form->get('id')->addError(new FormError('ID does not exist. Try again.'));
             }else{
-                if($user->getPassword()==$formData['password']){
+                if($this->decrypterMotDePasse($user->getPassword())==$formData['password']){
                     $this->session->set('id', $user->getId());
                     $this->session->set('name', $user->getName());
                     $this->session->set('lastName', $user->getLastName());
@@ -304,7 +327,139 @@ public function __construct(SessionInterface $session)
                 return $this->redirectToRoute('app_home');
            
             }
-            
+////////////////////////statis
+
+#[Route('/statis', name: 'statis_user')]
+public function statis(Request $request, ManagerRegistry $managerRegistry): JsonResponse
+{
+    $period = $request->get('period');
+  
+    $data1 = $this->getDataStatistics(User::class,  $period,$managerRegistry);
+    $data2= $this->getDataStatistics(Visitor::class,  $period,$managerRegistry);
+    $data3= $this->getCountrieStatic($managerRegistry);
+    
+
+    
+  
+   return new JsonResponse(['nameDate'=>array_keys($data1) ,'inscri' => array_values($data1),'visitor' => array_values($data2),"CountrieName" => array_keys($data3),'CountrieOcc' => array_values($data3)]);
+}
+///////////////////////////////get info et trie 
+private function getDataStatistics(string $className, string $period,ManagerRegistry $managerRegistry): array 
+{
+    
+ $infos = $managerRegistry->getManager()->getRepository($className)->findByRegistrationDate($period);
+
+    $data = [];
+    foreach ($infos as $user) {
+        $date = $user->getDateInscri()->format('Y-m-d'); // Format date as YYYY-MM-DD
+        $data[$date] = isset($data[$date]) ? $data[$date] + 1 : 1; // Count registrations for each date
+    }
+
+    // Fill in missing dates with 0 registrations
+    switch ($period) {
+        case 'last_7_days':
+            $startDate = new \DateTime('-7 days');
+            break;
+        case 'last_30_days':
+            $startDate = new \DateTime('-30 days');
+            break;
+        default:
+        $startDate = new \DateTime('2024-01-01'); 
+    } 
+    $endDate = new \DateTime(); 
+    $interval = DateInterval::createFromDateString('1 day');
+    $periodDates = new DatePeriod($startDate, $interval, $endDate);
+
+   
+    foreach ($periodDates as $date) {
+        $dateString = $date->format('Y-m-d');
+        if (!isset($data[$dateString])) {
+            $data[$dateString] = 0;
+        }
+    }
+    
+    
+    $today = new \DateTime();
+    $todayString = $today->format('Y-m-d');
+    if (!isset($data[$todayString])) {
+        $data[$todayString] = 0;
+    }
+
+    
+    ksort($data);
+
+    return $data;
+}
+
+///////////////////////////////////////
+private function getCountrieStatic(ManagerRegistry $managerRegistry): array
+{
+
+    $vistors= $managerRegistry->getManager()->getRepository(Visitor::class)->findAll();
+    $Countries=[];
+    
+    foreach ($vistors as $vistor) {
+         $Countrie =$this->getCountrie( $vistor->getIpAddress());
+        $Countries[$Countrie]=isset($Countries[$Countrie]) ? $Countries[$Countrie] + 1 : 1;;
+    }
+    return  $Countries;
+}
+///////////////////////////save photo
+#[Route('/take-photo', name: 'take_photo')]
+public function takePhoto(Request $request): Response
+{
+    $photoData = json_decode($request->getContent(), true);
+    $photoBase64 = $photoData['photo'];
+
+    
+    $photoBinary = base64_decode(str_replace('data:image/jpeg;base64,', '', $photoBase64));
+
+    
+    $nomFichier = $photoData['id'] . '.jpg';
+
+    
+    $dossierDestination = $this->getParameter('dossier_photos');
+    $cheminPhoto = $dossierDestination . '/' . $nomFichier;
+
+    
+    file_put_contents($cheminPhoto, $photoBinary);
+
+    
+    return new JsonResponse(['chemin_photo' => $cheminPhoto]);
+
+}
+#[Route('/recognition/{id}', name: 'recognition_app')]
+public function dd($id): Response{
+    return $this->render('user/recognition.html.twig',[
+        'id' => $id,
+    ]);
+    
+}
+
+#[Route('/loginFace', name: 'app_loginFace')]
+    public function loginFace(ManagerRegistry $managerRegistry): JsonResponse
+    {
+       
+       $scriptPath = $this->getParameter('kernel.project_dir') . '/public/facial_recognition.py';
+
+      
+       $process = new Process(['python', $scriptPath]);
+       $process->setTimeout(null);
+       $process->run();
+
+    
+
+      
+       $output = $process->getOutput();
+       $output = trim($output);
+        if($output){
+         $user=$managerRegistry->getManager()->getRepository(User::class)->findOneBy(['id' => $output]);
+         return new JsonResponse(['success' => true ,'id' => $user->getId() , 'password' => $this->decrypterMotDePasse($user->getPassword())]);
+      }
+   
+       return new JsonResponse(['success' => false]);
+       
+    }
 
 
 
@@ -328,6 +483,31 @@ public function __construct(SessionInterface $session)
 
 
 
+
+
+
+
+////////////////////////////////
+private function getCountrie($ipAddress){
+       //  // Construire le chemin vers la base de données GeoIP2 (dans le dossier public)
+          $databasePath = $this->getParameter('kernel.project_dir') . '/public/GeoLite2-City_20240220/GeoLite2-City.mmdb';
+ 
+         // Créer une instance du lecteur GeoIP2
+          $reader = new Reader($databasePath);
+         try {
+            // Utiliser le lecteur GeoIP2 pour obtenir des informations sur l'emplacement basées sur l'adresse IP
+            $record = $reader->city($ipAddress);
+
+           
+
+            return $record->country->name;
+           
+        } catch (\Exception $e) {
+       
+          return "private address";
+         }
+
+}
 
 
 
@@ -347,6 +527,7 @@ public function __construct(SessionInterface $session)
 
         return $code;
     }
+    //////////////////////send mail
     private function sendMail($message,$subject,User $user):bool
     {
         require_once __DIR__ . '/../../public/mail.php';
@@ -379,6 +560,19 @@ public function __construct(SessionInterface $session)
     
 
     return $randomId;
+}
+////////////////////////crypt password base64
+private function crypterMotDePasse($motDePasse)
+{
+    $motDePasseCrypte = base64_encode($motDePasse);
+    return $motDePasseCrypte;
+}
+
+
+private function decrypterMotDePasse($motDePasseCrypte)
+{
+    $motDePasse = base64_decode($motDePasseCrypte);
+    return $motDePasse;
 }
   
     
