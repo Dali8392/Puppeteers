@@ -32,6 +32,58 @@
 	</div>
 
 
+
+
+<style>
+    .qr_code_section {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100%; /* Ensure the container takes up the full height */
+    }
+
+    #qr_code {
+        /* Add any additional styling for the QR code container */
+    }
+</style>
+<br></br>
+<div class="qr_code_section">
+    <div id="qr_code"></div>
+</div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/qrcode-generator/qrcode.js"></script>
+<script>
+    
+    function generateQRCode(data) {
+        var qr = qrcode(0, 'L');
+        qr.addData(data);
+        qr.make();
+        var imgTag = qr.createImgTag();
+        console.log('QR Code generated:', imgTag); 
+        document.getElementById('qr_code').innerHTML = imgTag;
+    }
+
+    
+    var eventDetails = {
+        name: '{{ event.getName() }}',
+        type: '{{ event.getType() }}',
+        location: '{{ event.getEventLocation() }}',
+         startDate: '{{ event.getDateDebut() |date("Y-m-d\TH:i:s")}}', 
+        endDate: '{{ event.getDateFin() |date("Y-m-d\TH:i:s")}}', 
+        duration: '{{ event.getDuree() |date("Y-m-d\TH:i:s")}}' 
+       
+    };
+    console.log('Event details:', eventDetails); 
+
+    
+    generateQRCode(JSON.stringify(eventDetails));
+</script>
+
+
+
+
+
 		<!-- Single Listing -->
 
 		<div class="container">
@@ -76,8 +128,22 @@
 							<!-- Listing Image -->
 
 							<div class="hotel_image">
-								<img src="/images/listing_hotel.jpg" alt="">
 								
+								<div class="hotel_image">
+    <div id="map" style="height: 400px;"></div>
+    <script src="https://cdn.maptiler.com/maptiler-sdk-js/v1.2.0/maptiler-sdk.umd.min.js"></script>
+    <script>
+        maptilersdk.config.apiKey = '14EQpvvQYtCX1dWIjVmF';
+        const map = new maptilersdk.Map({
+            container: 'map',
+            style: maptilersdk.MapStyle.STREETS,
+            center: [{{ event.getEventLocation() }}],
+            zoom: 14,
+        });
+    </script>
+</div>
+<br></br>
+
 							</div>
 
 
