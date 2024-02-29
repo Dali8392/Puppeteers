@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\ReservationVoyageRepository;
 use Doctrine\ORM\Mapping as ORM;
+use DateTime;
 
 #[ORM\Entity(repositoryClass: ReservationVoyageRepository::class)]
 class ReservationVoyage
@@ -20,6 +21,18 @@ class ReservationVoyage
 
     #[ORM\Column(length: 10)]
     private ?string $idUser = null;
+
+    #[ORM\Column]
+    private ?DateTime $date ;
+
+    #[ORM\ManyToOne]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Voyage $voyageId = null;
+
+    public function __construct()
+    {
+        $this->date = new DateTime('today');
+    }
     public function getId(): ?int
     {
         return $this->id;
@@ -56,6 +69,30 @@ class ReservationVoyage
     public function setIdUser(string $idUser): static
     {
         $this->idUser = $idUser;
+
+        return $this;
+    }
+
+    public function getDate(): ?DateTime
+    {
+        return $this->date;
+    }
+
+    public function setDate(DateTime $date): static
+    {
+        $this->date = $date;
+
+        return $this;
+    }
+
+    public function getVoyageId(): ?Voyage
+    {
+        return $this->voyageId;
+    }
+
+    public function setVoyageId(?Voyage $voyageId): static
+    {
+        $this->voyageId = $voyageId;
 
         return $this;
     }

@@ -137,3 +137,8 @@ cursor: pointer;
     margin-top: 30px !important;
     margin-bottom: 30px !important;
 }
+#calendar-title{
+    margin-top: 25px;
+    margin-bottom: 50px;
+    font-size: 45px;
+}

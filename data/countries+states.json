@@ -20932,6 +20932,22 @@
                 "latitude": "42.40024200",
                 "longitude": "11.88917210",
                 "type": "province"
+            },
+            {
+                "id": 17351,
+                "name": "Milano",
+                "state_code": "VT",
+                "latitude": "42.40024200",
+                "longitude": "11.88917210",
+                "type": "province"
+            },
+            {
+                "id": 17352,
+                "name": "roma",
+                "state_code": "VT",
+                "latitude": "42.40024200",
+                "longitude": "11.88917210",
+                "type": "province"
             }
         ]
     },

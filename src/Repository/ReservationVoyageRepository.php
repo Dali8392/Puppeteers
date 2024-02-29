@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\ReservationVoyage;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Query\AST\WhereClause;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -45,4 +46,14 @@ class ReservationVoyageRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
+
+function getNbrReservationsVoyageByDate($date,$id){
+    $em = $this->getEntityManager();
+    $dql = "SELECT COUNT(rv) FROM App\Entity\ReservationVoyage rv WHERE rv.date = :date AND rv.voyageId= :id";
+    $query = $em->createQuery($dql);
+    $query->setParameter('date', $date->format('Y-m-d'));
+    $query->setParameter('id', $id);
+    return $query->getSingleScalarResult();
+   
+}
 }
