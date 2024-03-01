@@ -20,6 +20,14 @@ class ActiviteRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Activite::class);
     }
+    public function findByNameLike(string $name): array
+    {
+        return $this->createQueryBuilder('a')
+            ->andWhere('a.ville LIKE :name')
+            ->setParameter('name', '%' . $name . '%') // Utilisation de LIKE avec %
+            ->getQuery()
+            ->getResult();
+    }
 
 //    /**
 //     * @return Activite[] Returns an array of Activite objects
