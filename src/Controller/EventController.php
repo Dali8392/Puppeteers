@@ -15,6 +15,20 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+
+
+
+
+use Endroid\QrCode\Color\Color;
+use Endroid\QrCode\Encoding\Encoding;
+use Endroid\QrCode\ErrorCorrectionLevel\ErrorCorrectionLevelLow;
+use Endroid\QrCode\QrCode;
+use Endroid\QrCode\Label\Label;
+use Endroid\QrCode\Logo\Logo;
+use Endroid\QrCode\Writer\PngWriter;
+use Endroid\QrCode\Label\Font\NotoSans;
+
+
 class EventController extends AbstractController
 {
     private $entityManager;
@@ -81,8 +95,74 @@ class EventController extends AbstractController
         ]);
     }
     
+    #[Route('/qr_code/{id}', name: 'qr_code')]
+public function qr_code(EventRepository $eventRepository, int $id): Response
+{
+    // Fetch the event details by ID
+    $event = $eventRepository->find($id);
+
+    if (!$event) {
+        throw $this->createNotFoundException('Event not found');
+    }
+
+    $writer = new PngWriter();
+    $qrCode = QrCode::create(
+        'Event ID: ' . $event->getId() . PHP_EOL .
+        'Name: ' . $event->getName() . PHP_EOL .
+        'Type: ' . $event->getType() . PHP_EOL .
+        'Start Date: ' . $event->getDateDebut()->format('Y-m-d') . PHP_EOL .
+        'End Date: ' . $event->getDateFin()->format('Y-m-d') . PHP_EOL .
+        'Location: ' . $event->getEventLocation() . PHP_EOL .
+        'Duration: ' . $event->getDuree()->format('Y-m-d H:i:s') . PHP_EOL .
+        'Max Participants: ' . $event->getMaxParticipants() . PHP_EOL .
+        'Budget Allocated: ' . $event->getBudgetAllocated() . PHP_EOL .
+        'Status: ' . $event->getStatus()
+    )
+    ->setEncoding(new Encoding('UTF-8'))
+    ->setSize(120)
+    ->setMargin(0)
+    ->setForegroundColor(new Color(0, 0, 0))
+    ->setBackgroundColor(new Color(255, 255, 255));
+
+    // Create a label for the QR code
+    $label = Label::create('')->setFont(new NotoSans(8));
+
+    // Prepare QR codes
+    $qrCodes = [];
+    $qrCodes['img'] = $writer->write($qrCode)->getDataUri();
+    $qrCodes['simple'] = $writer->write(
+                        $qrCode,
+                        null,   
+                        $label->setText('Simple')
+                    )->getDataUri();
+
+    $qrCode->setForegroundColor(new Color(255, 0, 0));
+    $qrCodes['changeColor'] = $writer->write(
+        $qrCode,
+        null,
+        $label->setText('Color Change')
+    )->getDataUri();
+
+    $qrCode->setForegroundColor(new Color(0, 0, 0))->setBackgroundColor(new Color(255, 0, 0));
+    $qrCodes['changeBgColor'] = $writer->write(
+        $qrCode,
+        null,
+        $label->setText('Background Color Change')
+    )->getDataUri();
+
+    $qrCode->setSize(200)->setForegroundColor(new Color(0, 0, 0))->setBackgroundColor(new Color(255, 255, 255));
+    $qrCodes['withImage'] = $writer->write(
+        $qrCode,
+        null,
+        $label->setText('With Image')->setFont(new NotoSans(20))
+    )->getDataUri();
+
+    return $this->redirectToRoute('comment_index', ['id' => $id, 'qrCode' => $qrCodes]);
+}
 
 
+    
+    
     #[Route('/event/validate/{id}', name: 'event_validate', methods: ['GET', 'POST'])]
     public function validate(Event $event, EntityManagerInterface $entityManager): Response
     {
@@ -278,11 +358,13 @@ public function indexComment(CommentRepository $commentRepository, Request $requ
     }
 
     $comments = $commentRepository->findBy(['event' => $event]);
+    $qrCode = $request->query->get('qrCode');
 
     return $this->render('event/show.html.twig', [
         'id' => $event->getId(),
         'comments' => $comments,
         'event' => $event,
+        'qrCode' => $qrCode,
         'form' => $form->createView()
     ]);
 }

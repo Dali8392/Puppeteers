@@ -3,113 +3,108 @@
 {% block title %}{% endblock %}
 
 {% block body %}
-    
-
+<link rel="stylesheet" type="text/css" href="/styles/bootstrap4/bootstrap.min.css">
+<link href="/plugins/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+<link rel="stylesheet" type="text/css" href="/styles/contact_styles.css">
+<link rel="stylesheet" type="text/css" href="/styles/contact_responsive.css">
 <body>
+    <div class="home"></div>
 
-	<div class="home">
-	</div>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="single_listing">
 
-	<!-- Single Listing -->
-	<div class="container">
-		<div class="row">
-			<div class="col-lg-12">
-				<div class="single_listing">
-					
-					<!-- Hotel Info -->
-					<div class="hotel_info">
 
-						<!-- Title -->
-						<div class="hotel_title_container d-flex flex-lg-row flex-column">
-							<div class="hotel_title_content">
-								<h1 class="hotel_title">Grand Hotel Eurostar</h1>
-								<div class="rating_r rating_r_4 hotel_rating">
-									<i></i>
-									<i></i>
-									<i></i>
-									<i></i>
-									<i></i>
-								</div>
-								<div class="hotel_location">345 677 Gran Via Street, no 34, Madrid, Spain</div>
-							</div>
-							<div class="hotel_title_button ml-lg-auto text-lg-right">
-								<div class="button book_button trans_200"><a href="#">book<span></span><span></span><span></span></a></div>
-								<div class="hotel_map_link_container">
-									<div class="hotel_map_link">See Location on Map</div>
-								</div>
-							</div>
-						</div>
+	<div class="contact_form_section">
+		<div class="container">
+			<div class="row">
+				<div class="col">
 
-						<!-- Listing Image -->
-						<div class="hotel_image">
-							<img src="/images/listing_hotel.jpg" alt="">
-						</div>
+					<div class="contact_form_container">
+						<div class="contact_title text-center">Edit Comment</div>
+<form action="{{ path('comment_edit', {'id': id}) }}" id="contact_form" class="contact_form text-center" method="POST" novalidate="novalidate">
+    {{ form_row(form.sender, {'attr': {'class': 'contact_form_name input_field', 'placeholder': 'Name', 'required': 'required', 'data-error': 'Name is required.'}}) }}
+    {{ form_row(form.contenu, {'attr': {'class': 'text_field contact_form_message', 'placeholder': 'Message', 'required': 'required', 'data-error': 'Please, write us a message.'}}) }}
+    <button type="submit" id="form_submit_button" class="form_submit_button button trans_200">send message<span></span><span></span><span></span></button>
+</form>
+				</div>
 
-						<!-- Reviews -->
-						<div class="reviews">
-							<div class="reviews_title">Reviews</div>
-							<div class="reviews_container">
-								{% for comment in comments %}
-									{% if comment.getEvent().getId() == id %}
-										<div class="review">
-											<div class="row">
-												<div class="col-lg-1">
-													<div class="review_image">
-														<img src="/images/review_1.jpg" alt="Profile Image">
-													</div>
-												</div>
-												<div class="col-lg-9">
-													<div class="review_content">
-														<div class="review_title_container">
-															<div class="review_title">{{ comment.getContenu() }}</div>
-														</div>
-														<div class="review_name">{{ comment.getSender() }}</div>
-														<div class="review_date">{{ comment.getDate() }}</div>
-													</div>
-												</div>
-												<div class="col-lg-2">
-													<!-- Update button -->
-													<a href="{{ path('comment_edit', {'id': comment.getId()}) }}" class="btn btn-primary">Update</a>
-													<!-- Delete form -->
-													<form action="{{ path('comment_delete', {'id': comment.getId()}) }}" method="post">
-														<input type="hidden" name="_method" value="DELETE">
-														<button type="submit" class="btn btn-danger">Delete</button>
-													</form>
-												</div>
-											</div>
-										</div>
-									{% endif %}
-								{% endfor %}
-							</div>
-						</div>
-
-						<!-- Form for editing or creating a comment -->
-						<div class="comment_form">
-							{{ form_start(form, {'action': path('comment_edit', {'id': id}), 'method': 'POST', 'attr': {'novalidate': 'novalidate'}}) }}
-								{{ form_row(form.sender) }}
-								{{ form_row(form.contenu) }}
-								{{ form_row(form.submit) }}
-							{{ form_end(form) }}
-						</div>
-
-						<!-- Location on Map -->
-						<div class="location_on_map">
-							<div class="location_on_map_title">Location on Map</div>
-							<!-- Google Map -->
-							<div class="travelix_map">
-								<div id="google_map" class="google_map">
-									<div class="map_container">
-										<div id="map"></div>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
 				</div>
 			</div>
 		</div>
 	</div>
 
-</body>
+	<!-- About -->
+	<div class="about">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-5">
+					
+					<!-- About - Image -->
 
+					<div class="about_image">
+						<img src="/images/man.png" alt="">
+					</div>
+
+				</div>
+
+				<div class="col-lg-4">
+					
+					<!-- About - Content -->
+
+					<div class="about_content">
+						<div class="logo_container about_logo">
+							<div class="logo"><a href="#">HawesBiya</a></div>
+							
+						<p class="about_text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus quis vu lputate eros, iaculis consequat nisl. Nunc et suscipit urna. Integer eleme ntum orci eu vehicula iaculis consequat nisl. Nunc et suscipit urna pretium.</p>
+						<ul class="about_social_list">
+							<li class="about_social_item"><a href="#"><i class="fa fa-pinterest"></i></a></li>
+							<li class="about_social_item"><a href="#"><i class="fa fa-facebook-f"></i></a></li>
+							<li class="about_social_item"><a href="#"><i class="fa fa-twitter"></i></a></li>
+							<li class="about_social_item"><a href="#"><i class="fa fa-dribbble"></i></a></li>
+							<li class="about_social_item"><a href="#"><i class="fa fa-behance"></i></a></li>
+						</ul>
+						</div>
+					</div>
+
+				</div>
+
+				<div class="col-lg-3">
+					
+					<!-- About Info -->
+
+					<div class="about_info">
+						<ul class="contact_info_list">
+							<li class="contact_info_item d-flex flex-row">
+								<div><div class="contact_info_icon"><img src="/images/placeholder.svg" alt=""></div></div>
+								<div class="contact_info_text">4127 Raoul Wallenber 45b-c Gibraltar</div>
+							</li>
+							<li class="contact_info_item d-flex flex-row">
+								<div><div class="contact_info_icon"><img src="/images/phone-call.svg" alt=""></div></div>
+								<div class="contact_info_text">2556-808-8613</div>
+							</li>
+							<li class="contact_info_item d-flex flex-row">
+								<div><div class="contact_info_icon"><img src="/images/message.svg" alt=""></div></div>
+								<div class="contact_info_text"><a href="mailto:contactme@gmail.com?Subject=Hello" target="_top">contactme@gmail.com</a></div>
+							</li>
+							<li class="contact_info_item d-flex flex-row">
+								<div><div class="contact_info_icon"><img src="/images/planet-earth.svg" alt=""></div></div>
+								<div class="contact_info_text"><a href="https://colorlib.com">www.colorlib.com</a></div>
+							</li>
+						</ul>
+					</div>
+
+				</div>
+
+			</div>
+		</div>
+	</div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+	
+</body>
 {% endblock %}
