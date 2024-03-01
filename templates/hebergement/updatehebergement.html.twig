@@ -11,7 +11,7 @@
 				{{ form_errors(form) }}
 			</div>
 		{% endif %}
-		{{ form_start(form) }}
+		{{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
 		<div class="form-group row">
 			{{ form_label(form.name, 'Name', {'label_attr': {'class': 'col-sm-3 col-form-label'}}) }}
 			<div class="col-sm-9">

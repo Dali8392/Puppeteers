@@ -1,177 +1,174 @@
 {% extends 'base.html.twig' %}
+/////zeyed hedhaaa////
+{% block stylesheets %}
+	{{ parent() }}
+	<style>
+		.card {
+			width: 650px;
+			height: 700px;
+			perspective: 1000px;
+			margin: 300px auto 40px;
+		}
+
+		.card-inner {
+			width: 100%;
+			height: 100%;
+			position: relative;
+			transform-style: preserve-3d;
+			transition: transform 0.999s;
+		}
+
+		.card:hover .card-inner {
+			transform: rotateY(180deg);
+		}
+
+		.card-front,
+		.card-back {
+			position: absolute;
+			width: 100%;
+			height: 100%;
+			backface-visibility: hidden;
+		}
+
+		.card-front {
+			background-color: #BA93D3;
+			color: #fff;
+			display: flex;
+			align-items: center;
+			border: 10px solid #6A2C70;
+			border-radius: 10px;
+			justify-content: center;
+			font-size: 24px;
+			transform: rotateY(0deg);
+			text-align: center;
+		}
+
+		.card-back {
+			background-color: #F45162;
+			color: #fff;
+			display: flex;
+			align-items: center;
+			border: 10px solid #F08A5D;
+			border-radius: 10px;
+			justify-content: center;
+			font-size: 24px;
+			transform: rotateY(180deg);
+		}
+
+		.image {
+			width: 70%;
+			height: 60%;
+		}
+
+		.custom-title {
+			font-size: 15px;
+			font-family: "Lucida Console", "Courier New", monospace;
+			margin-bottom: 5px;
+			color: #470966;
+		}
+
+		.text {
+			font-family: "Lucida Console", "Courier New", monospace;
+			font-size: 15px;
+			color: #F5EDF9;
+		}
+
+		.rating-list {
+			list-style: none;
+			padding: 0;
+		}
+
+		.rating-item {
+			margin-bottom: 20px;
+		}
+
+		.add-rating-btn {
+			display: flex;
+			align-items: center;
+			text-decoration: none;
+			color: #fff;
+			background: linear-gradient(0deg, rgba(20,167,62,1) 0%, rgba(102,247,113,1) 100%);
+			padding: 10px 20px;
+			border-radius: 20em;
+			transition: box-shadow 0.2s ease-in;
+		}
+
+		.add-rating-btn:hover {
+			box-shadow: 0 0.5em 1.5em -0.5em #14a73e98;
+		}
+
+		.add-rating-btn svg {
+			margin-right: 6px;
+		}
+	</style>
+{% endblock %}
+
 {% block body %}
-	<!DOCTYPE html>
-	<html>
-		<head>
-			<title>Details</title>
-
-			<style>
-				.card {
-					width: 650px;
-					height: 700px;
-					perspective: 1000px;
-					margin: 300px auto 40px;
-				}
-
-				.card-inner {
-					width: 100%;
-					height: 100%;
-					position: relative;
-					transform-style: preserve-3d;
-					transition: transform 0.999s;
-				}
-
-				.card:hover .card-inner {
-					transform: rotateY(180deg);
-				}
-
-				.card-front,
-				.card-back {
-					position: absolute;
-					width: 100%;
-					height: 100%;
-					backface-visibility: hidden;
-				}
-
-				.card-front {
-					background-color: #BA93D3;
-					color: #fff;
-					display: flex;
-					align-items: center;
-					border: 10px solid #6A2C70;
-					border-radius: 10px;
-					justify-content: center;
-					font-size: 24px;
-					transform: rotateY(0deg);
-					text-align: center;
-				}
-
-				.card-back {
-					background-color: #F45162;
-					color: #fff;
-					display: flex;
-					align-items: center;
-					border: 10px solid #F08A5D;
-					border-radius: 10px;
-					justify-content: center;
-					font-size: 24px;
-					transform: rotateY(180deg);
-				}
-
-				.image {
-					width: 70%;
-					height: 60%;
-				}
-
-				.custom-title {
-					color: black;
-					font-size: 15px;
-					font-family: "Lucida Console", "Courier New", monospace;
-					text-align: center;
-				}
-				.cssbuttons-io-button {
-					display: flex;
-					align-items: center;
-					font-family: inherit;
-					font-weight: 500;
-					font-size: 16px;
-					padding: 0.7em 1.4em 0.7em 1.1em;
-					color: white;
-					background: #F4516F;
-					background: linear-gradient(0deg, rgba(20,167,62,1) 0%, rgba(102,247,113,1) 100%);
-					border: none;
-					box-shadow: 0 0.7em 1.5em -0.5em #14a73e98;
-					letter-spacing: 0.05em;
-					border-radius: 20em;
-				}
-
-				.cssbuttons-io-button svg {
-					margin-right: 6px;
-				}
-
-				.cssbuttons-io-button:hover {
-					box-shadow: 0 0.5em 1.5em -0.5em #14a73e98;
-				}
-
-				.cssbuttons-io-button:active {
-					box-shadow: 0 0.3em 1em -0.5em #14a73e98;
-				}
-				.text {
-					color: white;
-					font-family: "Lucida Console", "Courier New", monospace;
-					font-size: 15px;
-				}
-			</style>
-		</head>
-		<body>
-			<div class="container">
-				<div class="card">
-					<div class="card-inner">
-						<div class="card-front">
-							<div>
-								<h1 style="margin-bottom: 35px; text-align: center;">Details</h1>
-								<img class="image" src="{{ hebergement.Image }}.jpg">
-								<p>
-									<strong class="custom-title">Adresse:</strong>
-									<span class="text">{{ hebergement.adresse }}</span>
-								</p>
-								<p>
-									<strong class="custom-title">Tarif:</strong>
-									<span class="text">
-										${{hebergement.tarif }}per night</span>
-								</p>
-								<p>
-									<strong class="custom-title">Description:</strong>
-									<span class="text">{{ hebergement.description }}</span>
-								</p>
-								<p>
-									<strong class="custom-title">État:</strong>
-									<span class="text">{{ hebergement.etat }}</span>
-								</p>
-								<p>
-									<strong class="custom-title">Date de disponibilité:</strong>
-									<span class="text">{{ hebergement.dateDisponibilte|date('d/m/Y') }}</span>
-								</p>
-								<p>
-									<strong class="custom-title">Capacité:</strong>
-									<span class="text">{{ hebergement.capacite }}</span>
-								</p>
-							</div>
-
-						</div>
-						<div class="card-back">
-							<div>
-								<h1 style="margin-bottom: 35px; text-align: center;">Avis sur cet hébergement</h1>
-								{% if avis is not empty %}
-									<ul>
-										{% for avi in avis %}
-											<li>
-												<p>
-													<strong>Note:</strong>
-													<span class="text">{{ avi.note }}</span>
-												</p>
-												<p>
-													<strong>Commentaire:</strong>
-													<span class="text">{{ avi.commentaire }}</span>
-												</p>
-											</li>
-										{% endfor %}
-									</ul>
-								{% else %}
-									<p style="margin-bottom: 35px; text-align: center;color:white">Aucun avis disponible pour cet hébergement.</p>
-								{% endif %}
-								<a href="{{ path('hebergement_ajouter_avis') }}" class="cssbuttons-io-button">
-									<svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" width="24" height="24">
-										<path fill="none" d="M0 0h24v24H0z"></path>
-										<path fill="currentColor" d="M11 11V5h2v6h6v2h-6v6h-2v-6H5v-2z"></path>
-									</svg>
-									<span>Add</span>
-								</a>
-							</div>
-						</div>
+	<div class="container">
+		<div class="card">
+			<div class="card-inner">
+				<div class="card-front">
+					<div class="card-content">
+						<h1>Details</h1>
+						<img class="image" src="{{ hebergement.Image }}.jpg" alt="Accommodation Image">
+						<p>
+							<strong class="custom-title">Adresse:</strong>
+							<span class="text">{{ hebergement.adresse }}</span>
+						</p>
+						<p>
+							<strong class="custom-title">Tarif:</strong>
+							<span class="text">${{ hebergement.tarif }}
+								per night</span>
+						</p>
+						<p>
+							<strong class="custom-title">Description:</strong>
+							<span class="text">{{ hebergement.description }}</span>
+						</p>
+						<p>
+							<strong class="custom-title">État:</strong>
+							<span class="text">{{ hebergement.etat }}</span>
+						</p>
+						<p>
+							<strong class="custom-title">Date de disponibilité:</strong>
+							<span class="text">{{ hebergement.dateDisponibilte|date('d/m/Y') }}</span>
+						</p>
+						<p>
+							<strong class="custom-title">Capacité:</strong>
+							<span class="text">{{ hebergement.capacite }}</span>
+						</p>
+					</div>
+				</div>
+				<div class="card-back">
+					<div class="card-content">
+						<h1>Rating</h1>
+						{% if avis is not empty %}
+							<ul class="rating-list">
+								{% for avi in avis %}
+									<li class="rating-item">
+										<p>
+											<strong>Rate:</strong>
+											<span class="text">{{ avi.note }}</span>
+										</p>
+										<p>
+											<strong>Commentaire:</strong>
+											<span class="text">{{ avi.commentaire }}</span>
+										</p>
+									</li>
+								{% endfor %}
+							</ul>
+						{% else %}
+							<p>No Rating</p>
+						{% endif %}
+						<a href="{{ path('hebergement_ajouter_avis', {'id': hebergement.id}) }}" class="add-rating-btn">
+							<svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" width="24" height="24">
+								<path fill="none" d="M0 0h24v24H0z"></path>
+								<path fill="currentColor" d="M11 11V5h2v6h6v2h-6v6h-2v-6H5v-2z"></path>
+							</svg>
+							Add Rating
+						</a>
 					</div>
 				</div>
 			</div>
-		</body>
-	</html>
+		</div>
+	</div>
 {% endblock %}

@@ -5,126 +5,129 @@
 
 {% block body %}
 	<style>
-		.container {
-			display: flex;
-			width: 800px;
-			height: 550px;
-			max-width: 99%;
-			align-items: center;
-			justify-content: center;
-			position: relative;
-			overflow: hidden;
-			background-color: #ffffff25;
-			border-radius: 15px;
-			box-shadow: 0 0 30px rgba(0, 0, 0, 0.03);
-			border: 0.1px solid rgba(128, 128, 128, 0.178);
-			margin-bottom: 200px;
-		}
+    .container {
+        display: flex;
+        width: 800px;
+        height: 550px;
+        max-width: 99%;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        overflow: hidden;
+        background-color: #ffffff25;
+        border-radius: 15px;
+        box-shadow: 0 0 30px rgba(0, 0, 0, 0.03);
+        border: 0.1px solid rgba(128, 128, 128, 0.178);
+        margin-bottom: 100px; 
+    }
 
-		.left {
-			width: 66%;
-			height: 100%;
-		}
+    .left {
+        width: 66%;
+        height: 100%;
+    }
 
-		.form {
-			display: flex;
-			flex-direction: column;
-			justify-content: center;
-			height: 100%;
-			width: 100%;
-			left: 0;
-			backdrop-filter: blur(20px);
-			position: relative;
-		}
+    .form {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        height: 100%;
+        width: 100%;
+        left: 0;
+        backdrop-filter: blur(20px);
+        position: relative;
+    }
 
-		.form::before {
-			position: absolute;
-			content: "";
-			width: 40%;
-			height: 40%;
-			right: 1%;
-			z-index: -1;
-			background: radial-gradient(circle, rgb(194, 13, 170) 20%, rgb(26, 186, 235) 60%, rgb(26, 186, 235) 100%);
-			filter: blur(70px);
-			border-radius: 50%;
-		}
+    .form::before {
+        position: absolute;
+        content: "";
+        width: 40%;
+        height: 40%;
+        right: 1%;
+        z-index: -1;
+        background: radial-gradient(circle, rgb(194, 13, 170) 20%, rgb(26, 186, 235) 60%, rgb(26, 186, 235) 100%);
+        filter: blur(70px);
+        border-radius: 50%;
+    }
 
-		.right {
-			width: 34%;
-			height: 100%;
-		}
+    .right {
+        width: 34%;
+        height: 100%;
+    }
 
-		.img {
-			width: 100%;
-			height: 100%;
-		}
+    .img {
+        width: 100%;
+        height: 100%;
+    }
 
-		.container::after {
-			position: absolute;
-			content: "";
-			width: 80%;
-			height: 80%;
-			right: -40%;
-			background: rgb(157, 173, 203);
-			background: radial-gradient(circle, rgba(157, 173, 203, 1) 61%, rgba(99, 122, 159, 1) 100%);
-			border-radius: 50%;
-			z-index: -1;
-		}
+    .container::after {
+        position: absolute;
+        content: "";
+        width: 80%;
+        height: 80%;
+        right: -40%;
+        background: rgb(157, 173, 203);
+        background: radial-gradient(circle, rgba(157, 173, 203, 1) 61%, rgba(99, 122, 159, 1) 100%);
+        border-radius: 50%;
+        z-index: -1;
+    }
 
-		.input,
-		button {
-			background: rgba(253, 253, 253, 0);
-			outline: none;
-			border: 1px solid rgba(255, 0, 0, 0);
-			border-radius: 0.5rem;
-			padding: 20px;
-			margin: 10px auto;
-			width: 200%;
-			display: block;
-			color: #425981;
-			font-weight: 500;
-			font-size: 2em;
-		}
+    .input,
+    button {
+        background: rgba(253, 253, 253, 0);
+        outline: none;
+        border: 1px solid rgba(255, 0, 0, 0);
+        border-radius: 0.5rem;
+        padding: 20px;
+        margin: 10px auto;
+        width: 200%;
+        display: block;
+        color: #425981;
+        font-weight: 500;
+        font-size: 1.5em; 
+    }
 
-		.input-block {
-			position: relative;
-		}
+    .input-block {
+        position: relative;
+		margin-bottom: 30px; 
+    }
 
-		label {
-			position: absolute;
-			left: 15%;
-			top: 37%;
-			pointer-events: none;
-			color: black;
-			font-size: 20px
-		}
-		.input:focus + label,
-		.input:valid + label {
-			transform: translateY(-120%) scale(0.9);
-			transition: all 0.4s;
-		}
+    label {
+        position: absolute;
+        left: 15%;
+        top: 37%;
+        pointer-events: none;
+        color: black;
+        font-size: 20px
+    }
 
-		button {
-			background-color: #5e7eb6;
-			color: white;
-			font-size: medium;
-			box-shadow: 2px 4px 8px rgba(70, 70, 70, 0.178);
-		}
+    .input:focus + label,
+    .input:valid + label {
+        transform: translateY(-120%) scale(0.9);
+        transition: all 0.4s;
+    }
 
-		a {
-			color: #5e7eb6;
-		}
+    button {
+        background-color: #5e7eb6;
+        color: white;
+        font-size: medium;
+        box-shadow: 2px 4px 8px rgba(70, 70, 70, 0.178);
+    }
 
-		.input {
-			box-shadow: inset 4px 4px 4px rgba(165, 163, 163, 0.315), 4px 4px 4px rgba(218, 218, 218, 0.13);
-		}
+    a {
+        color: #5e7eb6;
+    }
 
-		.form-error-message {
-			color: red;
-			font-size: 14px;
-			margin-top: 5px;
-		}
-	</style>
+    .input {
+        box-shadow: inset 4px 4px 4px rgba(165, 163, 163, 0.315), 4px 4px 4px rgba(218, 218, 218, 0.13);
+    }
+
+    .form-error-message {
+        color: red;
+        font-size: 14px;
+        margin-top: 5px;
+    }
+</style>
+
 
 	<body>
 		<h1 style="margin-bottom: 35px; text-align: center;">Add Type of Accommodation</h1>
@@ -150,6 +153,13 @@
 							<label for="description">Description</label>
 							<div class="form-error-message">
 								{{ form_errors(form.description) }}
+							</div>
+						</div>
+						<div class="input-block">
+							{{ form_widget(form.color, {'attr': {'class': 'input'}}) }}
+							<label for="color">Color</label>
+							<div class="form-error-message">
+								{{ form_errors(form.color) }}
 							</div>
 						</div>
 						<button>Add</button>

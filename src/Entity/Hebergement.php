@@ -49,7 +49,8 @@ class Hebergement
     private ?string $etat = null;
 
     #[ORM\Column]
-    #[Assert\NotBlank(message: 'dateDisponibilte ne peut pas être vide')]
+    #[Assert\NotBlank(message: 'This date should not be empty')]
+    #[Assert\GreaterThanOrEqual('today', message: "This date must be greater than or equal to today.")]
     private ?DateTime $dateDisponibilte = null;
 
     #[ORM\Column]
@@ -60,21 +61,41 @@ class Hebergement
     private Collection $voyages;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: 'Image should not be empty')]
     private ?string $image = null;
 
     #[ORM\Column(length: 255)]
     #[Assert\NotBlank(message: 'Name should not be empty')]
     private ?string $name = null;
+    #[ORM\Column(nullable: true)]
+    private ?int $number_likes = null;
+    #[ORM\Column(nullable: true)]
+    private ?int $number_dislikes = null;
+
+    #[ORM\OneToMany(targetEntity: ReservationHebergement::class, mappedBy: 'hebergement')]
+    private Collection $reservationhebergement;
 
     public function __construct()
     {
         $this->avis = new ArrayCollection();
         $this->voyages = new ArrayCollection();
+        $this->hebergement = new ArrayCollection();
     }
 
     public function getId(): ?int
     {
         return $this->id;
+    }
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
+    public function setName(string $name): static
+    {
+        $this->name = $name;
+
+        return $this;
     }
 
     public function getAdresse(): ?string
@@ -109,6 +130,29 @@ class Hebergement
     public function setDescription(string $description): static
     {
         $this->description = $description;
+
+        return $this;
+    }
+    public function getnumber_likes(): ?int
+    {
+        return $this->number_likes;
+    }
+
+    public function setnumber_likes(int $numberLikes): static
+    {
+        $this->number_likes = $numberLikes;
+
+        return $this;
+    }
+
+    public function getnumber_dislikes(): ?int
+    {
+        return $this->number_dislikes;
+    }
+
+    public function setnumber_dislikes(int $numberDislikes): static
+    {
+        $this->number_dislikes = $numberDislikes;
 
         return $this;
     }
@@ -245,20 +289,40 @@ class Hebergement
         return $this;
     }
 
-    public function getName(): ?string
-    {
-        return $this->name;
-    }
-
-    public function setName(string $name): static
-    {
-        $this->name = $name;
-
-        return $this;
-    }
+   
     public function __toString(): string
     {
         return (string) $this->getId();
+    }
+
+    /**
+     * @return Collection<int, ReservationHebergement>
+     */
+    public function getReservationHebergement(): Collection
+    {
+        return $this->reservationhebergement;
+    }
+
+    public function addReservationHebergement(ReservationHebergement $reservationhebergement): static
+    {
+        if (!$this->reservationhebergement->contains($reservationhebergement)) {
+            $this->reservationhebergement->add($reservationhebergement);
+            $reservationhebergement->setHebergement($this);
+        }
+
+        return $this;
+    }
+
+    public function removeReservationHebergement(ReservationHebergement $reservationhebergement): static
+    {
+        if ($this->reservationhebergement->removeElement($reservationhebergement)) {
+            // set the owning side to null (unless already changed)
+            if ($reservationhebergement->getHebergement() === $this) {
+                $reservationhebergement->setHebergement(null);
+            }
+        }
+
+        return $this;
     }
 
 

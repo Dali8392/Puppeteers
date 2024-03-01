@@ -2,12 +2,18 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\AvisRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 
 #[ORM\Entity(repositoryClass: AvisRepository::class)]
+
+#[ApiResource(
+    collectionOperations: ["get"],
+    itemOperations: ["get"],
+)]
 class Avis
 {
     #[ORM\Id]
@@ -16,17 +22,20 @@ class Avis
     private ?int $id = null;
 
     #[ORM\Column]
+    #[Assert\NotBlank(message: 'Rating should not be empty')]
     private ?int $note = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: 'Comment should not be empty')]
     private ?string $commentaire = null;
 
     #[ORM\ManyToOne(inversedBy: 'avis')]
     private ?Hebergement $hebergement = null;
 
-    #[ORM\ManyToOne(inversedBy: 'avis')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?User $owner = null;
+    #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: 'E-mail should not be empty')]
+    #[Assert\Email(message: 'The email "{{ value }}" is not a valid email.')]
+    private ?string $email = null;
 
     public function getId(): ?int
     {
@@ -69,15 +78,17 @@ class Avis
         return $this;
     }
 
-    public function getOwner(): ?User
+    public function getEmail(): ?string
     {
-        return $this->owner;
+        return $this->email;
     }
 
-    public function setOwner(?User $owner): static
+    public function setEmail(string $email): static
     {
-        $this->owner = $owner;
+        $this->email = $email;
 
         return $this;
     }
+
+    
 }

@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\TypeHebergement;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ColorType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -18,6 +19,7 @@ class TypeHebergementFormeType extends AbstractType
         $builder
             ->add('type')
             ->add('description')
+            ->add('color', ColorType::class)
             ->add('submit', SubmitType::class)
         ;
     }

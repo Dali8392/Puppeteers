@@ -27,6 +27,9 @@ class TypeHebergement
     #[ORM\OneToMany(targetEntity: Hebergement::class, mappedBy: 'typeHebergement')]
     private Collection $hebergement;
 
+    #[ORM\Column(length: 7, nullable: true)]
+    private ?string $color = null;
+
     public function __construct()
     {
         $this->hebergement = new ArrayCollection();
@@ -93,6 +96,18 @@ class TypeHebergement
     public function __toString(): string
     {
         return (string) $this->getId();
+    }
+
+    public function getColor(): ?string
+    {
+        return $this->color;
+    }
+
+    public function setColor(?string $color): static
+    {
+        $this->color = $color;
+
+        return $this;
     }
 
 }

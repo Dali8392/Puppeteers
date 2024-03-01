@@ -15,6 +15,9 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\IsFalse;
 use Symfony\Component\Validator\Constraints\IsTrue;
 use Symfony\Component\Validator\Constraints\Range;
+use Symfony\Component\Form\Extension\Core\Type\DateType as SymfonyDateType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
+
 
 class HebergementFormeType extends AbstractType
 {
@@ -39,7 +42,12 @@ class HebergementFormeType extends AbstractType
             ->add('tarif')
             ->add('description')
             ->add('etat')
-            ->add('dateDisponibilte')
+            ->add('dateDisponibilte', DateType::class, array(
+                'widget' => 'single_text',
+                'format' => 'yyyy-MM-dd',
+                'data' => new \DateTime(),
+                'attr' => array('class' => 'form-control', 'style' => 'line-height: 20px;')
+            )) 
             ->add('capacite', NumberType::class, [
                 'constraints' => [
                     new Range(['min' => 0, 'max' => 20, 'minMessage' => 'capacity must be at least 0', 'maxMessage' => 'capacity cannot exceed 20'])

@@ -45,4 +45,14 @@ class ReservationHebergementRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
+public function getreservationbyid(int $idh)
+{
+    $em= $this->getEntityManager();
+    $qb= $em->createQueryBuilder();
+    $qb->select("h")
+    ->from(ReservationHebergement::class,"h")
+    ->where('h.hebergement = :idh')
+    ->setParameter('idh', $idh);
+    return $qb->getQuery()->getResult();
+}
 }

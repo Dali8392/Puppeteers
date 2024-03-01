@@ -29,6 +29,10 @@ class ReservationHebergement
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
     private ?Paiement $paiement = null;
 
+    #[ORM\ManyToOne(inversedBy: 'reservationhebergement')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Hebergement $hebergement = null;
+    
     public function getId(): ?int
     {
         return $this->id;
@@ -90,6 +94,18 @@ class ReservationHebergement
     public function setPaiement(?Paiement $paiement): static
     {
         $this->paiement = $paiement;
+
+        return $this;
+    }
+
+    public function getHebergement(): ?Hebergement
+    {
+        return $this->hebergement;
+    }
+
+    public function setHebergement(?Hebergement $hebergement): static
+    {
+        $this->hebergement = $hebergement;
 
         return $this;
     }

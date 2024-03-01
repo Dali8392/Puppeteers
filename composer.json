@@ -7,9 +7,17 @@
     "php": ">=7.2.5",
     "ext-ctype": "*",
     "ext-iconv": "*",
+    "api-platform/core": "^2.7",
+    "bacon/bacon-qr-code": "^2.0",
     "doctrine/doctrine-bundle": "^2.11",
     "doctrine/doctrine-migrations-bundle": "^3.3",
     "doctrine/orm": "^3.0",
+    "endroid/qr-code": "^5.0",
+    "endroid/qr-code-bundle": "^5.0",
+    "knplabs/knp-paginator-bundle": "^5.9",
+    "mpdf/mpdf": "^6.1",
+    "nelmio/api-doc-bundle": "^4.20",
+    "nelmio/cors-bundle": "^2.4",
     "phpdocumentor/reflection-docblock": "^5.3",
     "phpstan/phpdoc-parser": "^1.25",
     "sensio/framework-extra-bundle": "^6.2",
@@ -38,19 +46,22 @@
     "symfony/string": "5.4.*",
     "symfony/translation": "5.4.*",
     "symfony/twig-bundle": "5.4.*",
+    "symfony/twilio-notifier": "5.4.*",
     "symfony/ux-turbo": "^2.14",
     "symfony/validator": "5.4.*",
     "symfony/web-link": "5.4.*",
     "symfony/yaml": "5.4.*",
     "twig/extra-bundle": "^2.12|^3.0",
-    "twig/twig": "^2.12|^3.0"
+    "twig/twig": "^2.12|^3.0",
+    "twilio/sdk": "^7.16"
   },
   "config": {
     "allow-plugins": {
       "composer/package-versions-deprecated": true,
       "php-http/discovery": true,
       "symfony/flex": true,
-      "symfony/runtime": true
+      "symfony/runtime": true,
+      "endroid/installer": true
     },
     "optimize-autoloader": true,
     "preferred-install": {
@@ -90,7 +101,7 @@
   },
   "extra": {
     "symfony": {
-      "allow-contrib": false,
+      "allow-contrib": true,
       "require": "5.4.*"
     }
   },

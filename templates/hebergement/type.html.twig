@@ -3,14 +3,16 @@
 {% extends 'baseAdmin.html.twig' %}
 
 {% block body %}
+
+	<h2 style="margin-bottom: 35px; text-align: center;">List of Types of Accommodation</h2>
+	<div class="card">
+		<p style="text-indent: 10px; text-align: justify;letter-spacing: 3px;">Total number of Type:{{ nombre_type}}</p>
+	</div>
 	<div class="custom-button-container">
 
 		<a href="choice" class="button">Back</a>
 		<a href="addtype" class="button">Create New</a>
 	</div>
-
-	<h2 style="margin-bottom: 35px; text-align: center;">List of Types of Accommodation</h2>
-
 	<table>
 		<tr>
 			<th>ID</th>
@@ -34,12 +36,56 @@
 	</table>
 
 	<style>
+		.card {
+			position: relative;
+			width: 350px;
+			height: 100px;
+			border-radius: 14px;
+			z-index: 1111;
+			overflow: hidden;
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			justify-content: center;
+			box-shadow: 20px 20px 60px #bebebe, -20px -20px 60px #ffffff;
+			margin: 10px auto;
+		}
+
+		@keyframes blob-bounce {
+			0% {
+				transform: translate(-100%, -100%) translate3d(0, 0, 0);
+			}
+
+			25% {
+				transform: translate(-100%, -100%) translate3d(100%, 0, 0);
+			}
+
+			50% {
+				transform: translate(-100%, -100%) translate3d(100%, 100%, 0);
+			}
+
+			75% {
+				transform: translate(-100%, -100%) translate3d(0, 100%, 0);
+			}
+
+			100% {
+				transform: translate(-100%, -100%) translate3d(0, 0, 0);
+			}
+		}
 		table {
 			border-collapse: collapse;
 			width: 100%;
 		}
 
-		th,
+		th {
+			padding: 8px;
+			text-align: left;
+			border-bottom: 1px solid #ddd;
+			text-align: center;
+			background-color: #706AF5;
+			color: white;
+
+		}
 		td {
 			padding: 8px;
 			text-align: left;
