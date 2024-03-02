@@ -98,3 +98,25 @@ margin-top: 50px;
     margin-bottom: 30px;
     margin-left: 15px;
  }
+
+ #button-container{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+ }
+ #book-btn{
+   background:  linear-gradient(to right, #fa9e1b, #8d4fff, #fa9e1b);
+   width: 350px;
+   height: 65px;
+	border-radius: 27px;
+    font-size: 20px;
+    color: aliceblue;
+    font-weight: 600;
+    transition: scale 500ms ease-in-out;
+    margin-bottom: 50px;
+ }
+ #book-btn:hover{
+    /* background:  linear-gradient(to right, #8d4fff, #fa9e1b); */
+    scale: 1.2;
+    cursor: pointer;
+ }

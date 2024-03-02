@@ -56,4 +56,11 @@ function getNbrReservationsVoyageByDate($date,$id){
     return $query->getSingleScalarResult();
    
 }
+
+// function getTopVoyages(){
+//     $em= $this->getEntityManager();
+  
+
+// }
+
 }

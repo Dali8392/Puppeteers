@@ -203,7 +203,7 @@ public function showDetails(int $id, VoyageRepository $repo,ReservationVoyageRep
    return $this->render('voyage/detailsvoyage.html.twig', [
     't' => $v,
     'labels'=>json_encode($chartlabels),
-    'data'=>json_encode($chartdata)
+    'data'=>json_encode($chartdata),
 ]);
 }
 
