@@ -1,0 +1,88 @@
+{% extends 'baseAdmin.html.twig' %}
+
+{% block title %}Update Accommodation
+{% endblock %}
+
+{% block body %}
+	<div class="container">
+		<h1 style="margin-bottom:35px;">Update Accommodation</h1>
+		{% if form_errors(form) %}
+			<div class="alert alert-danger">
+				{{ form_errors(form) }}
+			</div>
+		{% endif %}
+		{{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
+		<div class="form-group row">
+			{{ form_label(form.name, 'Name', {'label_attr': {'class': 'col-sm-3 col-form-label'}}) }}
+			<div class="col-sm-9">
+				{{ form_widget(form.name, {'attr': {'class': 'form-control'}}) }}
+				{{ form_errors(form.name) }}
+			</div>
+		</div>
+		<div class="form-group row">
+			{{ form_label(form.etat, 'State', {'label_attr': {'class': 'col-sm-3 col-form-label'}}) }}
+			<div class="col-sm-9">
+				{{ form_widget(form.etat, {'attr': {'class': 'form-control'}}) }}
+				{{ form_errors(form.etat) }}
+			</div>
+		</div>
+		<div class="form-group row">
+			{{ form_label(form.image, 'Image', {'label_attr': {'class': 'col-sm-3 col-form-label'}}) }}
+			<div class="col-sm-9">
+				{{ form_widget(form.image, {'attr': {'class': 'form-control'}}) }}
+				{{ form_errors(form.image) }}
+			</div>
+		</div>
+		<div class="form-group row">
+			{{ form_label(form.typeHebergement, 'Type', {'label_attr': {'class': 'col-sm-3 col-form-label'}}) }}
+			<div class="col-sm-9">
+				{{ form_widget(form.typeHebergement, {'attr': {'class': 'form-control'}}) }}
+				{{ form_errors(form.typeHebergement) }}
+			</div>
+		</div>
+		<div class="form-group row">
+			{{ form_label(form.adresse, 'Adress', {'label_attr': {'class': 'col-sm-3 col-form-label'}}) }}
+			<div class="col-sm-9">
+				{{ form_widget(form.adresse, {'attr': {'class': 'form-control'}}) }}
+				{{ form_errors(form.adresse) }}
+			</div>
+		</div>
+		<div class="form-group row">
+			{{ form_label(form.tarif, 'Price', {'label_attr': {'class': 'col-sm-3 col-form-label'}}) }}
+			<div class="col-sm-9">
+				{{ form_widget(form.tarif, {'attr': {'class': 'form-control'}}) }}
+				{{ form_errors(form.tarif) }}
+			</div>
+		</div>
+		<div class="form-group row">
+			{{ form_label(form.description, 'Description', {'label_attr': {'class': 'col-sm-3 col-form-label'}}) }}
+			<div class="col-sm-9">
+				{{ form_widget(form.description, {'attr': {'class': 'form-control'}}) }}
+				{{ form_errors(form.description) }}
+			</div>
+		</div>
+		<div class="form-group row">
+			{{ form_label(form.dateDisponibilte, 'Date', {'label_attr': {'class': 'col-sm-3 col-form-label'}}) }}
+			<div class="col-sm-9">
+				{{ form_widget(form.dateDisponibilte, {'attr': {'class': 'form-control'}}) }}
+				{{ form_errors(form.dateDisponibilte) }}
+			</div>
+		</div>
+		<div class="form-group row">
+			{{ form_label(form.capacite, 'Capacity', {'label_attr': {'class': 'col-sm-3 col-form-label'}}) }}
+			<div class="col-sm-9">
+				{{ form_widget(form.capacite, {'attr': {'class': 'form-control'}}) }}
+				{{ form_errors(form.capacite) }}
+			</div>
+		</div>
+
+		<div class="form-group row">
+			<div class="col-sm-12">
+
+				<button type="submit" class="btn btn-primary">Save</button>
+				<a href="{{ path('liste1', {'id': hebergement.id}) }}" class="btn btn-secondary">Cancel</a>
+			</div>
+		</div>
+
+	</div>
+{% endblock %}

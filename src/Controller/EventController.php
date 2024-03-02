@@ -27,6 +27,7 @@ use Endroid\QrCode\Label\Label;
 use Endroid\QrCode\Logo\Logo;
 use Endroid\QrCode\Writer\PngWriter;
 use Endroid\QrCode\Label\Font\NotoSans;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class EventController extends AbstractController
@@ -409,5 +410,31 @@ public function deletec( Comment $comment ,EntityManagerInterface $entityManager
 
     return $this->redirectToRoute('comment_show_all');
 }
+
+#[Route('/event/add_participant/{idEvent}/{idUser}', name: 'event_add_participant')]
+public function addParticipant(int $idEvent, string $idUser, EntityManagerInterface $entityManager, UserRepository $userRepository): Response
+{
+    $event = $entityManager->getRepository(Event::class)->find($idEvent);
+    $user = $userRepository->find($idUser);
+    
+   if ($event->getUserCreator() == $user->getId()) {
+        return new JsonResponse(['error' => 'User already in event'], Response::HTTP_BAD_REQUEST);
+    }
+
+    $maxParticipants = $event->getMaxParticipants();
+    $currentParticipants = count($event->getParticipants());
+    if ($currentParticipants >= $maxParticipants) {
+        return new JsonResponse(['error' => 'Maximum number of participants reached'], Response::HTTP_BAD_REQUEST);
+    }
+
+    $event->addParticipant($user);
+
+    $entityManager->persist($event);
+    $entityManager->flush();
+
+    return $this->redirectToRoute('event_index');;
+}
+
+
 
 }

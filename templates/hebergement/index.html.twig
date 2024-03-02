@@ -1,8 +1,213 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+	<style>
+			   .content-wrapper {
+                padding-top: 100px; 
+                padding-bottom: 200px; 
+            }
+				body {
+					text-align: center;
+					font-size: 18px;
+					color: #000;
+				}
+				h1 {
+					font-size: 30px;
+					font-weight: bold;
+					color: #4A235A;
+				}
+				.custom-table {
+					margin-top: 200px;
+					border-bottom: 10px solid #ccc;
+					padding-bottom: 20px;
+				}
+				.card {
+					width: 350px;
+					height: 450px;
+					background: #FBEEFD;
+					border-radius: 20px;
+					box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+					margin: 10px;
+					display: inline-block;
+					vertical-align: top;
+					font-family: 'Roboto', sans-serif;
+					text-align: center;
+				}
+				.hebergement-title {
+					margin-top: 20px;
+				}
+				.hebergement-adresse {
+					line-height: 4;
+				}
+				.hebergement-price {
+					font-weight: bold;
+					color: #641E16;
+					line-height: 4;
+				}
+				.hebergement-buttons {
+					position: absolute;
+					bottom: -3px;
+					left: 50%;
+					transform: translateX(-50%);
+				}
+				.button {
+					text-decoration: none;
+					text-align: center;
+					-webkit-transform: translate(-50%, 125%);
+					-ms-transform: translate(-50%, 125%);
+					transform: translate(-50%, 125%);
+					width: 150px;
+					border-radius: 1rem;
+					border: none;
+					background-color: #A569BD;
+					color: #fff;
+					font-size: 1rem;
+					padding: 0.5rem 1rem;
+					position: absolute;
+					left: 50%;
+					bottom: 0;
+					opacity: 0;
+					-webkit-transition: 0.3s ease-out;
+					transition: 0.3s ease-out;
+					cursor: pointer;
+					font-family: Arial, Helvetica, sans-serif;
+				}
+				.card:hover {
+					border-color: #6c00f8;
+					-webkit-box-shadow: 10px 5px 18px 0 rgba(255, 255, 255, 0.877);
+					box-shadow: 10px 5px 18px 0 rgba(255, 255, 255, 0.877);
+				}
+				.card:hover .button {
+					-webkit-transform: translate(-50%, 50%);
+					-ms-transform: translate(-50%, 50%);
+					transform: translate(-50%, 50%);
+					opacity: 1;
+				}
+				.title {
+					margin-bottom: 35px;
+					text-align: center;
+					color: #4A235A;
+					font-family: "Lucida Console", "Courier New", monospace;
+					font-size: 30px;
 
-    <h1>Hello {{ app.session.get('id') }}! ✅</h1>
-    <script>
-        var a='{{ app.session.get('id') }}'
-        alert(a);
-    </script>
+				}
+				.custom-select {
+					border: none; 
+					appearance: none; 
+					-webkit-appearance: none; 
+				}
+				.body {
+					width: 1200px;
+					height: 700px;
+					display: flex;
+					align-items: center;
+					justify-content: center;
+					position: relative;
+					border-radius: 3px;
+					background: url(images/offer_2.jpg) no-repeat center center; 
+					background-size: cover; 
+					box-shadow: rgba(0, 0, 0, 0.24) 0 3px 8px;
+					margin: 30px auto;
+                }
+				.announcement {
+					font-weight: bold;
+					font-size: 24px;
+					color: #333;
+					background-color: #f9f9f9;
+					padding: 10px;
+					border-radius: 5px;
+					margin: 30px auto;
+				}
+				.btn1 {
+					appearance: none;
+					background-color: transparent;
+					border: 0.125em solid #1A1A1A;
+					border-radius: 0.9375em;
+					box-sizing: border-box;
+					color: #3B3B3B;
+					cursor: pointer;
+					display: inline-block;
+					font-family: Roobert,-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
+					font-size: 16px;
+					font-weight: 600;
+					line-height: normal;
+					margin: 0;
+					min-height: 3.75em;
+					min-width: 0;
+					outline: none;
+					padding: 1em 2.3em;
+					text-align: center;
+					text-decoration: none;
+					transition: all 300ms cubic-bezier(.23, 1, 0.32, 1);
+					user-select: none;
+					-webkit-user-select: none;
+					touch-action: manipulation;
+					will-change: transform;
+				}
+				.btn1:disabled {
+					pointer-events: none;
+				}
+				.btn1:hover {
+					color: #fff;
+					background-color: #1A1A1A;
+					box-shadow: rgba(0, 0, 0, 0.25) 0 8px 15px;
+					transform: translateY(-2px);
+				}
+				.btn1:active {
+					box-shadow: none;
+					transform: translateY(0);
+				}	
+			</style>
+		<div class="content-wrapper">
+			<div class="contact_background" style="background-image:url(images/background.jpg)"></div>
+			<div class="custom-table">
+                <h1 style="text-align: center;">List of Accommodations</h1>
+				<div style="text-align: center;">
+				    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+		            <input type="text" id="searchInput" placeholder="Search..." style="font-size: 20px; width: 300px;">
+						<button id="searchButton" class="btn1">Search</button>
+					<div id="searchResults"></div>
+					<select class="custom-select" title="Type" onchange="location = this.value;">
+						<option value="{{ path('liste') }}">All</option>
+						{% for type in types %}
+							<option value="{{ path('liste', {'type': type.id}) }}" {% if selectedType == type.id %} selected {% endif %}>{{ type.type }}</option>
+						{% endfor %}
+					</select>
+				</div>
+				{% for hebergement in hebergements %}
+					<div class="card">
+						
+						<h3 class="hebergement-title">{{ hebergement.name }}</h3>
+						<img src="{{ hebergement.Image }}.jpg" width="250" height="200">
+						<div class="hebergement-adresse" data-address="{{ hebergement.adresse }}">{{ hebergement.adresse }}</div>
+						<div class="hebergement-price">${{ hebergement.tarif }}
+							per night</div>
+						<div class="hebergement-buttons">
+							<a href="{{ path('hebergement_details', {'id': hebergement.id}) }}" class="button">See Details</a>
 
-  
+						</div>
+					</div>
+				{% endfor %}
+			</div>
+		
+			<div class="body">
+            <p class="announcement">If you have an Accommodation offer 🏨, <br>
+			contact us now at this number 📞: +216 71 969 969  </p>
+           </div>
+			</div>
+			<script>
+			$(document).ready(function() {
+				$('#searchInput').on('input', function() {
+					var query = $(this).val().toLowerCase();
+					$('.card').each(function() {
+						var address = $(this).find('.hebergement-adresse').data('address').toLowerCase();
+						if (address.includes(query)) {
+							$(this).show();
+						} else {
+							$(this).hide();
+						}
+					});
+				});
+			});
+			</script>
+{% endblock %}
+	

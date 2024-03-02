@@ -2,10 +2,18 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\AvisRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+
 
 #[ORM\Entity(repositoryClass: AvisRepository::class)]
+
+#[ApiResource(
+    collectionOperations: ["get"],
+    itemOperations: ["get"],
+)]
 class Avis
 {
     #[ORM\Id]
@@ -14,13 +22,19 @@ class Avis
     private ?int $id = null;
 
     #[ORM\Column]
+    #[Assert\NotBlank(message: 'Rating should not be empty')]
     private ?int $note = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: 'Comment should not be empty')]
     private ?string $commentaire = null;
 
     #[ORM\ManyToOne(inversedBy: 'avis')]
     private ?Hebergement $hebergement = null;
+
+    #[ORM\Column(length: 255)]
+   
+    private ?string $email = null;
 
     public function getId(): ?int
     {
@@ -62,4 +76,18 @@ class Avis
 
         return $this;
     }
+
+    public function getEmail(): ?string
+    {
+        return $this->email;
+    }
+
+    public function setEmail(string $email): static
+    {
+        $this->email = $email;
+
+        return $this;
+    }
+
+    
 }

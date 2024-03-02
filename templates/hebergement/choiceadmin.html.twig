@@ -1,0 +1,84 @@
+{% extends 'baseAdmin.html.twig' %}
+{% block body %}
+	<style>
+		.container {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			height: 100vh; /* Center vertically */
+		}
+
+		.btn-group {
+			display: flex;
+		}
+
+		.box {
+			position: relative;
+			margin: 10px;
+			width: 500px;
+			height: 45px;
+			overflow: hidden;
+			border: none;
+			background-color: rgb(218, 203, 177);
+			font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+			border-radius: 20px;
+			cursor: pointer;
+			box-shadow: 0 0 10px rgb(104, 134, 218);
+			display: flex;
+			justify-content: center;
+			align-items: center;
+		}
+
+		.text-button {
+			font-size: 1.2rem;
+			font-weight: bold;
+			text-align: center;
+			padding: 0 20px;
+			position: relative;
+			z-index: 1;
+		}
+
+		.box::before {
+			content: "";
+			position: absolute;
+			width: 15px;
+			height: 200px;
+			margin-top: -92px;
+			background: linear-gradient(#00ccff, #d400d4);
+			animation: amm 4s linear infinite;
+		}
+
+		@keyframes amm {
+			0% {
+				transform: rotate(0deg);
+			}
+
+			100% {
+				transform: rotate(360deg);
+			}
+		}
+
+		.box::after {
+			content: "";
+			position: absolute;
+			inset: 4px;
+			background-color: rgb(218, 203, 177);
+			border-radius: 20px;
+		}
+	</style>
+	<h1 style="margin-bottom: 35px; text-align: center; color:#12A5D1 ">Accommodation Managment</h1>
+	<div class="container">
+		<div class="btn-group">
+			<div class="box">
+				<a href="{{ path('liste1') }}" class="text-button">Accommodation</a>
+			</div>
+			<div class="box">
+				<a href="{{ path('types') }}" class="text-button">Type of Accommodation</a>
+			</div>
+			<div class="box">
+				<a href="{{ path('stats') }}" class="text-button">Statistics</a>
+			</div>
+		</div>
+	</div>
+
+{% endblock %}

@@ -1,0 +1,65 @@
+{% extends 'baseAdmin.html.twig' %}
+
+{% block title %}Statistiques{% endblock %}
+
+{% block body %}
+<div class="container">
+  <h1 style="margin-bottom: 35px; text-align: center;">Statistics</h1>
+  <canvas id="Types" width="400" height="100"></canvas>
+  <canvas id="LikesDislikes" width="400" height="200"></canvas>
+</div>
+{% endblock %}
+
+{% block javascripts %}
+{{ parent() }}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        let typesCanvas = document.querySelector("#Types");
+        if (typesCanvas) {
+            let typesData = {
+                labels: {{ typ|raw }},
+                datasets: [{
+                    label: "Répartition des types",
+                    data: {{ typecount|raw }},
+                    backgroundColor: {{ typeColor|raw }}
+                }]
+            };
+            let typesChart = new Chart(typesCanvas, {
+                type: "pie",
+                data: typesData
+            });
+        }
+        let likesDislikesCanvas = document.querySelector("#LikesDislikes");
+        if (likesDislikesCanvas) {
+            let likesDislikesData = {
+                labels: {{ hname|raw }}, 
+                datasets: [{
+                    label: 'Likes',
+                    data: {{ likes|raw }},
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 1
+                }, {
+                    label: 'Dislikes',
+                    data: {{ dislikes|raw }},
+                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                    borderColor: 'rgba(255, 99, 132, 1)',
+                    borderWidth: 1
+                }]
+            };
+            let likesDislikesChart = new Chart(likesDislikesCanvas, {
+                type: 'bar',
+                data: likesDislikesData,
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        }
+    });
+</script>
+{% endblock %}

@@ -45,4 +45,15 @@ class HebergementRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
+
+public function findEntitiesByString($address)
+{   $em= $this->getEntityManager();
+    $qb= $em->createQueryBuilder();
+    $qb->select("h")
+    ->from(Hebergement::class,"h")
+        ->where('h.adresse LIKE :address')
+        ->setParameter('address', '%' . $address . '%');
+        return $qb->getQuery()->getResult();
+}
+
 }

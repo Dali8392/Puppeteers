@@ -91,7 +91,8 @@
 									<div class="hotel_location">Location : {{ event.getEventLocation() }}</div>
 								</div>
 								<div class="hotel_title_button ml-lg-auto text-lg-right">
-									<div class="button book_button trans_200"><a href="#">Join WaitList<span></span><span></span><span></span></a></div>
+									<div class="button book_button trans_200"><a href="{{ path('event_add_participant', {'idUser': app.session.get('id'),'idEvent': event.getId() }) }}" >Join WaitList<span></span><span></span><span></span></a></div>
+                                    
 									<div class="hotel_map_link_container">
 										<div class="hotel_map_link">{% set duree = event.getDuree() %}
 {% if duree %}

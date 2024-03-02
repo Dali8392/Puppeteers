@@ -1,0 +1,12 @@
+{# templates/hebergement/deletehebergement.html.twig #}
+
+{% extends 'baseAdmin.html.twig' %}
+{% block body %}
+	<h1 style="margin-bottom: 35px; text-align: center;">Delete Accommodations</h1>
+	<p>Are you sure to delete?</p>
+	<form action="{{ path('deletehebergement', {'id': hebergement.id}) }}" method="post">
+		<input type="hidden" name="_method" value="DELETE">
+		<button type="submit">Confirm deletion</button>
+	</form>
+	<a href="{{ path('liste1', {'id': hebergement.id}) }}">Annuler</a>
+{% endblock %}
