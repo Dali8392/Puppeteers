@@ -1,0 +1,53 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ 'Activities'|trans }}{% endblock %}
+
+{% block body %}
+<div class="container" style="margin-top: 200px;">
+
+    <h1>{{ 'Activities'|trans }}</h1>
+
+    <table class="table">
+        <tbody>
+         
+            <tr>
+                <th>{{ 'City'|trans }}</th>
+                <td>{{ activite.ville }}</td>
+            </tr>
+            <tr>
+                <th>{{ 'Price'|trans }}</th>
+                <td>{{ activite.prix }}</td>
+            </tr>
+            <tr>
+                <th>{{ 'Details'|trans }}</th>
+                <td>{{ activite.details }}</td>
+            </tr>
+            <tr>
+                <th>{{ 'Time'|trans }}</th>
+                <td>{{ activite.heure }}</td>
+            </tr>
+            <tr>
+                <th>{{ 'Available Guides'|trans }}</th>
+                <td>
+                   <div class="dropdown">
+    <button class="btn btn-rounded btn-info dropdown-toggle" type="button" id="guideDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+{{ 'Select Guide'|trans }}
+    </button>
+    <div class="dropdown-menu" aria-labelledby="guideDropdown">
+        {% for guide in guides %}
+            {% if guide.ville == activite.ville %}
+                <a class="dropdown-item" href="#">{{ guide.name }} {{ guide.lastname }} ({{ guide.langue }})</a>
+            {% endif %}
+        {% endfor %}
+    </div>
+</div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+ <a href="{{ path('app_activite_user_index') }}" class="btn btn-rounded btn-danger mb-3">{{ 'Back To List'|trans }}</a>
+    <a href="{{ path('app_activite_subscribe', {'userId': 'aaa', 'activiteId': activite.id}) }}" class="btn btn-flat btn-success mb-3">{{'Subscribe to this activity'|trans }}</a>
+    <a href="{{ path('app_activite_subscribed') }}" class="btn btn-flat btn-success mb-3">{{'Show list of subbed activities'|trans }}</a>
+</div>
+{% endblock %}

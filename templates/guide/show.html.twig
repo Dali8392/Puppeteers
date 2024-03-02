@@ -44,8 +44,8 @@
         </tbody>
     </table>
 </div>
-    <a href="{{ path('app_guide_index') }}">back to list</a>
-
-    <a href="{{ path('app_guide_edit', {'id': guide.id}) }}">edit</a>
+            
+             <a href="{{ path('app_guide_index') }}" class="btn btn-rounded btn-danger mb-3">Back to List</a>   
+              <a href="{{ path('app_guide_edit', {'id': guide.id}) }}" class="btn btn-rounded btn-danger mb-3">Edit</a>   
 
 {% endblock %}

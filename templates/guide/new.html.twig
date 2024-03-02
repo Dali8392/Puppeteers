@@ -6,7 +6,7 @@
 <style>
  .button-update {
   background-color: blue;
-  color: white; /* Set text color explicitly */
+  color: white; 
   padding: 5px 10px;
   border: none;
   border-radius: 5px;
@@ -24,8 +24,9 @@
 {{ form_end(form) }}
         {% endif %}
             <a href="{{ path('app_guide_new', {'id': guide.id}) }}" class="button-submit">submit</a>
+            <a href="{{ path('app_guide_index') }}" class="button-submit">Back to Guide List</a>
 
-    <a href="{{ path('app_guide_index') }}">Back to Guide List</a>
+    </a>
     </div>
 
 {% endblock %}

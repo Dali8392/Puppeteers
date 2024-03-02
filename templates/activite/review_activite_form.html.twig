@@ -1,4 +1,4 @@
-{% extends 'base.html.twig' %}
+{% extends 'baseAdmin.html.twig' %}
 
 {% block title %}Activite index{% endblock %}
 
@@ -6,7 +6,7 @@
 <style>
     .grid-container {
         display: grid;
-        grid-template-columns: repeat(3, 1fr); /* Adjust columns as needed */
+        grid-template-columns: repeat(3, 1fr); 
         grid-gap: 10px;
     }
 
@@ -15,20 +15,20 @@
         padding: 10px;
         margin-bottom: 10px;
         display: flex;
-        flex-direction: column; /* Stack elements vertically */
-        align-items: center; /* Center horizontally */
-        justify-content: flex-end; /* Align buttons at bottom */
+        flex-direction: column; 
+        align-items: center; 
+        justify-content: flex-end; 
     }
 
     .grid-item a {
-        display: inline-block; /* Allow buttons to shrink */
-        margin: 5px; /* Add some spacing around buttons */
-        /* Remove grey color if needed */
+        display: inline-block; 
+        margin: 5px; 
+        
     }
 
     .button-accept {
         background-color: green;
-        color: white; /* Set text color explicitly */
+        color: white; 
         padding: 5px 10px;
         border: none;
         border-radius: 5px;
@@ -37,18 +37,17 @@
 
     .button-delete {
         background-color: red;
-        color: white; /* Set text color explicitly */
+        color: white; 
         padding: 5px 10px;
         border: none;
         border-radius: 5px;
         cursor: pointer;
     }
 
-    /* Optional media query for wider screens (adjust as needed) */
     @media (min-width: 768px) {
         .grid-item {
-            align-items: flex-start; /* Align buttons at top in wider screens */
-            justify-content: space-between; /* Spread buttons horizontally */
+            align-items: flex-start; 
+            justify-content: space-between;
         }
     }
 </style>

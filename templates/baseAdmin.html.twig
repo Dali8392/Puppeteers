@@ -5,9 +5,10 @@
     <meta http-equiv="x-ua-compatible" content="ie=edge" />
      <title>{% block title %}HawesBiya - Admin Dashboard{% endblock %}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+   
     {% block stylesheets %}
             <link
-      rel="shortcut icon"
+      rel=as"shortcut icon"
       type="image/png"
       href={{ asset("assets/images/icon/favicon.ico") }}
     />
@@ -26,7 +27,7 @@
     <!-- amchart css -->
     <link
       rel="stylesheet"
-      href="https://www.amcharts.com/lib/3/plugins/export/export.css"
+      href={{ asset("https://www.amcharts.com/lib/3/plugins/export/export.css") }}
       type="text/css"
       media="all"
     />
@@ -35,7 +36,7 @@
     <link rel="stylesheet" href={{ asset("assets/css/default-css.css") }} />
     <link rel="stylesheet" href={{ asset("assets/css/styles.css") }} />
     <link rel="stylesheet" href={{ asset("assets/css/responsive.css") }} />
-    <script src="assets/js/vendor/modernizr-2.8.3.min.js"></script>
+    <script src={{ asset("assets/js/vendor/modernizr-2.8.3.min.js") }}></script>
     <!-- modernizr css -->
      {% endblock %}
     
@@ -55,7 +56,7 @@
       <div class="sidebar-menu">
         <div class="sidebar-header">
           <div class="logo">
-            <a href="#"
+            {# <a href={{ path("app_homeAdmine") }} #}
               ><img src={{ asset("assets/images/icon/logo.png") }} alt="logo"
             /></a>
           </div>
@@ -65,7 +66,7 @@
             <nav>
               <ul class="metismenu" id="menu">
                 <li class="active">
-                  <a href="#" aria-expanded="true"
+                  {# <a href={{ path("app_homeAdmine") }} aria-expanded="true" #}
                     ><i class="ti-dashboard"></i><span>dashboard</span></a
                   >
                 </li>
@@ -256,7 +257,7 @@
                       <a href="#" class="notify-item">
                         <div class="notify-thumb">
                           <img
-                            src="assets/images/author/author-img1.jpg"
+                            src={{ asset("assets/images/author/author-img1.jpg") }}
                             alt="image"
                           />
                         </div>
@@ -269,7 +270,7 @@
                       <a href="#" class="notify-item">
                         <div class="notify-thumb">
                           <img
-                            src="assets/images/author/author-img2.jpg"
+                            src={{ asset("assets/images/author/author-img2.jpg") }}
                             alt="image"
                           />
                         </div>
@@ -284,7 +285,7 @@
                       <a href="#" class="notify-item">
                         <div class="notify-thumb">
                           <img
-                            src="assets/images/author/author-img3.jpg"
+                            src={{ asset("assets/images/author/author-img3.jpg") }}
                             alt="image"
                           />
                         </div>
@@ -297,7 +298,7 @@
                       <a href="#" class="notify-item">
                         <div class="notify-thumb">
                           <img
-                            src="assets/images/author/author-img4.jpg"
+                            src={{ asset("assets/images/author/author-img4.jpg") }}
                             alt="image"
                           />
                         </div>
@@ -312,7 +313,7 @@
                       <a href="#" class="notify-item">
                         <div class="notify-thumb">
                           <img
-                            src="assets/images/author/author-img2.jpg"
+                            src={{ asset("assets/images/author/author-img2.jpg") }}
                             alt="image"
                           />
                         </div>
@@ -325,7 +326,7 @@
                       <a href="#" class="notify-item">
                         <div class="notify-thumb">
                           <img
-                            src="assets/images/author/author-img1.jpg"
+                            src={{ asset("assets/images/author/author-img1.jpg") }}
                             alt="image"
                           />
                         </div>
@@ -338,7 +339,7 @@
                       <a href="#" class="notify-item">
                         <div class="notify-thumb">
                           <img
-                            src="assets/images/author/author-img3.jpg"
+                            src={{ asset("assets/images/author/author-img3.jpg") }}
                             alt="image"
                           />
                         </div>
@@ -375,16 +376,16 @@
               <div class="user-profile pull-right">
                 <img
                   class="avatar user-thumb"
-                  src="assets/images/author/avatar.png"
+                  src={{ asset("assets/images/author/avatar.png") }}
                   alt="avatar"
                 />
                 <h4 class="user-name dropdown-toggle" data-toggle="dropdown">
-                  Kumkum Rai <i class="fa fa-angle-down"></i>
+                  {{ app.session.get('name') }} {{ app.session.get('lastName') }} <i class="fa fa-angle-down"></i>
                 </h4>
                 <div class="dropdown-menu">
                   <a class="dropdown-item" href="#">Message</a>
                   <a class="dropdown-item" href="#">Settings</a>
-                  <a class="dropdown-item" href="#">Log Out</a>
+                  {# <a class="dropdown-item" href={{ path("logout_user") }}>Log Out</a> #}
                 </div>
               </div>
             </div>
@@ -409,7 +410,7 @@
                 <a
                   type="button"
                   class="btn btn-primary btn-flat btn-lg mt-3"
-                  href="#"
+                  {# href={{ path("fetch_UserAdmin") }} #}
                   >Click</a
                 >
               </div>
@@ -755,12 +756,12 @@
     <!-- jquery latest version -->
     <script src={{ asset("assets/js/vendor/jquery-2.2.4.min.js") }}></script>
     <!-- bootstrap 4 js -->
-    <script src="assets/js/popper.min.js"></script>
-    <script src="assets/js/bootstrap.min.js"></script>
-    <script src="assets/js/owl.carousel.min.js"></script>
-    <script src="assets/js/metisMenu.min.js"></script>
-    <script src="assets/js/jquery.slimscroll.min.js"></script>
-    <script src="assets/js/jquery.slicknav.min.js"></script>
+    <script src={{ asset("assets/js/popper.min.js") }}></script>
+    <script src={{ asset("assets/js/bootstrap.min.js") }}></script>
+    <script src={{ asset("assets/js/owl.carousel.min.js") }}></script>
+    <script src={{ asset("assets/js/metisMenu.min.js") }}></script>
+    <script src={{ asset("assets/js/jquery.slimscroll.min.js") }}></script>
+    <script src={{ asset("assets/js/jquery.slicknav.min.js") }}></script>
 
     <!-- start chart js -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.min.js"></script>
@@ -779,9 +780,11 @@
     <script src={{ asset("assets/js/line-chart.js") }}></script>
     <!-- all pie chart -->
     <script src={{ asset("assets/js/pie-chart.js") }}></script>
+        <script src={{ asset("assets/js/bar-chart.js") }}></script>
     <!-- others plugins -->
     <script src={{ asset("assets/js/plugins.js") }}></script>
     <script src={{ asset("assets/js/scripts.js") }}></script>
     {% endblock %}
+ 
   </body>
 </html>

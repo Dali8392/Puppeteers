@@ -35,7 +35,7 @@
       href={{ asset("plugins/OwlCarousel2-2.2.1/animate.css") }}
     />
     <link rel="stylesheet" type="text/css" href={{ asset("styles/main_styles.css") }} />
-    <link rel="stylesheet" type="text/css" href={{ asset("styles/responsive.css" ) }}/>
+<link rel="stylesheet" type="text/css" href="{{ asset('styles/responsive.css') }}" />
      {% endblock %}
      
   </head>
@@ -1045,7 +1045,7 @@
                     <li class="contact_info_item d-flex flex-row">
                       <div>
                         <div class="contact_info_icon">
-                          <img src="images/placeholder.svg" alt="" />
+                          <img src="{{ asset('images/placeholder.svg') }}" alt="" />
                         </div>
                       </div>
                       <div class="contact_info_text">
@@ -1055,7 +1055,7 @@
                     <li class="contact_info_item d-flex flex-row">
                       <div>
                         <div class="contact_info_icon">
-                          <img src="images/phone-call.svg" alt="" />
+                          <img src="{{ asset('images/phone-call.svg') }}" alt="" />
                         </div>
                       </div>
                       <div class="contact_info_text">71 969 969</div>
@@ -1063,7 +1063,7 @@
                     <li class="contact_info_item d-flex flex-row">
                       <div>
                         <div class="contact_info_icon">
-                          <img src="images/message.svg" alt="" />
+                          <img src="{{ asset('images/message.svg') }}" alt="" />
                         </div>
                       </div>
                       <div class="contact_info_text">
@@ -1077,7 +1077,7 @@
                     <li class="contact_info_item d-flex flex-row">
                       <div>
                         <div class="contact_info_icon">
-                          <img src="images/planet-earth.svg" alt="" />
+                          <img src="{{ asset('images/planet-earth.svg') }}" alt="" />
                         </div>
                       </div>
                       <div class="contact_info_text">

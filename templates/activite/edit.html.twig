@@ -1,4 +1,4 @@
-{% extends 'base.html.twig' %}
+{% extends 'baseAdmin.html.twig' %}
 
 {% block title %}Edit Activite{% endblock %}
 
@@ -10,7 +10,7 @@
 
                                {{ form_end(form) }}
     
-    <a href="{{ path('app_activite_index') }}">back to list</a>
+ <a href="{{ path('app_activite_index') }}" class="btn btn-rounded btn-danger mb-3">Back to List</a>    </div>
 
     </div>
 {% endblock %}

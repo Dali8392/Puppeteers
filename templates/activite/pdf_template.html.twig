@@ -1,0 +1,70 @@
+{% extends 'base.html.twig' %}
+
+
+{% block body %}
+<div class="container" style="margin-top: 200px;">
+    <div id="pdfContent">
+        <img src="/images/logo.png" style="width: 100px; height: auto;" alt="Logo">
+        <h1>HawesBiya.tn</h1>
+        <ul>
+            <li><strong>Ville:</strong> {{ activite.ville }}</li>
+            <li><strong>Prix:</strong> {{ activite.prix }}</li>
+            <li><strong>Details:</strong> {{ activite.details }}</li>
+            <li><strong>Heure:</strong> {{ activite.heure }}</li>
+        </ul>
+        
+        <!-- Weather information -->
+        <h2>Weather Forecast for {{ activite.ville }}</h2>
+        {% if weatherData is defined and weatherData.forecast.forecastday is defined %}
+            <div class="weather-forecast">
+                {% for forecastDay in weatherData.forecast.forecastday %}
+                    {% if forecastDay.day is defined %}
+                        <div class="weather-day">
+                            <p class="date">{{ forecastDay.date }}</p>
+                            <p class="weather-condition">{{ forecastDay.day.condition.text }}</p>
+                            <img src="{{ forecastDay.day.condition.icon }}" alt="{{ forecastDay.day.condition.text }}" class="weather-icon">
+                            <p class="temperature">Max: {{ forecastDay.day.maxtemp_c }}°C, Min: {{ forecastDay.day.mintemp_c }}°C</p>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        {% else %}
+            <p>No weather information available</p>
+        {% endif %}
+    </div>
+
+    <button id="generatePdfBtn">Generate PDF</button>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+
+<script>
+  window.jsPDF = window.jspdf.jsPDF;
+
+  const image = document.getElementById('pdfContent').querySelector('img'); // Get the image element
+
+  image.onload = function() {
+    // Image has loaded, proceed with PDF generation
+    const generatePdf = function() {
+      const pdf = new jsPDF();
+      pdf.html(document.getElementById('pdfContent'), {
+        callback: function(pdf) {
+          setTimeout(function() {
+            pdf.save('hawesbiya_pdf.pdf');
+          }, 1000);
+        }
+      });
+    };
+
+    if (image.complete) { // Check if image is fully loaded before generating PDF
+      generatePdf();
+    } else {
+      // Handle potential errors or delays in image loading (optional)
+      console.warn("Image not fully loaded yet, waiting...");
+      image.addEventListener('load', generatePdf); // Add event listener for delayed loading
+    }
+  };
+
+  // Additional code (e.g., button click event listener) remains the same
+</script>
+{% endblock %}

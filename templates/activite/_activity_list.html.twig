@@ -1,0 +1,14 @@
+{% for activite in activites %}
+  {% if activite.etat == 1 %}
+    <div class="grid-item">
+      <img src="{{ asset('/images/footer_blog_3.jpg') }}" alt="Activity Image">
+      <a href="{{ path('app_activite_show', {'id': activite.id}) }}">
+        <h3>{{ activite.ville }}</h3>
+        <p>Prix: {{ activite.prix }}</p>
+        <p>Heure: {{ activite.heure }}</p>
+      </a>
+      <a href="{{ path('app_activite_edit', {'id': activite.id}) }}" class="button-update">Modifier</a>
+      <a href="{{ path('app_activite_delete', {'id': activite.id}) }}" class="button-delete">Supprimer</a>
+    </div>
+  {% endif %}
+{% endfor %}
