@@ -15,20 +15,18 @@
                         </div>
                         <div class="card-body" style="margin-top: 20px;">
                             <dl>
-                                <dt>Date de début :</dt>
+                                <dt>Date  :</dt>
                                 <dd>{{ reservation.date|date('d/m/Y') }}</dd>
-                                <dt>Date de fin :</dt>
-                                <dd>{{ reservation.duree|date('d/m/Y') }}</dd>
-                                <dt>Nombre de passagers :</dt>
+                                <dt>Passenger Count:</dt>
                                 <dd>{{ reservation.max }}</dd>
-                                {# Ajoutez d'autres détails de réservation au besoin #}
+                                {# Add other reservation details as needed #}
                             </dl>
                         </div>
                         <div class="card-footer" style="margin-top: 20px; background-color: rgba(0, 0, 0, 0.5);">
                             <div class="btn-group d-flex justify-content-center" role="group" aria-label="Actions">
-                                <a href="{{ path('modifier_reservation_hebergement', {'id': reservation.id}) }}" class="btn btn-primary mr-2" style="background-color: purple; color: white;">Edit</a>
-                                <a href="{{ path('delete_reservation_hebergement', {'id': reservation.id}) }}" class="btn btn-danger mr-2" onclick="return confirm('Are you sure you want to delete this reservation?');">Delete</a>
-                                <a href="{{ path('app_stripe', {'id': reservation.id}) }}" class="btn btn-secondary" style="background-color: #8a2be2; color: white;">Payment</a>
+                                <a href="{{ path('modifier_reservation_voyage', {'id': reservation.id}) }}" class="btn btn-primary mr-2" style="background-color: purple; color: white;">Edit</a>
+                                <a href="{{ path('delete_reservation_voyage', {'id': reservation.id}) }}" class="btn btn-danger mr-2" onclick="return confirm('Are you sure you want to delete this reservation?');">Delete</a>
+                                 <a href="{{ path('app_stripe1', {'id': reservation.id}) }}" class="btn btn-secondary" style="background-color: #8a2be2; color: white;">Payment</a>
                             </div>
                         </div>
                     </div>
@@ -38,8 +36,3 @@
     </div>
 </div>
 {% endblock %}
-
-
-
-
-

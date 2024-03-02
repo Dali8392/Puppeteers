@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Booking Details</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+
+        #content {
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+        }
+
+        #title {
+            background-color: rgba(138, 43, 226, 0.1);
+            color: #333;
+            padding: 20px;
+            text-align: center;
+            margin-top: 0;
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        #print-content {
+            margin-bottom: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+            color: #333; 
+        }
+
+        #contact {
+            background-color: rgba(138, 43, 226, 0.1); 
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+            border-bottom-left-radius: 10px;
+            border-bottom-right-radius: 10px;
+        }
+
+        .contact-info {
+            margin-bottom: 10px;
+        }
+
+        .contact-info p {
+            margin: 5px 0;
+            color: #333; 
+        }
+
+        .message {
+            margin-top: 20px;
+            font-style: italic;
+            font-size: 14px;
+            line-height: 1.5;
+            color: #333; 
+            text-align: center;
+        }
+
+        .thank-you {
+            margin-top: 20px;
+            text-align: center;
+            font-weight: bold;
+            color: #333; 
+        }
+
+        .title-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .title-content h1 {
+            margin: 0;
+            flex-grow: 1;
+        }
+
+        .title-content p {
+            margin: 0;
+        }
+
+        /* Footer Styles */
+        footer {
+            text-align: center;
+            margin-top: 20px;
+            color: #333; 
+        }
+
+        #google_translate_element {
+            display: inline-block;
+            color: #333; 
+        }
+    </style>
+</head>
+<body>
+
+<div id="content">
+    <div id="title">
+        <div class="title-content">
+            <h1>HawesBiya Travel Agency</h1>
+            <p>{{ paiement.date ? paiement.date|date('Y-m-d') : '' }}</p>
+        </div>
+        <p style="font-size: 16px;">Thank you for choosing our travel agency for your upcoming trip.</p>
+    </div>
+    <br>
+    <br>
+    <br>
+    <p class="message">These are the details of your payment. Please keep it for any future reference.</p>
+    <br>
+    <br>
+
+    <div id="print-content">
+        <table>
+            <tr>
+                <th>Invoice Number</th>
+                <td>{{ paiement.id }}</td>
+            </tr>
+            <tr>
+                <th>Amount</th>
+                <td>{{ paiement.montant }}</td>
+            </tr>
+            <tr>
+                <th>Date</th>
+                <td>{{ paiement.date ? paiement.date|date('Y-m-d') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Payment Method</th>
+                <td>{{ paiement.methode }}</td>
+            </tr>
+        </table>
+    </div>
+    <br>
+    <br>
+    <p class="message">If you have any questions or need further assistance, feel free to contact us. We're here to help make your trip as enjoyable as possible.</p>
+    <div id="contact">
+        <h2>Contact</h2>
+        <div class="contact-info">
+            <p>Cite el ghazela ariana Tunisie 2083</p>
+            <p>71 969 969</p>
+            <p>hawesBiya@gmail.com</p>
+            <p>www.hawesBiya.com</p>
+        </div>
+    </div>
+    <p class="thank-you">Thank you again for your trust and happy travels!</p>
+</div>
+
+<!-- Footer -->
+<footer>
+    <div id="google_translate_element"></div>
+</footer>
+<!-- End Footer -->
+
+<script type="text/javascript">
+    function googleTranslateElementInit() {
+        new google.translate.TranslateElement({pageLanguage: 'fr', includedLanguages: 'en,es,ar', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');
+    }
+</script>
+<script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
+</body>
+</html>

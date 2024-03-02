@@ -4,11 +4,8 @@ namespace App\Entity;
 
 use App\Repository\VoyageRepository;
 use DateTime;
-<<<<<<< HEAD
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-=======
->>>>>>> 42a7833db9154d776e467dfb64612089dc7ce596
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: VoyageRepository::class)]
@@ -49,7 +46,6 @@ class Voyage
     #[ORM\ManyToOne(inversedBy: 'voyages')]
     private ?Hebergement $hebergement = null;
 
-<<<<<<< HEAD
     #[ORM\OneToMany(targetEntity: ReservationVoyage::class, mappedBy: 'voyage')]
     private Collection $reservationvoyage;
 
@@ -58,8 +54,6 @@ class Voyage
         $this->reservationvoyage = new ArrayCollection();
     }
 
-=======
->>>>>>> 42a7833db9154d776e467dfb64612089dc7ce596
     public function getId(): ?int
     {
         return $this->id;
@@ -184,7 +178,6 @@ class Voyage
 
         return $this;
     }
-<<<<<<< HEAD
 
     /**
      * @return Collection<int, ReservationVoyage>
@@ -220,6 +213,4 @@ class Voyage
     {
         return $this->id; // Remplacez "nom" par le nom de la propriété que vous souhaitez utiliser comme chaîne de caractères représentant l'objet Hebergement
     }
-=======
->>>>>>> 42a7833db9154d776e467dfb64612089dc7ce596
 }

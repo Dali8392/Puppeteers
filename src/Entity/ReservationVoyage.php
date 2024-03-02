@@ -3,7 +3,9 @@
 namespace App\Entity;
 
 use App\Repository\ReservationVoyageRepository;
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: ReservationVoyageRepository::class)]
 class ReservationVoyage
@@ -12,25 +14,45 @@ class ReservationVoyage
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
+
     #[ORM\Column]
+    #[Assert\NotBlank(message: "Date cannot be blank.")]
+    #[Assert\Type(type: "\DateTime", message: "Departure Date must be a valid date.")]
+    private ?DateTime $date = null;
+
+    #[ORM\Column]
+    #[Assert\NotBlank(message: "Max cannot be blank.")]
+    #[Assert\Positive(message: "Max must be a positive number .")]
     private ?int $max = null;
 
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
     private ?Paiement $paiement = null;
 
     #[ORM\Column(length: 10)]
+    #[Assert\NotBlank(message: "User ID cannot be blank.")]
+    #[Assert\Length(max: 10, maxMessage: "User ID cannot be longer than 6 characters.")]
     private ?string $idUser = null;
-<<<<<<< HEAD
 
     #[ORM\ManyToOne(inversedBy: 'reservationvoyage')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Voyage $voyage = null;
-=======
->>>>>>> 42a7833db9154d776e467dfb64612089dc7ce596
     public function getId(): ?int
     {
         return $this->id;
     }
+
+    public function getDate(): ?DateTime
+    {
+        return $this->date;
+    }
+
+    public function setDate(DateTime $date): static
+    {
+        $this->date = $date;
+
+        return $this;
+    }
+
     public function getMax(): ?int
     {
         return $this->max;
@@ -66,7 +88,6 @@ class ReservationVoyage
 
         return $this;
     }
-<<<<<<< HEAD
 
     public function getVoyage(): ?Voyage
     {
@@ -80,7 +101,7 @@ class ReservationVoyage
         return $this;
     }
 
+     
+
    
-=======
->>>>>>> 42a7833db9154d776e467dfb64612089dc7ce596
 }

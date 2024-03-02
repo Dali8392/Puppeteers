@@ -7,20 +7,17 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-<<<<<<< HEAD
 use Symfony\Component\Validator\Constraints\PositiveOrZero;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Validator\Constraints\Choice;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-=======
->>>>>>> 42a7833db9154d776e467dfb64612089dc7ce596
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 class PaiementFormeType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-<<<<<<< HEAD
         ->add('montant', null, [
             'constraints' => [
                 new PositiveOrZero([
@@ -33,7 +30,13 @@ class PaiementFormeType extends AbstractType
             ],
             ])
             ->add('date', DateTimeType::class, [
-                'widget' => 'single_text', // Afficher uniquement le champ de texte simple (sans widget de sélection)
+                'widget' => 'single_text',
+             // Afficher uniquement le champ de texte simple (sans widget de sélection)
+             'constraints' => [
+                new NotBlank(['message' => 'date is required.']),
+            ],
+            'empty_data' => null,
+        
             ])
             ->add('methode', ChoiceType::class, [
                 'choices' => [
@@ -44,12 +47,6 @@ class PaiementFormeType extends AbstractType
                 'required' => true,
             ]);
           
-=======
-            ->add('montant')
-            ->add('date')
-            ->add('methode')
-            ->add('submit', SubmitType::class)
->>>>>>> 42a7833db9154d776e467dfb64612089dc7ce596
         ;
     }
 

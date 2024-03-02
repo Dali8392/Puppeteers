@@ -5,13 +5,33 @@
 {% block body %}
     <!-- Header -->
     <header class="w3-display-container w3-content" style="max-width:1500px; position: relative;">
-        <!-- You can replace the image source below with your own image for the journey -->
         <img src="{{ asset('images/home_slider.jpg') }}" alt="journey" width="1500" height="800"> 
         <div class="w3-display-middle w3-padding" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: rgba(0, 0, 0, 0.8); padding: 20px; border-radius: 10px;">
             <div class="w3-container">
                 <h2 class="w3-center" style="color: white;">Book your journey now!</h2>
                 {{ form_start(form,{'attr':{'novalidate':'novalidate'}}) }}
+                 <div class="form-group row">
+                    <label class="col-sm-4 col-form-label" style="color: white;">Trip</label>
+                    <div class="col-sm-8">
+                        {{ form_widget(form.voyage, {'attr': {'class': 'form-control'}}) }}
+                        {{ form_errors(form.voyage) }}
+                    </div>
+                </div>
                 <div class="form-group row">
+                    <label class="col-sm-4 col-form-label" style="color: white;">Date</label>
+                    <div class="col-sm-8">
+                        {{ form_widget(form.date, {'attr': {'class': 'form-control'}}) }}
+                        {{ form_errors(form.date) }}
+                    </div>
+                </div>
+                 <div class="form-group row">
+                    <label class="col-sm-4 col-form-label" style="color: white;">User</label>
+                    <div class="col-sm-8">
+                        {{ form_widget(form.idUser, {'attr': {'class': 'form-control'}}) }}
+                        {{ form_errors(form.idUser) }}
+                    </div>
+                </div>
+                  <div class="form-group row">
                     <label class="col-sm-4 col-form-label" style="color: white;">Number of passengers</label>
                     <div class="col-sm-8">
                         {{ form_widget(form.max, {'attr': {'class': 'form-control'}}) }}
