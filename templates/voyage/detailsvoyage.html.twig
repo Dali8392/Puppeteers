@@ -1,0 +1,183 @@
+{% extends 'base.html.twig' %}
+
+
+{% block stylesheets %}
+            {{ encore_entry_link_tags('app') }}
+       
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href={{ asset("styles/bootstrap4/bootstrap.min.css") }}
+    />
+    <link
+      href={{ asset("plugins/font-awesome-4.7.0/css/font-awesome.min.css") }}
+      rel="stylesheet"
+      type="text/css"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href={{ asset("plugins/OwlCarousel2-2.2.1/owl.carousel.css") }}
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href={{ asset("plugins/OwlCarousel2-2.2.1/owl.theme.default.css") }}
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href={{ asset("plugins/OwlCarousel2-2.2.1/animate.css") }}
+    />
+    <link rel="stylesheet" type="text/css" href={{ asset("styles/main_styles.css") }} />
+    <link rel="stylesheet" type="text/css" href={{ asset("styles/responsive.css" ) }}/>
+    <link rel="stylesheet" href="/styles/detailsvoyage.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.css" integrity="sha512-/zs32ZEJh+/EO2N1b0PEdoA10JkdC3zJ8L5FTiQu82LR9S/rOQNfQN7U59U9BC12swNeRAz3HSzIL2vpp4fv3w==" crossorigin="anonymous">
+    
+     {% endblock %}
+
+
+
+{% block body %}
+    <div id="main-container">
+        <div id="image-container" style="background-image: url('/assets/images/destinations/{{t.destination}}/voyage.jpeg')" >
+        <div id="voyage-title">   <h1>  {{t.depart | upper}} </h1>   <img id="arrow" src="{{asset("images/arrow.png")}}"/>  <h1>  {{t.destination | upper}} </h1>   </div>
+        </div>
+        <div id="voyage-infos">
+        <div id="voyage-description">
+            <h2>Description</h2>
+            <span id="description"> {{t.description}}  </span>
+           </div>
+        <div id="voyage-details">
+         <h2> Travel Details </h2>
+        <div id="voyage-details-upper">
+        <div class="voyage-detail">
+            <h4>• Departure</h4>
+            <span> {{t.depart}}  </span>
+            </div>
+            <div class="voyage-detail">
+            <h4>• Destination</h4>
+            <span> {{t.destination}}  </span>
+            </div>
+            <div class="voyage-detail">
+            <h4>• Departure date</h4>          
+            <span> {{t.DateDep|date('Y-m-d')}} </span>
+            </div>
+            </div>
+            <div id="voyage-details-middle">
+            <div class="voyage-detail">
+            <h4>• Arrival Date</h4>
+            <span> {{t.DateArr|date('Y-m-d')}}  </span>
+            </div>
+            <div class="voyage-detail">
+             <h4>• Available Seats</h4>
+            <span> {{t.NombrePlaceDispo}}  </span>
+            </div>
+            <div class="voyage-detail">
+            <h4>• Transportation</h4>
+            <span> {{t.moyenTransport}}  </span>
+            </div>
+            </div>
+             <div id="voyage-details-lower">
+            <div class="voyage-detail">
+            <h4>• Departure Time</h4>
+            <span> {{t.HeureDep|date('H:i')}}  </span>
+            </div>
+            <div class="voyage-detail">
+             <h4>• Arrival Time</h4>
+            <span> {{t.HeureArr|date('H:i')}}  </span>
+            </div>
+            </div>
+        </div>
+        </div>
+
+
+<div id="chart-container">
+<h1> Reservations during the last week </h1>
+
+<div id="chart" style="height: 750px;width:1500px;margin-left:170px">
+  <canvas id="myChart"></canvas>
+ </div> 
+</div>
+
+
+<div id="button-container">
+
+<button id="book-btn"> Book Now ! </button>
+
+</div>
+    </div>
+
+ 
+
+      
+{% endblock %}
+
+{% block javascripts %}
+            {{ encore_entry_script_tags('app') }}
+        
+    <!-- jquery latest version -->
+    <script src="/assets/js/vendor/jquery-2.2.4.min.js"></script>
+    <!-- bootstrap 4 js -->
+    <script src="/assets/js/popper.min.js"></script>
+    <script src="/assets/js/bootstrap.min.js"></script>
+    <script src="/assets/js/owl.carousel.min.js"></script>
+    <script src="/assets/js/metisMenu.min.js"></script>
+    <script src="/assets/js/jquery.slimscroll.min.js"></script>
+    <script src="/assets/js/jquery.slicknav.min.js"></script>
+
+    <!-- start chart js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js" integrity="sha512-s+xg36jbIujB2S2VKfpGmlC3T5V2TF3lY48DX7u2r9XzGzgPsa6wTpOQA7J9iffvdeBN0q9tKzRxVxw1JviZPg==" crossorigin="anonymous"></script>
+      <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+  const ctx = document.getElementById('myChart');
+
+  new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels:{{labels|raw}},
+      datasets: [{
+        label: 'Number of reservations',
+        data: {{data|raw}},
+        borderWidth: 1,
+        backgroundColor : '#8d4fff',
+      }]
+    },
+    options: {
+      scales: {
+        y: {
+          beginAtZero: true,
+          stepSize: 1 
+        }
+      }
+    }
+  });
+</script>
+
+
+
+
+
+
+     
+    <!-- start highcharts js -->
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <!-- start zingchart js -->
+    <script src="https://cdn.zingchart.com/zingchart.min.js"></script>
+    <script>
+      zingchart.MODULESDIR = "https://cdn.zingchart.com/modules/";
+      ZC.LICENSE = [
+        "569d52cefae586f634c54f86dc99e6a9",
+        "ee6b7db5b51705a13dc2339db3edaf6d",
+      ];
+    </script>
+    <!-- all line chart activation -->
+    <script src={{ asset("assets/js/line-chart.js") }}></script>
+    <!-- all pie chart -->
+    <script src={{ asset("assets/js/pie-chart.js") }}></script>
+    <!-- others plugins -->
+    <script src={{ asset("assets/js/plugins.js") }}></script>
+    <script src={{ asset("assets/js/scripts.js") }}></script>
+     <script src={{ asset("js/autocomplete.js") }}></script>
+     
+    {% endblock %}

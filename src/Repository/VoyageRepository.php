@@ -45,4 +45,104 @@ class VoyageRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
+
+public function SearchVoyageByDepDes($dep,$des) {
+    $em=$this->getEntityManager ();
+    if($dep === null || $dep==="" ){
+        if (strpos(strtolower($des),",") !== false) {
+            $sql= "select v from App\Entity\Voyage v where v.destination LIKE :des";
+            $req=$em->createQuery($sql);
+             $req->setParameter("des", trim(explode(',',$des)[0])."%");}
+             else{
+                $sql="select v from App\Entity\Voyage v where v.destination LIKE :des ";
+                $req=$em->createQuery($sql);
+                $req->setParameter("des", "%".$des ."%");}
+    }
+    else if($des === null || $des==="" ){
+        if (strpos(strtolower($dep),",") !== false) {
+            $sql= "select v from App\Entity\Voyage v where v.depart LIKE :dep";
+            $req=$em->createQuery($sql);
+             $req->setParameter("dep", trim(explode(',',$dep)[0])."%");}
+         else{
+            $sql= "select v from App\Entity\Voyage v where v.depart LIKE :dep";
+            $req=$em->createQuery($sql);
+            $req->setParameter("dep", "%".$dep . "%");}
+        
+    }
+    else {
+        $sql= "select v from App\Entity\Voyage v where v.depart LIKE :dep AND v.destination LIKE :des";
+        $req=$em->createQuery($sql);
+        if (strpos(strtolower($des),",") !== false) {
+            $req->setParameter("des", trim(explode(',',$des)[0])."%");}
+            else { $req->setParameter("des", "%".$des ."%");} 
+        
+        if (strpos(strtolower($dep),",") !== false) {
+            $req->setParameter("dep", trim(explode(',',$dep)[0])."%");}
+            else { $req->setParameter("dep", "%".$dep ."%");} 
+       
+    }
+    $result=$req->getResult();
+    return $result;
+
+}
+
+
+public function SearchVoyageByTransport($transport){
+    return $this->createQueryBuilder('v')
+            ->andWhere('v.moyenTransport = :transport')
+            ->setParameter('transport', $transport)
+            ->getQuery()
+            ->getResult();
+}
+
+
+public function FilterVoyages($dep,$des,$datedep,$budget) {
+    $em = $this->getEntityManager();
+    $qb = $em->createQueryBuilder();
+
+    $qb->select('v')
+        ->from('App\Entity\Voyage', 'v');
+
+    if (!empty($dep)) {
+        if (strpos(strtolower($dep),",") !== false) {
+        $qb->andWhere('v.depart LIKE :dep')
+            ->setParameter('dep', trim(explode(',',$dep)[0]) . '%');
+        }
+        else{
+            $qb->andWhere('v.depart LIKE :dep')
+            ->setParameter('dep', "%".$dep . '%');
+        }
+    }
+
+    if (!empty($des)) {
+        if (strpos(strtolower($des),",") !== false) {
+            $qb->andWhere('v.destination LIKE :des')
+                ->setParameter('des', trim(explode(',',$des)[0]) . '%');
+            }
+            else{
+                $qb->andWhere('v.destination LIKE :des')
+                ->setParameter('des', '%' . $des . '%');
+            }
+      
+    }
+
+    if (!empty($datedep)) {
+        $qb->andWhere('v.DateDep = :datedep')
+            ->setParameter('datedep', $datedep);
+    }
+
+    if (!empty($budget) && $budget > 0) {
+        $qb->andWhere('v.prix <= :budget')
+            ->setParameter('budget', $budget);
+    }
+
+    $query = $qb->getQuery();
+    $result = $query->getResult();
+
+    return $result;
+
+
+
+}
+
 }

@@ -1,0 +1,192 @@
+{% extends 'baseAdmin.html.twig' %}
+{% block headertitle %} Add travel {% endblock %}
+{% block namespan %} Travel Management {% endblock %}
+
+{% block stylesheets %}
+            <link
+      rel="shortcut icon"
+      type="image/png"
+      href={{ asset("assets/images/icon/favicon.ico") }}
+    />
+       
+    <link
+      rel="shortcut icon"
+      type="image/png"
+      href={{ asset("assets/images/icon/favicon.ico") }}
+    />
+    <link rel="stylesheet" href={{ asset("assets/css/bootstrap.min.css") }} />
+    <link rel="stylesheet" href={{ asset("assets/css/font-awesome.min.css") }} />
+    <link rel="stylesheet" href={{ asset("assets/css/themify-icons.css") }} />
+    <link rel="stylesheet" href={{ asset("assets/css/metisMenu.css") }} />
+    <link rel="stylesheet" href={{ asset("assets/css/owl.carousel.min.css") }} />
+    <link rel="stylesheet" href={{ asset("assets/css/slicknav.min.css") }} />
+    <!-- amchart css -->
+    <link
+      rel="stylesheet"
+      href="https://www.amcharts.com/lib/3/plugins/export/export.css"
+      type="text/css"
+      media="all"
+    />
+    <!-- others css -->
+    <link rel="stylesheet" href={{ asset("assets/css/typography.css") }} />
+    <link rel="stylesheet" href={{ asset("assets/css/default-css.css") }} />
+    <link rel="stylesheet" href={{ asset("assets/css/styles.css") }} />
+    <link rel="stylesheet" href={{ asset("assets/css/responsive.css") }} />
+    <script src="assets/js/vendor/modernizr-2.8.3.min.js"></script>
+    <!-- modernizr css -->
+
+    <link rel="stylesheet" href={{ asset("styles/addvoyage.css") }} />
+     {% endblock %}
+
+
+
+
+
+{% block body %}
+<div id="main-container" style="margin-bottom : 45px; max-height : 134vh ">
+<div id="form-container" >
+<div class="text-center">
+<h3 style="font-weight : bold ;  margin-bottom : 35px"> Add Travel </h3>
+</div>
+
+<div class="row justify-content-center">
+
+{{ form_start(f, {'attr': {'novalidate': 'novalidate'}}) }}
+<div id="sections-container" style=" display: flex;
+    flex-direction: row;">
+		<div class="left-section" style=" display: flex;
+    flex-direction: column;">
+
+ <div class="form-group">
+{{ form_label(f.depart, "Departure", {'label_attr': {'class': 'form-label'}}) }}
+ {{ form_widget(f.depart, {'attr': {'class': 'form-control'}}) }}
+ {% if form_errors(f.depart) is not empty %}
+ <div class="alert alert-danger">
+ {{ form_errors(f.depart) }}
+ </div>
+ {% endif %}
+ </div>
+
+<div class="form-group">
+        {{ form_label(f.destination, "Destination", {'label_attr': {'class': 'form-label'}}) }}
+        {{ form_widget(f.destination, {'attr': {'class': 'form-control'}}) }}
+        {% if form_errors(f.destination) is not empty %}
+            <div class="alert alert-danger">
+                {{ form_errors(f.destination) }}
+            </div>
+        {% endif %}
+    </div>
+
+
+
+     <div class="form-group">
+                        {{ form_label(f.DateDep, 'Departure Date', {'label_attr': {'class': 'form-label'}}) }}
+                        {{ form_widget(f.DateDep, {'attr': {'class': 'form-control'}}) }}
+                        {% if form_errors(f.DateDep) is not empty %}
+                            <div class="alert alert-danger">
+                                {{ form_errors(f.DateDep) }}
+                            </div>
+                        {% endif %}
+                    </div>
+
+    <div class="form-group">
+                        {{ form_label(f.DateArr, 'Arrival Date', {'label_attr': {'class': 'form-label'}}) }}
+                        {{ form_widget(f.DateArr, {'attr': {'class': 'form-control'}}) }}
+                        {% if form_errors(f.DateArr) is not empty %}
+                            <div class="alert alert-danger">
+                                {{ form_errors(f.DateArr) }}
+                            </div>
+                        {% endif %}
+                    </div>
+
+
+                    <div class="form-group">
+                        {{ form_label(f.HeureDep, 'Departure Time', {'label_attr': {'class': 'form-label'}}) }}
+                        {{ form_widget(f.HeureDep, {'attr': {'class': 'form-control'}}) }}
+                        {% if form_errors(f.HeureDep) is not empty %}
+                            <div class="alert alert-danger">
+                                {{ form_errors(f.HeureDep) }}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="form-group">
+                        {{ form_label(f.HeureArr, 'Arrival Time', {'label_attr': {'class': 'form-label'}}) }}
+                        {{ form_widget(f.HeureArr, {'attr': {'class': 'form-control'}}) }}
+                        {% if form_errors(f.HeureArr) is not empty %}
+                            <div class="alert alert-danger">
+                                {{ form_errors(f.HeureArr) }}
+                            </div>
+                        {% endif %}
+                    </div>
+                    
+</div> <!--end of section-->
+					<div class="splitter" style=" border: 1px solid gray;
+    margin: 0 10px;"></div>
+					<div class="right-section" style=" display: flex;
+    flex-direction: column;">
+
+                    <div class="form-group">
+                        {{ form_label(f.prix, 'Price', {'label_attr': {'class': 'form-label'}}) }}
+                        {{ form_widget(f.prix, {'attr': {'class': 'form-control'}}) }}
+                        {% if form_errors(f.prix) is not empty %}
+                            <div class="alert alert-danger">
+                                {{ form_errors(f.prix) }}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="form-group">
+                        {{ form_label(f.NombrePlaceDispo, 'Available Seats', {'label_attr': {'class': 'form-label'}}) }}
+                        {{ form_widget(f.NombrePlaceDispo, {'attr': {'class': 'form-control'}}) }}
+                        {% if form_errors(f.NombrePlaceDispo) is not empty %}
+                            <div class="alert alert-danger">
+                                {{ form_errors(f.NombrePlaceDispo) }}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                     <div class="form-group">
+                        {{ form_label(f.description, 'Description', {'label_attr': {'class': 'form-label'}}) }}
+                        {{ form_widget(f.description, {'attr': {'class': 'form-control'}}) }}
+                        {% if form_errors(f.description) is not empty %}
+                            <div class="alert alert-danger">
+                                {{ form_errors(f.description) }}
+                            </div>
+                        {% endif %}
+                    </div>
+                    <div class="form-group">
+                        {{ form_label(f.moyenTransport, 'Transportation', {'label_attr': {'class': 'form-label'}}) }}
+                        {{ form_widget(f.moyenTransport, {'attr': {'class': 'form-control'}}) }}
+                        {% if form_errors(f.moyenTransport) is not empty %}
+                            <div class="alert alert-danger">
+                                {{ form_errors(f.moyenTransport) }}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="form-group">
+                        {{ form_label(f.hebergement, 'Accomodation', {'label_attr': {'class': 'form-label'}}) }}
+                        {{ form_widget(f.hebergement, {'attr': {'class': 'form-control'}}) }}
+                        {% if form_errors(f.hebergement) is not empty %}
+                            <div class="alert alert-danger">
+                                {{ form_errors(f.hebergement) }}
+                            </div>
+                        {% endif %}
+                    </div>
+
+</div> <!--end of section-->
+</div> <!--end of section container-->
+                    <div class="text-center">
+                     {{ form_widget(f.submit, {'attr': {'class': 'btn btn-primary' , 'style': 'width : 400px ; margin-top: 30px;margin-bottom: 20px; height : 52px ; font-size : 21px;font-weight : bold; '}}) }}
+                    </div>
+
+<div class="text-center" style="margin-bottom: 30px;">
+<a id="cancel-link" href={{ path('VoyagesList') }} > Cancel </a>                   </div>
+</div>
+{{ form_end(f) }}
+
+
+</div>
+</div>
+{% endblock %}

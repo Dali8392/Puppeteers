@@ -1,0 +1,122 @@
+#image-container{
+    height: 100vh;
+    background-size: cover;
+    position: relative;
+}
+#description{
+    font-size: 25px !important;
+    font-family: 'FontAwesome' !important;
+    font-weight: bold !important;
+}
+#voyage-title{
+    display: flex;
+    flex-direction: row;
+    position: absolute;
+    bottom: 0;
+    background-color: #43116c79;
+    color: cornsilk;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    height: 110px;
+}
+#voyage-title h1{
+    font-weight: 700;
+}
+
+#voyage-infos h2{
+font-size: 40px;
+font-family:'beyond' ;
+font-weight: 800;
+margin-bottom: 20px;
+margin-top: 20px;
+}
+#voyage-details{
+    flex-direction: column;
+    background: linear-gradient(to bottom, #fa9e1b, #8d4fff);
+    color: aliceblue;
+}
+#voyage-infos h2,#chart-container h1{
+    font-size: 52px;
+    font-family:'beyond' ;
+    font-weight: 800;
+    margin-bottom: 20px;
+}
+#voyage-details h2{
+    text-align: center;
+   
+}
+.voyage-detail{
+    margin-right: 120px;
+    display: flex;
+}
+#voyage-details span{
+    font-size: 27px;
+    text-align: center;
+    margin-left: 25px;
+    font-family: 'FontAwesome';
+    color: black;
+    font-weight: 550;
+}
+#voyage-details-lower,#voyage-details-upper,#voyage-details-middle{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+#voyage-details-lower,#voyage-details-middle{
+    margin-top: 25px;
+    margin-left: 200px;
+}
+
+
+#arrow{
+    height: 79px;
+    width: 114px;
+    margin-left: 55px;
+    margin-right: 55px;
+}
+#main-container{
+    background-color: antiquewhite;
+}
+h4{
+font-size: 30px;
+font-weight: 700;
+}
+#voyage-infos{
+    color: black;
+}
+ #voyage-description{
+    margin-left: 20px;
+ }
+
+ #chart-container {
+color: black;
+margin-top: 50px;
+
+ }
+ #chart-container h1{
+    margin-bottom: 30px;
+    margin-left: 15px;
+ }
+
+ #button-container{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+ }
+ #book-btn{
+   background:  linear-gradient(to right, #fa9e1b, #8d4fff, #fa9e1b);
+   width: 350px;
+   height: 65px;
+	border-radius: 27px;
+    font-size: 20px;
+    color: aliceblue;
+    font-weight: 600;
+    transition: scale 500ms ease-in-out;
+    margin-bottom: 50px;
+ }
+ #book-btn:hover{
+    /* background:  linear-gradient(to right, #8d4fff, #fa9e1b); */
+    scale: 1.2;
+    cursor: pointer;
+ }

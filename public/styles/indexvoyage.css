@@ -1,0 +1,257 @@
+#main-container{
+    margin-top: 180px;
+    background-color: #f3f6f9;
+
+}
+
+#filter-container{
+    width: 100%;
+    height: 150px;
+    
+    background: linear-gradient(to right, #fa9e1b, #8d4fff);
+    margin-bottom: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#elements-container{
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: wrap;
+
+    
+}
+#voyages-container{
+    justify-content: center;
+    display: flex;
+    flex-direction: column;
+}
+.destination-image{
+    height: auto !important;
+    width:100% !important;
+    border-radius: 11px;
+}
+
+.voyage{
+    height: 45vh;
+    width: 26%; 
+    margin-bottom: 100px; 
+    text-align: center;
+    margin-left: 70px;
+    border: 4px solid;
+    border-radius: 15px;
+    background-color: #31124b;
+    transition: transform 0.5s ease;
+}
+
+.trip-infos{
+
+height: 32%;
+opacity: 0.9 ;
+display: flex;
+justify-content: center;
+}
+#left{
+display: flex;
+flex-direction: column;
+float: left;
+width: 50%;
+justify-content: center;
+color: white;
+}
+#right{
+    float: right;
+    justify-content: center;
+    color: rgb(255, 169, 48);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+    
+}
+
+.infos-label{
+    font-size: 18px;
+    font-weight: 700;
+    color: rgb(255, 169, 48);
+  
+}
+.infos{
+    font-size: 18px;
+    font-weight: 600;
+    margin-left: 4px;
+}
+.row{
+    margin-bottom: 7px;
+}
+
+#right h2{
+    font-weight: 800;
+    font-size: 43px;
+}
+
+.voyage:hover{
+    cursor: pointer;
+    transform: scale(1.1);
+    opacity: 0.8;
+}
+
+#voyages-container h1{
+    font-size: 90px;
+    font-weight: 700;
+    color: black;
+    font-family: 'Beyond';
+    text-align: center;
+    margin-top: 25px;
+    margin-bottom: 25px;
+}
+
+
+
+#searchicon{
+    height: 35px;
+}
+#searchbtn{
+    margin-left: 50px;
+    font-size: 13px;
+    font-weight: 700;
+    color: #fff;
+    text-transform: uppercase;
+    line-height: 53px;
+    padding-left: 46px;
+    padding-right: 46px;
+    background: #31124b;
+    transition: transform 0.5s ease;
+    height: 53px;
+    border-radius: 27px;
+    overflow: hidden;
+}
+
+#searchbtn:hover{
+   cursor: pointer;
+   background-color: #4e1c76;
+   transform: scale(1.05);
+}
+
+#filterform {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+#filterform label {
+    margin-right: 10px;
+}
+
+#filterform input[type="text"],
+#filterform input[type="date"],
+#filterform input[type="range"] {
+    
+    margin-bottom: 10px;
+    padding: 5px;
+    border: none;
+    border-bottom: 3px solid #000000;
+    border-radius: 3px;
+    width: 260px;
+    height: 40px;
+}
+#filterform input[type="text"],
+#filterform input[type="date"]{
+    margin-left: 50px;
+}
+#filterform input[type="range"]{
+    color: #31124b;
+}
+#filterform span{
+    font-size: 25px;
+    font-weight: bolder;
+    color: rgb(255, 255, 255);
+    
+}
+#budget-output{
+    margin-left: 15px;
+    margin-right: 3px;
+}
+
+#filterform label{
+    font-size: 30px;
+    font-weight: 700;
+    margin-left: 50px;
+    margin-right: 5px;
+    color: rgb(255, 255, 255);
+}
+#filter-container label{
+font-size: 16px;
+}
+
+
+/**autocomplete**************************************************************************/
+#auto-complete-depart,#auto-complete-destination {
+    /*the container must be positioned relative:*/
+    position: relative;
+    
+  }
+  
+  #auto-complete-depart input,#auto-complete-destination input {
+    width: calc(100% - 43px);
+    outline: none;
+    
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    padding: 10px;
+    padding-right: 31px;
+    font-size: 16px;
+  }
+.autocomplete-items {
+    position: absolute;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    box-shadow: 0px 2px 10px 2px rgba(0, 0, 0, 0.1);
+    border-top: none;
+    z-index: 99;
+    /*position the autocomplete items to be the same width as the container:*/
+    top: calc(100% + 2px);
+    left: 50px;
+    right: 0;
+    margin-top: -10px;
+    background-color: #fff;
+  }
+  
+  .autocomplete-items div {
+    padding: 10px;
+    cursor: pointer;
+  }
+  
+  .autocomplete-items div:hover {
+    /*when hovering an item:*/
+    background-color: rgba(0, 0, 0, 0.1);
+  }
+  
+  .autocomplete-items .autocomplete-active {
+    /*when navigating through the items using the arrow keys:*/
+    background-color: rgba(0, 0, 0, 0.1);
+  }
+  
+  .clear-button {
+    color: rgba(0, 0, 0, 0.4);
+    cursor: pointer;
+    
+    position: absolute;
+    right: 5px;
+    top: 0;
+  
+    height: 100%;
+    display: none;
+    align-items: center;
+  }
+  
+  .clear-button.visible {
+    display: flex;
+  }
+  
+  .clear-button.visible svg{
+    margin-bottom: 10px;
+  }
+  
+  .clear-button:hover {
+    color: rgba(0, 0, 0, 0.6);
+  }

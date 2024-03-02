@@ -1,0 +1,97 @@
+{% extends 'baseAdmin.html.twig' %}
+{% block headertitle %} Add transportation {% endblock %}
+{% block namespan %} Transportation Management {% endblock %}
+
+{% block stylesheets %}
+            <link
+      rel="shortcut icon"
+      type="image/png"
+      href={{ asset("assets/images/icon/favicon.ico") }}
+    />
+       
+    <link
+      rel="shortcut icon"
+      type="image/png"
+      href={{ asset("assets/images/icon/favicon.ico") }}
+    />
+    <link rel="stylesheet" href={{ asset("assets/css/bootstrap.min.css") }} />
+    <link rel="stylesheet" href={{ asset("assets/css/font-awesome.min.css") }} />
+    <link rel="stylesheet" href={{ asset("assets/css/themify-icons.css") }} />
+    <link rel="stylesheet" href={{ asset("assets/css/metisMenu.css") }} />
+    <link rel="stylesheet" href={{ asset("assets/css/owl.carousel.min.css") }} />
+    <link rel="stylesheet" href={{ asset("assets/css/slicknav.min.css") }} />
+    <!-- amchart css -->
+    <link
+      rel="stylesheet"
+      href="https://www.amcharts.com/lib/3/plugins/export/export.css"
+      type="text/css"
+      media="all"
+    />
+    <!-- others css -->
+    <link rel="stylesheet" href={{ asset("assets/css/typography.css") }} />
+    <link rel="stylesheet" href={{ asset("assets/css/default-css.css") }} />
+    <link rel="stylesheet" href={{ asset("assets/css/styles.css") }} />
+    <link rel="stylesheet" href={{ asset("assets/css/responsive.css") }} />
+    <script src="assets/js/vendor/modernizr-2.8.3.min.js"></script>
+    <!-- modernizr css -->
+
+    <link rel="stylesheet" href={{ asset("styles/addmoyen.css") }} />
+     {% endblock %}
+
+
+
+
+
+{% block body %}
+<div id="main-container" style="margin-bottom : 45px; max-height : 134vh ">
+<div id="form-container" >
+<div class="text-center">
+<h3 style="font-weight : bold ;  margin-bottom : 35px"> Add Transportation </h3>
+</div>
+
+<div class="row justify-content-center">
+
+{{ form_start(f, {'attr': {'novalidate': 'novalidate'}}) }}
+ <div class="form-group">
+{{ form_label(f.typeMoyen, "Type", {'label_attr': {'class': 'form-label'}}) }}
+ {{ form_widget(f.typeMoyen, {'attr': {'class': 'form-control'}}) }}
+ {% if form_errors(f.typeMoyen) is not empty %}
+ <div class="alert alert-danger">
+ {{ form_errors(f.typeMoyen) }}
+ </div>
+ {% endif %}
+ </div>
+
+ <div class="form-group">
+{{ form_label(f.categorieMoyen, "Category", {'label_attr': {'class': 'form-label'}}) }}
+ {{ form_widget(f.categorieMoyen, {'attr': {'class': 'form-control'}}) }}
+ {% if form_errors(f.categorieMoyen) is not empty %}
+ <div class="alert alert-danger">
+ {{ form_errors(f.categorieMoyen) }}
+ </div>
+ {% endif %}
+ </div>
+
+  <div class="form-group">
+{{ form_label(f.idModele, "Model", {'label_attr': {'class': 'form-label'}}) }}
+ {{ form_widget(f.idModele, {'attr': {'class': 'form-control'}}) }}
+ {% if form_errors(f.idModele) is not empty %}
+ <div class="alert alert-danger">
+ {{ form_errors(f.idModele) }}
+ </div>
+ {% endif %}
+ </div>
+
+
+  <div class="text-center">
+                     {{ form_widget(f.submit, {'attr': {'class': 'btn btn-primary' , 'style': 'width : 400px ; margin-top: 30px;margin-bottom: 20px; height : 52px ; font-size : 21px;font-weight : bold; '}}) }}
+                    </div>
+<div class="text-center" style="margin-bottom: 30px;">
+<a id="cancel-link" href={{ path('moyensList') }} > Cancel </a>                   </div>
+{{ form_end(f) }}
+</div>
+</div>
+</div>
+
+
+ {% endblock %}

@@ -1,0 +1,144 @@
+td, th{
+    white-space: nowrap;
+
+}
+th{
+    justify-content: center;
+    font-size: 18px;
+}
+h1 , h2{
+    margin-top: 20px;
+    margin-bottom: 25px;
+}
+h2{
+    color: red;
+}
+
+.container{
+    position: relative;
+    right: 215px;
+}
+
+td{
+    font-size: 16px;
+    
+}
+
+#addimg{
+    width: 25px;
+    height: 20px;
+}
+#updateimg{
+    width: 33px;
+    height: 17px;  
+}
+#delimg{
+    height: 26px;
+    width: 27px;
+}
+
+.btn.btn-danger{
+height: 44px;
+align-items: center;
+width: 125px;
+transition: height 0.5s;
+}
+
+#updatebtn{
+    width: 125px;
+    margin-bottom: 5px;
+    transition: padding 0.5s;
+}
+#updatebtn:hover{
+    padding: 15px 10px}
+
+.btn.btn-danger:hover{
+        height: 50px;
+    }
+
+.voyages-row:hover{
+    background-color: #c8d6e5 !important;
+    
+}
+.voyages-row {
+    transition: background-color 0.7s !important; 
+}
+
+.btn.btn-success{
+    margin-left: 900px;
+    margin-bottom: 20px;
+    width: 140px;
+    height: 55px ;
+    font-size: 18px;
+    font-weight: 600;
+    transition: height 0.5s;
+}
+.btn.btn-success:hover{
+    height: 60px;
+}
+
+#searchsection input[type="text"]{
+        margin-left: 10px;
+        height: 35px;
+        width: 200px;
+        border: none;
+        border-bottom: 1px solid;
+}
+
+#searchsection label{
+    font-size: 16px;
+}
+
+
+
+#searchicon{
+    height: 35px;
+}
+#searchbtn{
+    margin-left: 25px;
+    height: 45px;
+    width: 120px;
+    border: none;
+    background: linear-gradient(to right, #8914fe 0%, #8063f5 100%);
+    border-radius: 5px;
+    color: white;
+    font-size: 15px;
+    transition: height 0.5s;
+}
+
+#searchbtn:hover{
+    height: 50px;
+    font-weight: 700;
+    background-color: rgb(121, 20, 199);
+}
+
+#typeselect{
+    margin-left: 10px;
+    height: 35px;
+    width: 200px;
+}
+
+#inputs-container{
+    display: flex;
+    flex-direction: row;
+}
+
+
+/**********************calendar****/
+.fc-event:hover{
+cursor: pointer;
+}
+
+#calendar-container{
+    width: auto;
+}
+#calendar{
+    margin-left: 20% !important;
+    margin-top: 30px !important;
+    margin-bottom: 30px !important;
+}
+#calendar-title{
+    margin-top: 25px;
+    margin-bottom: 50px;
+    font-size: 45px;
+}

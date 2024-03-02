@@ -136,7 +136,7 @@ class ReservationController extends AbstractController
              $entityManager->persist($reservationVoyage);
             $entityManager->flush();
 
-            return $this->redirectToRoute('reservation_voyage_show',['id'=>$reservationVoyage->getId()]);
+            return $this->redirectToRoute('reservation_voyage_show', ['id' => $reservationVoyage->getId()]);
         }
 
         return $this->render('reservation/reservationvoy/newv.html.twig', [

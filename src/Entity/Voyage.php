@@ -6,6 +6,10 @@ use App\Repository\VoyageRepository;
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 
+use Symfony\Component\Validator\Constraints as Assert;
+use App\Constraints as CustomAssert;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
+
 #[ORM\Entity(repositoryClass: VoyageRepository::class)]
 class Voyage
 {
@@ -15,35 +19,88 @@ class Voyage
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message:"This field is mandatory.")]
+    #[CustomAssert\MyCountryConstraint]
     private ?string $depart = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message:"This field is mandatory.")]
+    #[CustomAssert\MyCountryConstraint]
     private ?string $destination = null;
 
-    #[ORM\Column]
-    private ?DateTime $date_dep = null;
+    #[ORM\Column(type: 'date')]
+    #[Assert\NotBlank(message:"This field is mandatory.")]
+    #[Assert\GreaterThanOrEqual('today' , message:"This date must be > today.")]
+    private ?\DateTimeInterface $DateDep = null;
+    
+    #[ORM\Column(type: 'date')]
+    #[Assert\NotBlank(message:"This field is mandatory.")]
+    #[Assert\GreaterThanOrEqual(propertyPath: 'date_dep' , message:"Arrival Date must be > Departure Date.")]
+    #[Assert\GreaterThanOrEqual('today' , message:"This date must be > today.")]
+    private ?\DateTimeInterface $DateArr = null;
+    
+    #[ORM\Column(type: 'time')]
+    #[Assert\NotBlank(message:"This field is mandatory.")]
+    private ?\DateTimeInterface $HeureDep = null;
+    
+    #[ORM\Column(type: 'time')]
+    #[Assert\NotBlank(message:"This field is mandatory.")]
+    #[Assert\NotNull(message:"This field is mandatory.")]
+    private ?\DateTimeInterface $HeureArr = null;
 
     #[ORM\Column(length: 255)]
-    private ?DateTime $date_arr = null;
-
-    #[ORM\Column(length: 255)]
-    private ?DateTime $heure_dep = null;
-
-    #[ORM\Column(length: 255)]
-    private ?DateTime $heure_arr = null;
-
-    #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message:"This field is mandatory.")]
+    #[Assert\Positive(message:"This field must be > 0.")]
     private ?float $prix = null;
 
     #[ORM\Column(length: 255)]
-    private ?int $nombre_place_dispo = null;
+    #[Assert\NotBlank(message:"This field is mandatory.")]
+    #[Assert\Positive(message:"This field must be > 0.")]
 
-    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+    private ?int $NombrePlaceDispo = null;
+    
+    #[ORM\ManyToOne (targetEntity:MoyenTransport::class)]
+    #[ORM\JoinColumn(name:'moyen_transport_id', referencedColumnName:'id')]
+    #[Assert\NotNull(message:"This field is mandatory.")]
     private ?MoyenTransport $moyenTransport = null;
 
     #[ORM\ManyToOne(inversedBy: 'voyages')]
+    // #[Assert\NotNull(message:"This field is mandatory.")]
     private ?Hebergement $hebergement = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    #[Assert\NotBlank(message:"This field is mandatory.")]
+    private ?string $description = null;
+
+
+/**
+     * @Assert\Callback
+     */
+    public function validate(ExecutionContextInterface $context, $payload)
+    {
+
+        $dateDep= $this ->getDateDep();
+        $heureDep=$this->getHeureDep();
+        $dateArr= $this ->getDateArr();
+        $heureArr=$this->getHeureArr();
+        $dep= $this->getDepart();
+        $des=$this->getDestination();
+        if ($dateArr&& $dateDep&& ($heureDep!==null)&& ($heureArr!==null)){
+        $datetimeDep = new \DateTime($dateDep->format('Y-m-d') . ' ' . $heureDep->format('H:i:s'));
+        $datetimeArr = new \DateTime($dateArr->format('Y-m-d') . ' ' . $heureArr->format('H:i:s'));       
+        
+        if ($datetimeArr < $datetimeDep) {
+        $context->buildViolation('Departure and arrival dates and times are not compatible')->atPath('HeureDep')->addViolation();
+        $context->buildViolation('Departure and arrival dates and times are not compatible')->atPath('HeureArr')->addViolation();
+        }}
+
+        if($dep && $des){
+        if($dep===$des){
+            $context->buildViolation('Departure and destination can\'t be the same')->atPath('depart')->addViolation();
+        }}
+    
+
+    }
     public function getId(): ?int
     {
         return $this->id;
@@ -75,48 +132,48 @@ class Voyage
 
     public function getDateDep(): ?DateTime
     {
-        return $this->date_dep;
+        return $this->DateDep;
     }
 
     public function setDateDep(DateTime $date_dep): static
     {
-        $this->date_dep = $date_dep;
+        $this->DateDep = $date_dep;
 
         return $this;
     }
 
     public function getDateArr(): ?DateTime
     {
-        return $this->date_arr;
+        return $this->DateArr;
     }
 
     public function setDateArr(DateTime $date_arr): static
     {
-        $this->date_arr = $date_arr;
+        $this->DateArr = $date_arr;
 
         return $this;
     }
 
     public function getHeureDep(): ?DateTime
     {
-        return $this->heure_dep;
+        return $this->HeureDep;
     }
 
     public function setHeureDep(DateTime $heure_dep): static
     {
-        $this->heure_dep = $heure_dep;
+        $this->HeureDep = $heure_dep;
 
         return $this;
     }
 
     public function getHeureArr(): ?DateTime
     {
-        return $this->heure_arr;
+        return $this->HeureArr;
     }
 
     public function setHeureArr(DateTime $heure_arr): static
     {
-        $this->heure_arr = $heure_arr;
+        $this->HeureArr = $heure_arr;
 
         return $this;
     }
@@ -135,12 +192,12 @@ class Voyage
 
     public function getNombrePlaceDispo(): ?int
     {
-        return $this->nombre_place_dispo;
+        return $this->NombrePlaceDispo;
     }
 
     public function setNombrePlaceDispo(int $nombre_place_dispo): static
     {
-        $this->nombre_place_dispo = $nombre_place_dispo;
+        $this->NombrePlaceDispo = $nombre_place_dispo;
 
         return $this;
     }
@@ -168,4 +225,21 @@ class Voyage
 
         return $this;
     }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(?string $description): static
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+    public function __toString()
+{
+    return $this->getDepart() . ' - ' . $this->getDestination();
+}
+    
 }
