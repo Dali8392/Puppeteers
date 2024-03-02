@@ -7,18 +7,40 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
+use Symfony\Component\Validator\Constraints\Range;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 class ReservationVoyageFormeType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('max')
-            ->add('idUser')
-            ->add('paiement')
-            ->add('submit', SubmitType::class)
-        ;
-    }
+        ->add('voyage')
+        ->add('date', DateTimeType::class, [
+            'widget' => 'single_text',
+         // Afficher uniquement le champ de texte simple (sans widget de sélection)
+         'constraints' => [
+            new NotBlank(['message' => 'date is required.']),
+        ],
+        'empty_data' => null,
+    
+        ])
+        ->add('max', IntegerType::class, [
+            'constraints' => [
+                new Range([
+                    'min' => 1,
+                    'max' => 50,
+                    'minMessage' => 'The maximum must be at least 1',
+                    'maxMessage' => 'The maximum cannot be more than  50',
+                ]),
+            ],
+        ])
+       
+        
+    ;
+}
 
     public function configureOptions(OptionsResolver $resolver): void
     {

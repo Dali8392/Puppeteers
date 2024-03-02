@@ -29,8 +29,7 @@ class ReservationVoyage
     private ?Paiement $paiement = null;
 
     #[ORM\Column(length: 10)]
-    #[Assert\NotBlank(message: "User ID cannot be blank.")]
-    #[Assert\Length(max: 10, maxMessage: "User ID cannot be longer than 6 characters.")]
+    
     private ?string $idUser = null;
 
     #[ORM\ManyToOne(inversedBy: 'reservationvoyage')]

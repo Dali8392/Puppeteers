@@ -1,0 +1,55 @@
+{% extends 'baseAdmin.html.twig' %}
+
+{% block title %}List of Payment{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        .first-row {
+            background-color: #6495ED;
+            color: black; /* Change text color if needed */
+        }
+        .custom-table-container {
+            max-width: 800px; /* Set desired maximum width */
+            margin: 0 auto; /* Center the container */
+        }
+        .text-center {
+            text-align: center; /* Center-align text */
+        }
+    </style>
+{% endblock %}
+{% block body %}
+<br>
+<br>
+<br>
+<h1 class="text-center">List of paiement</h1>
+<br>
+<br>
+
+<div class="custom-table-container">
+    <div class="table-responsive">
+        <table class="table mx-auto">
+            <thead>
+                <tr class="first-row">
+                    <th>ID</th>
+                    <th>Amount</th>
+                    <th>Date</th>
+                    <th>Method</th>
+                   
+                </tr>
+            </thead>
+            <tbody>
+                {% for paiement in paiements %}
+                <tr>
+                    <td>{{ paiement.id }}</td>
+                    <td>{{ paiement.montant }}</td>
+                    <td>{{ paiement.date|date('Y-m-d') }}</td> 
+                    <td>{{ paiement.methode }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
+

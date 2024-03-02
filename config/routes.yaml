@@ -4,3 +4,8 @@
 ajax_search:
     path: /search
     defaults: { _controller: 'App\Controller\HebergementController::searchAction' }
+app_stripe:
+  path: /stripe/{id}
+  controller: App\Controller\ReservationController::index2
+  requirements:
+    id: \d+

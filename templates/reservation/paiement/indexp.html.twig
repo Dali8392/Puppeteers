@@ -1,0 +1,36 @@
+{% extends 'baseAdmin.html.twig' %}
+
+{% block title %}Liste des paiements{% endblock %}
+
+{% block body %}
+    <h1>Liste des paiements</h1>
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Montant</th>
+                <th scope="col">Date</th>
+                <th scope="col">Méthode</th>
+                <th scope="col">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for paiement in paiements %}
+                <tr>
+                    <th scope="row">{{ paiement.id }}</th>
+                    <td>{{ paiement.montant }}</td>
+                    <td>{{ paiement.date|date('Y-m-d') }}</td>
+                    <td>{{ paiement.methode }}</td>
+                    <td>
+                        <a href="{{ path('paiement_afficher', {'id': paiement.id}) }}">Détails</a>
+                        <a href="{{ path('paiement_editer', {'id': paiement.id}) }}">Editer</a>
+                        <form method="post" action="{{ path('paiement_supprimer', {'id': paiement.id}) }}" style="display: inline-block;">
+                            <input type="hidden" name="_token" value="{{ csrf_token('supprimer' ~ paiement.id) }}">
+                            <button type="submit" class="btn btn-link">Supprimer</button>
+                        </form>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

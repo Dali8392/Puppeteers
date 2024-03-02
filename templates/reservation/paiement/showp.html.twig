@@ -1,0 +1,94 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Booking Details{% endblock %}
+
+{% block body %}
+<div style="position: relative;">
+    <img src="{{ asset('images/home_slider.jpg') }}" class="img-fluid" alt="Reservation Image">
+    <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: white;">
+        <div class="container">
+            <div class="row justify-content-center mt-5">
+                <div class="col-md-10">
+                    <div class="card" style="background-color: rgba(0, 0, 0, 0.5);">
+                        <div class="card-header" style="background-color: #8a2be2; color: white; padding: 5px 20px;">
+                            <h1 class="card-title" style="font-size: 20px; margin-bottom: 0;">Details</h1>
+                        </div>
+                        <div class="card-body" id="print-content">
+                            {% for message in app.flashes('success') %}
+                                <div style="color: violet; border: 2px violet solid; text-align: center; padding: 5px; margin-bottom: 10px;">
+                                    {{ message }}
+                                </div>
+                            {% endfor %}
+                            <dl class="row">
+                                <dt class="col-sm-4">ID</dt>
+                                <dd class="col-sm-8">{{ paiement.id }}</dd>
+
+                                <dt class="col-sm-4">Amount</dt>
+                                <dd class="col-sm-8">{{ paiement.montant }}</dd>
+
+                                <dt class="col-sm-4">Date</dt>
+                                <dd class="col-sm-8">{{ paiement.date ? paiement.date|date('Y-m-d') : '' }}</dd>
+
+                                <dt class="col-sm-4">Payment Method</dt>
+                                <dd class="col-sm-8">{{ paiement.methode }}</dd>
+                            </dl>
+                            <div class="btn-group d-flex justify-content-center" role="group" aria-label="Actions">
+                                <a href="#" class="btn btn-secondary mr-2" style="background-color: #8a2be2; color: white;">Back</a>
+                                <a href="{{ path('generate_paiement_pdf', {'id': paiement.id}) }}" class="btn btn-secondary mr-2" style="background-color: #8a2be2; color: white;">Download PDF</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function printContent(elId) {
+        var content = document.getElementById(elId).innerHTML;
+        var myWindow = window.open('', '', 'width=400,height=400');
+        myWindow.document.write('<html><head><title>Print</title>');
+        myWindow.document.write('<style>');
+        myWindow.document.write('body { font-family: Arial, sans-serif; }');
+        myWindow.document.write('h1 { font-size: 24px; }');
+        myWindow.document.write('dl { margin-bottom: 10px; }');
+        myWindow.document.write('dt, dd { display: inline; }');
+        myWindow.document.write('dt { font-weight: bold; margin-right: 5px; }');
+        myWindow.document.write('</style>');
+        myWindow.document.write('</head><body>');
+        myWindow.document.write(content);
+        myWindow.document.write('</body></html>');
+        myWindow.document.close();
+        myWindow.print();
+    }
+</script>
+<style>
+    /* Style spécifique pour le fichier PDF */
+    .container {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+    }
+    .card {
+        border: none;
+        box-shadow: none;
+        background-color: #fff;
+    }
+    .card-header {
+        background-color: #8a2be2;
+        color: white;
+        padding: 10px 20px;
+        border-radius: 5px 5px 0 0;
+    }
+    .card-body {
+        padding: 20px;
+    }
+    .btn-group {
+        margin-top: 20px;
+        text-align: center;
+    }
+</style>
+
+
+{% endblock %}

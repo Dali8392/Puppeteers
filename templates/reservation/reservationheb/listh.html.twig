@@ -1,0 +1,62 @@
+{% extends 'baseAdmin.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        .first-row {
+            background-color: #6495ED;
+            color: black; /* Change text color if necessary */
+        }
+        .custom-table-container {
+            max-width: 800px; /* Set desired maximum width */
+            margin: 0 auto; /* Center the container */
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <br>
+        <br>
+        <br>
+        <h1 class="text-center">List of Accommodation Reservations</h1>
+        <br>
+        <br>
+
+        <div class="custom-table-container">
+            <div class="table-responsive">
+                <table class="table mx-auto">
+                    <thead>
+                        <tr class="first-row"> 
+                            <th>ID</th>
+                            <th>User ID</th>
+                            <th>Departure Date</th>
+                            <th>Arrival Date</th>
+                            <th>Number of Passengers</th>
+                            <th class="paiement-id">Payment ID</th>
+                            <th>Action</th> 
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for reservation in reservations %}
+                            <tr>
+                                <td>{{ reservation.id }}</td>
+                                <td>{{ reservation.idUser }}</td>
+                                <td>{{ reservation.date|date('Y-m-d') }}</td>
+                                <td>{{ reservation.duree|date('Y-m-d') }}</td>
+                                <td style="color: {% if reservation.max > 5 %}green{% else %}red{% endif %}">{{ reservation.max }}</td>
+                                <td class="paiement-id">{{ reservation.paiement ? reservation.paiement.id : '' }}</td>
+                                <td>
+                                    <form method="POST" action="{{ path('delete_reservation_heb', {'id': reservation.id}) }}" onsubmit="return confirm('Are you sure you want to delete this reservation?')">
+                                        <button type="submit" class="btn btn-danger">Delete</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+

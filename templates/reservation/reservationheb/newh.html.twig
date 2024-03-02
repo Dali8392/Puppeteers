@@ -1,0 +1,81 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Book your accommodation now{% endblock %}
+
+{% block body %}
+<style>
+    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
+    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+</style>
+    <!-- Header -->
+    <header class="w3-display-container w3-content" style="max-width:1500px; position: relative;">
+        
+        <img src="{{ asset('images/home_slider.jpg') }}" class="img-fluid" alt="Reservation Image">
+        <div class="w3-display-middle w3-padding" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: rgba(0, 0, 0, 0.8); padding: 20px; border-radius: 10px;">
+            <div class="w3-container">
+                <h2 class="w3-center" style="color: white;">Book your accommodation now!</h2>
+                {{ form_start(form,{'attr':{'novalidate':'novalidate'}}) }}
+                 <div class="form-group row">
+                    <label class="col-sm-4 col-form-label" style="color: white;">Accommodation</label>
+                    <div class="col-sm-8">
+                        {{ form_widget(form.hebergement, {'attr': {'class': 'form-control'}}) }}
+                        {{ form_errors(form.hebergement) }}
+                    </div>
+                </div>
+                 
+                <div class="form-group row">
+                    <label class="col-sm-4 col-form-label" style="color: white;">Start date</label>
+                    <div class="col-sm-8">
+                        {{ form_widget(form.date, {'attr': {'class': 'form-control'}}) }}
+                        {{ form_errors(form.date) }}
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-4 col-form-label" style="color: white;">End date</label>
+                    <div class="col-sm-8">
+                        {{ form_widget(form.duree, {'attr': {'class': 'form-control'}}) }}
+                        {{ form_errors(form.duree) }}
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-4 col-form-label" style="color: white;">Number of passengers</label>
+                    <div class="col-sm-8">
+                        {{ form_widget(form.max, {'attr': {'class': 'form-control'}}) }}
+                        {{ form_errors(form.max) }}
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary" style="background-color: purple; color: white;">Book Now</button>
+                 
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </header>
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+

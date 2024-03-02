@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Booking Details{% endblock %}
+
+{% block body %}
+<div style="position: relative;">
+    <img src="{{ asset('images/home_slider.jpg') }}" class="img-fluid" alt="Reservation Image">
+    <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: white;">
+        <div class="container">
+            <div class="row justify-content-center mt-5">
+                <div class="col-md-10">
+                    <div class="card" style="background-color: rgba(0, 0, 0, 0.5);">
+                        <div class="card-header" style="background-color: #8a2be2; color: white; padding: 5px 20px;">
+                            <h1 class="card-title" style="font-size: 20px; margin-bottom: 0;">Booking Details</h1>
+                        </div>
+                        <div class="card-body" style="margin-top: 20px;">
+                            <dl>
+                                <dt>Date de début :</dt>
+                                <dd>{{ reservation.date|date('d/m/Y') }}</dd>
+                                <dt>Date de fin :</dt>
+                                <dd>{{ reservation.duree|date('d/m/Y') }}</dd>
+                                <dt>Nombre de passagers :</dt>
+                                <dd>{{ reservation.max }}</dd>
+                                {# Ajoutez d'autres détails de réservation au besoin #}
+                            </dl>
+                        </div>
+                        <div class="card-footer" style="margin-top: 20px; background-color: rgba(0, 0, 0, 0.5);">
+                            <div class="btn-group d-flex justify-content-center" role="group" aria-label="Actions">
+                                <a href="{{ path('modifier_reservation_hebergement', {'id': reservation.id}) }}" class="btn btn-primary mr-2" style="background-color: purple; color: white;">Edit</a>
+                                <a href="{{ path('delete_reservation_hebergement', {'id': reservation.id}) }}" class="btn btn-danger mr-2" onclick="return confirm('Are you sure you want to delete this reservation?');">Delete</a>
+                                <a href="{{ path('app_stripe', {'id': reservation.id}) }}" class="btn btn-secondary" style="background-color: #8a2be2; color: white;">Payment</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+
+
+
+

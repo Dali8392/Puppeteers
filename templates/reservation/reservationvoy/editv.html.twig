@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modify Accommodation Reservation{% endblock %}
+
+{% block body %}
+<div style="position: relative;">
+    <img src="{{ asset('images/home_slider.jpg') }}" class="img-fluid" alt="Reservation Image">
+    <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: white;">
+        <div class="container">
+            <div class="row justify-content-center mt-5">
+                <div class="col-md-10">
+                    <div class="card" style="background-color: rgba(0, 0, 0, 0.5); border-radius: 15px;">
+                        <div class="card-header" style="background-color: #8a2be2; color: white; padding: 10px;">
+                            <h1 class="card-title" style="font-size: 24px; margin: 0;">Modify Accommodation Reservation</h1>
+                        </div>
+                        <div class="card-body" style="padding: 30px;">
+                          {{ form_start(form,{'attr':{'novalidate':'novalidate'}}) }}
+                                {{ form_widget(form) }}
+                                <button type="submit" class="btn btn-primary" style="background-color: purple; color: white; margin-top: 20px;">Save </button>
+                            {{ form_end(form) }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+

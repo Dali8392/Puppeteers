@@ -18,8 +18,7 @@ class ReservationHebergement
     private ?int $id = null;
 
     #[ORM\Column(length: 10, nullable: true)]
-    #[Assert\NotBlank(message: "User ID cannot be blank.")]
-    #[Assert\Length(max: 10, maxMessage: "User ID cannot be longer than 6 characters.")]
+    
     private ?string $idUser = null;
 
     #[ORM\Column]
