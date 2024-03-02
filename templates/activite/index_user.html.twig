@@ -1,0 +1,187 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ 'Activities'|trans }}
+{% endblock %}
+
+
+{% block body %}
+<style>
+  .grid-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); 
+    grid-gap: 10px;
+  }
+
+  .grid-item {
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin-bottom: 10px;
+    display: flex;
+    flex-direction: column; 
+    align-items: center; 
+    justify-content: flex-end; 
+  }
+
+  .grid-item a {
+    display: inline-block; 
+    margin: 5px; 
+  }
+
+  .grid-item a, .grid-item h3 {
+  }
+
+
+
+ 
+
+  @media (min-width: 768px) {
+    .grid-item {
+      align-items: flex-start; 
+      justify-content: space-between; 
+    }
+  }
+
+    .search-container {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .search-input {
+            padding: 8px 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            height: 30px;
+        }
+
+        .search-button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 5px 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+</style>
+
+
+    <div class="container" style="margin-top: 200px;">
+        <h1>Activities List</h1>
+
+        <div class="search-container">
+                <input type="text" id='searchinput'class="search-input" name="search" placeholder="Rechercher par ville">
+           
+        </div>
+
+        <div id='activities-container'class="grid-container">
+            {% if app.request.query.search is defined %}
+                {% set searchTerm = app.request.query.search %}
+                {% set filteredActivities = activites|filter(activity => activity.ville ~ searchTerm) %}
+            {% else %}
+                {% set filteredActivities = activites %}
+            {% endif %}
+
+            {% for activite in filteredActivities %}
+                {% if activite.etat == 1 %}
+        <div class="grid-item">
+            <img src="{{ asset('/images/footer_blog_3.jpg') }}" alt="Activity Image">
+            <a href="{{ path('app_activite_user_show', {'id': activite.id}) }}">
+                <h3>{{ activite.ville }}</h3>
+                <p>Price: {{ activite.prix }}</p>
+                <p>Time: {{ activite.heure }}</p>
+            </a>
+
+        </div>
+    {% endif %}
+{% endfor %}
+
+        </div>
+
+    </div>
+{% endblock %}
+
+
+
+
+
+{% block javascripts %}
+ <!-- jquery latest version -->
+    <script src={{ asset("assets/js/vendor/jquery-2.2.4.min.js") }}></script>
+    <!-- bootstrap 4 js -->
+    <script src={{ asset("assets/js/popper.min.js") }}></script>
+    <script src={{ asset("assets/js/bootstrap.min.js") }}></script>
+    <script src={{ asset("assets/js/owl.carousel.min.js") }}></script>
+    <script src={{ asset("assets/js/metisMenu.min.js") }}></script>
+    <script src={{ asset("assets/js/jquery.slimscroll.min.js") }}></script>
+    <script src={{ asset("assets/js/jquery.slicknav.min.js") }}></script>
+
+    <!-- start chart js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.min.js"></script>
+    <!-- start highcharts js -->
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <!-- start zingchart js -->
+    <script src="https://cdn.zingchart.com/zingchart.min.js"></script>
+    <script>
+      zingchart.MODULESDIR = "https://cdn.zingchart.com/modules/";
+      ZC.LICENSE = [
+        "569d52cefae586f634c54f86dc99e6a9",
+        "ee6b7db5b51705a13dc2339db3edaf6d",
+      ];
+    </script>
+    <!-- all line chart activation -->
+    <script src={{ asset("assets/js/line-chart.js") }}></script>
+    <!-- all pie chart -->
+    <script src={{ asset("assets/js/pie-chart.js") }}></script>
+        <script src={{ asset("assets/js/bar-chart.js") }}></script>
+    <!-- others plugins -->
+    <script src={{ asset("assets/js/plugins.js") }}></script>
+    <script src={{ asset("assets/js/scripts.js") }}></script>
+
+<script >
+
+ $(document).ready(function() {
+    $('#searchinput').keyup(function () {
+        var searchTerm = $(this).val().trim();
+        
+        
+        // Vérifiez si le champ de recherche n'est pas vide
+        if (searchTerm !== '') {
+            // Envoyer la requête Ajax
+            $.ajax({
+                url: '{{ path('app_activite_search') }}', // Assurez-vous que cette route existe dans votre application Symfony
+                method: 'POST',
+                data: {name: searchTerm},
+                success: function(response) {
+                  
+                   $('#activities-container').empty(); // Vider la liste actuelle des activités
+                  
+                     response.list.forEach(function(activite) {
+                     if(activite.etat == '1'){
+            var activityHtml = '<div class="grid-item">' +
+                '<img src="{{ asset("/images/footer_blog_3.jpg") }}" alt="Activity Image">' +
+                '<a href="{{ path("app_activite_show", {"id": '+ activite.id +'}) }}">' +
+                '<h3>' + activite.ville + '</h3>' +
+                '<p>Prix: ' + activite.prix + '</p>' +
+                '<p>Heure: ' + activite.heure + '</p>' +
+                '</a>' +
+                '<a href="{{ path("app_activite_edit", {"id": '+ activite.id +'}) }}" class="button-update">Modifier</a>' +
+                '<a href="{{ path("app_activite_delete", {"id": '+ activite.id +'}) }}" class="button-delete">Supprimer</a>' +
+                '</div>';
+            $('#activities-container').append(activityHtml);
+            }
+        });
+                },
+                error: function(xhr, status, error) {
+                    console.log(xhr, status, error); // Affichez les détails de l'erreur dans la console
+                    // Gérer les erreurs éventuelles
+                }
+            });
+        } else {
+            // Si le champ de recherche est vide, vider la liste des activités
+            $('#activities-container').empty();
+        }
+    });
+});
+
+ </script>
+{% endblock %}

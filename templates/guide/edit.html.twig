@@ -1,0 +1,14 @@
+{% extends 'baseAdmin.html.twig' %}
+
+{% block title %}Edit Guide{% endblock %}
+
+{% block body %}
+    <div class="container" style="margin-top: 200px;">
+
+    <h1>Edit Guide</h1>
+{{ form_start(form, { 'attr':{'novalidate':'novalidate'  }}) }}
+
+                               {{ form_end(form) }}
+
+ <a href="{{ path('app_guide_index') }}" class="btn btn-rounded btn-danger mb-3">Back to List</a></div>
+{% endblock %}

@@ -1,0 +1,314 @@
+{% extends 'baseAdmin.html.twig' %}
+{% block stylesheets %}
+     <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/css/font-awesome.min.css">
+    <link rel="stylesheet" href="assets/css/themify-icons.css">
+    <link rel="stylesheet" href="assets/css/metisMenu.css">
+    <link rel="stylesheet" href="assets/css/owl.carousel.min.css">
+    <link rel="stylesheet" href="assets/css/slicknav.min.css">
+    <!-- amcharts css -->
+    <link rel="stylesheet" href="https://www.amcharts.com/lib/3/plugins/export/export.css" type="text/css" media="all" />
+    <!-- Start datatable css -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.18/css/dataTables.bootstrap4.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/responsive/2.2.3/css/responsive.bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/responsive/2.2.3/css/responsive.jqueryui.min.css">
+    <!-- style css -->
+    <link rel="stylesheet" href="assets/css/typography.css">
+    <link rel="stylesheet" href="assets/css/default-css.css">
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <link rel="stylesheet" href="assets/css/responsive.css">
+        <link rel="stylesheet" href="https://www.amcharts.com/lib/3/plugins/export/export.css" type="text/css" media="all" />
+
+    <!-- modernizr css -->
+    <script src="assets/js/vendor/modernizr-2.8.3.min.js"></script>
+{% endblock %}
+{% block javascripts %}
+      <!-- offset area end -->
+    <!-- jquery latest version -->
+     <script src="assets/js/vendor/jquery-2.2.4.min.js"></script>
+    <!-- bootstrap 4 js -->
+    <script src="assets/js/popper.min.js"></script>
+    <script src="assets/js/bootstrap.min.js"></script>
+    <script src="assets/js/owl.carousel.min.js"></script>
+    <script src="assets/js/metisMenu.min.js"></script>
+    <script src="assets/js/jquery.slimscroll.min.js"></script>
+    <script src="assets/js/jquery.slicknav.min.js"></script>
+   <!-- start highcharts js -->
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/modules/accessibility.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.min.js"></script>
+
+    
+    <!-- <script src="assets/js/line-chart.js"></script>
+     Start datatable js -->
+    <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.js"></script>
+    <script src="https://cdn.datatables.net/1.10.18/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.18/js/dataTables.bootstrap4.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/2.2.3/js/dataTables.responsive.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/2.2.3/js/responsive.bootstrap.min.js"></script>
+    <!-- others plugins -->
+    <script src="assets/js/plugins.js"></script>
+    <script src="assets/js/scripts.js"></script>
+    
+    <script>
+        function deleteUser(id) {
+            if (confirm('Are you sure you want to delete this user?')) {
+                $.ajax({
+                    type: 'POST',
+                    url: '/user/delete/' + id,
+                    success: function(data) {
+                        $('#dataTable2').DataTable().row($('#user_' + id)).remove().draw(); 
+                    },
+                    error: function(xhr, status, error) {
+                        alert('An error occurred while deleting the user.');
+                    }
+                });
+            }
+        }
+        ///////////////////////
+        function addAdmin(id) {
+            $.ajax({
+                type: 'POST',
+                url: '/user/addAdmin/' + id,
+                success: function(data) {
+                   
+                    updateRole(id, 'admin');
+                   
+                    updateModifyLink(id, 'deleteAdmin');
+                },
+                error: function(xhr, status, error) {
+                    alert('An error occurred while adding user as admin.');
+                }
+            });
+        }
+///////////////////////////////////
+        function deleteAdmin(id) {
+            $.ajax({
+                type: 'POST',
+                url: '/user/deleteAdmin/' + id,
+                success: function(data) {
+                   
+                    updateRole(id, 'user');
+                  
+                    updateModifyLink(id, 'addAdmin');
+                },
+                error: function(xhr, status, error) {
+                    alert('An error occurred while deleting user from admins list.');
+                }
+            });
+        }
+        /////////////////////////////
+         function updateRole(id, role) {
+            $('#user_' + id + ' .role').text(role);
+        }
+          ///////////////
+        function updateModifyLink(id, action) {
+            var linkText = (action === 'addAdmin') ? 'Add as admin' : 'Delete from admins list';
+            var linkFunction = (action === 'addAdmin') ? 'addAdmin' : 'deleteAdmin';
+            $('#user_' + id + ' .modify-link').html('<a href="#" onclick="' + linkFunction + '(\'' + id + '\')">' + linkText + '</a>');
+        }
+        
+        ////////////////
+    </script>
+    <script>
+$(document).ready(function() {
+
+  
+    function getUsersData(period) {
+        $.ajax({
+            url: '{{ path("statis_user") }}',
+            method: 'POST',
+            data: { period: period },
+            success: function(response) {
+                
+
+                drawChart(response.inscri,response.visitor,response.nameDate);
+                drawChartCountries(response.CountrieName,response.CountrieOcc);
+            },
+            error: function(xhr, status, error) {
+                console.error(error);
+            }
+        });
+    }
+
+    ////////////////////////////////
+    function drawChart(data1, data2,months) {
+        Highcharts.chart('visitor_graph', {
+            chart: {
+                type: 'areaspline'
+            },
+            title: false,
+            yAxis: {
+                title: false,
+                gridLineColor: '#fbf7f7',
+                gridLineWidth: 1
+            },
+            xAxis: {
+                gridLineColor: '#fbf7f7',
+                gridLineWidth: 1,
+                categories: months
+            },
+            series: [{
+                name: 'inscri stat',
+                data: data1,
+                fillColor: 'rgba(103, 13, 251, 0.5)',
+                lineColor: 'transparent'
+            },
+            {
+                name: 'vistor statis',
+                data: data2,
+                fillColor: 'rgba(251, 13, 103, 0.5)',
+                lineColor: 'transparent'
+            }
+            ]
+        });
+    }
+
+   /////////////////////////////
+    function updateStatistics() {
+        var period = $('#periodSelect').val();
+        getUsersData(period);
+    }
+  
+    //////////////////////////////
+    function generateUniqueColors(length) {
+    var colors = [];
+    var letters = '0123456789ABCDEF';
+
+    for (var i = 0; i < length; i++) {
+        var color = '#';
+        for (var j = 0; j < 6; j++) {
+            color += letters[Math.floor(Math.random() * 16)];
+        }
+        colors.push(color);
+    }
+
+    return colors;
+}
+    function drawChartCountries(data1,data2) {
+        
+        var ctx = document.getElementById("seolinechart8").getContext('2d');
+          var nbPays = Math.max(data1.length, data2.length);
+         var backgroundColor = generateUniqueColors(nbPays);
+
+    
+    var chart = new Chart(ctx, {
+        // The type of chart we want to create
+        type: 'doughnut',
+        // The data for our dataset
+        data: {
+            labels: data1,
+            datasets: [{
+                backgroundColor:backgroundColor,
+                borderColor: '#fff',
+                data: data2,
+            }]
+        },
+        // Configuration options go here
+        options: {
+            legend: {
+                display: true
+            },
+            animation: {
+                easing: "easeInOutBack"
+            }
+        }
+    });
+    }
+////////////////////////////////////////
+  $('#periodSelect').change(function(){
+       
+        getUsersData($(this).val() );
+        console.log($(this).val());
+     });
+
+    ////////////////////////////////
+    
+    updateStatistics();
+
+   /////////////////////////////////
+    setInterval(updateStatistics, 10000);
+});
+    </script>
+{% endblock %}
+{% block body %}
+<div class="col-12 mt-5">
+    <div class="card">
+        <div class="card-body">
+            <h4 class="header-title">Table Users</h4>
+            <div class="data-tables datatable-primary">
+                <table id="dataTable2" class="text-center">
+                    <thead class="text-capitalize">
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Last Name</th>
+                            <th>Role</th>
+                            <th>Email</th>
+                            <th>Cin</th>
+                            <th>Date Inscri</th>
+                            <th>Password</th>
+                            <th>Modify</th>
+                            <th>Delete</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for user in list %}
+                        {% if user.getId() != app.session.get('id') %}
+                            <tr id="user_{{ user.getId() }}">
+                                <td>{{ user.getId() }}</td>
+                                <td>{{ user.getName() }}</td>
+                                <td>{{ user.getLastName() }}</td>
+                                <td class="role">{{ user.getRole() }}</td>
+                                <td>{{ user.getEmail() }}</td>
+                                <td>{{ user.getCin() }}</td>
+                                <td>{{ user.getDateInscri().format('Y-m-d H:i:s') }}</td>
+                                <td>{{ user.getPassword() }}</td>
+                                 <td class="modify-link" >
+                                {% if user.getRole() == 'user' %}
+                                    <a href="#" onclick="addAdmin('{{ user.getId() }}')">Add as admin</a>
+                                {% endif %}
+                                {% if user.getRole() == 'admin' %}
+                                    <a href="#" onclick="deleteAdmin('{{ user.getId() }}')">Delete from admins list</a>
+                                {% endif %}
+                                 </td>
+                                <td><a href="#" onclick="deleteUser('{{ user.getId() }}')"><i class="ti-trash"></i></a></td>
+                            </tr>
+                        {% endif %}
+                            
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+ 
+   
+            <div class="row" style='padding : 20px 20px 20px 20px;'>
+    <div class="col-xl-9 col-lg-8">
+        <div class="card h-full">
+            <div class="card-body">
+                <h4 class="header-title">Visitor Graph</h4>
+                <select class="custome-select border-0 pr-3" id='periodSelect'>
+                                <option selected="" value='last_7_days'>Last 7 Days</option>
+                                <option value="last_30_days">last 30 days</option>
+                                <option value="all">all</option>
+                    </select>
+                <div id="visitor_graph"></div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-lg-4 coin-distribution">
+        <div class="card h-full">
+            <div class="card-body">
+                <h4 class="header-title">Number of countries that use my website the most</h4>
+                <canvas id="seolinechart8" height="233"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+                   
+{% endblock %}

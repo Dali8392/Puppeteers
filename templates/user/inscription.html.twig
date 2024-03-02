@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html>
+
+<meta http-equiv="content-type" content="text/html;charset=UTF-8" />
+<head>
+<title>hawesBiya-Sign up</title>
+
+
+{% block stylesheets %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+<link href={{ asset("styles/styleIsncription.css") }} rel="stylesheet" type="text/css" media="all" />
+ {% endblock %}
+</head>
+<body>
+
+
+
+
+<body>
+	<div class="main" id="main">
+
+
+		<h1>HawesBiya</h1>
+		<p style="
+		text-align: center;
+		color: #fff;
+		/* font-size: 3em; */
+		margin-bottom: 1em;
+		/* text-transform: uppercase; */
+		/* letter-spacing: 5px; */
+		font-weight: 600;
+		padding: 0 0 30px;
+	">
+    Sign up to try an unforgettable experience.</p>
+
+
+		<div class="w3_agile_main_grids">
+		
+			<div id='progress'><div id='progress-complete'></div></div>
+			  
+			
+            {{ form_start(form, {'attr': {'id': 'SignupForm', 'class': 'agile_form','novalidate':'novalidate'}}) }}
+            <fieldset id="firstStep">
+                <h3>Account information</h3>
+                <div class="form-group agileits_w3layouts_form w3_agileits_margin">
+                    <div class="wthree_input">
+                        <i class="fa fa-user" aria-hidden="true"></i>
+                        {{ form_row(form.name, {'attr': {'placeholder': 'Name'} , 'label': false,'errors':false}) }}
+                         {{ form_errors(form.name) }}
+                    </div>
+                </div>
+                <div class="form-group agileits_w3layouts_form">
+                    <div class="wthree_input">
+                        <i class="fa fa-user" aria-hidden="true"></i>
+                        {{ form_row(form.lastName, {'attr': {'placeholder': 'Last Name'}, 'label': false,'errors':false}) }}
+                         {{ form_errors(form.lastName) }}
+                    </div>
+                </div>
+                <div class="form-group agileits_w3layouts_form">
+                    <div class="wthree_input">
+                        <i class="fa fa-envelope" aria-hidden="true"></i>
+                        {{ form_row(form.email, {'attr': {'placeholder': 'Email'}, 'label': false,'errors':false}) }}
+                         {{ form_errors(form.email) }}
+                    </div>
+                </div>
+                <div class="form-group agileits_w3layouts_form">
+                    <div class="wthree_input">
+                        <i class="fas fa-address-card"></i>
+                        {{ form_row(form.cin, {'attr': {'placeholder': 'Cin'}, 'label': false,'errors':false}) }}
+                         {{ form_errors(form.cin) }}
+                    </div>
+                </div>
+               <div class="form-group agileits_w3layouts_form">
+    <div class="wthree_input">
+        <i class="fas fa-lock"></i>
+        {{ form_widget(form.password.first, {'attr': {'placeholder': 'Password'}, 'label': false}) }}
+         {{ form_errors(form.password.first) }}
+    </div>
+</div>
+<div class="form-group agileits_w3layouts_form">
+    <div class="wthree_input">
+        <i class="fas fa-lock"></i>
+        {{ form_widget(form.password.second, {'attr': {'placeholder': 'Confirme Password'}, 'label': false}) }}
+         
+    </div>
+</div>
+               
+                <div class="clear"></div>
+                <p>
+                    <button type="button" id="NextStep" class="btn btn-primary">Next</button>
+                </p>
+                 
+            </fieldset>
+            	<fieldset id="lastStep" hidden>
+					<h3>Email validation</h3>
+					<h4 class="w3layouts_type">Enter the code sent by email address: </h4>
+					<div class="form-group agileits_w3layouts_form">
+                        <div class="wthree_input">
+                            <i class="fas fa-envelope" aria-hidden="true"></i>
+                            <input id="ValidationCode" type="text" name="ValidationCode"  placeholder="Validation Code"  />
+                            <input id="code" type="text" name="code"  hidden  />
+                        </div>
+                    </div>
+					<div class="clear"> </div>
+                    <p>
+                    <button type="button" id="predStep" class="btn btn-primary">Back</button>
+                </p>
+					  {{ form_widget(form.sign_up, {
+                     'attr': {
+                      'class': 'btn btn-primary agileinfo_primary submit',
+                      'id': 'SaveAccount'
+                            }
+                                                    }) }}
+				</fieldset>
+                
+            {{ form_end(form) }}
+			
+
+			
+			<div class="agileits_copyright">
+				<p> <a href={{ path('app_home') }}>Back to Home</a></p>
+			</div>
+		</div>
+	</div>
+	 {% block javascript %}
+<script src={{ asset("js/jquery-3.2.1.min.js") }}></script>
+<script>
+  
+    jQuery(document).ready(function($) {
+        $('#NextStep').click(function(){
+            var formData = $('#SignupForm').serialize();
+               
+            $.ajax({
+                url: '{{ path('validate_user_form') }}',
+                type: 'POST',
+                data: formData,
+                success: function(response){
+                   
+                    if(response.success) {
+                        $('#progress-complete').width('50%');
+                        $('#firstStep').hide();
+                        $('#lastStep').show();
+                        $('#code').val(response.code);
+                    } else {
+                         $('#main').replaceWith(response.form);
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.log(xhr.responseText); 
+                    alert('Error occurred while processing the request!');
+                }
+            });
+        });
+        //////////////
+        $('#predStep').click(function(){
+          
+               
+            $.ajax({
+                url: '{{ path('validate_user_form') }}',
+                type: 'POST',
+                data: 'backForm',
+                success: function(response){
+                   
+                  $('#main').replaceWith(response.form);
+                        $('#progress-complete').width('0%');
+                        $('#firstStep').show();
+                        $('#lastStep').hide();
+                         
+                         
+                         $('#code').val('');
+                         $('#ValidationCode').val('');
+                   
+                },
+                error: function(xhr, status, error) {
+                    console.log(xhr.responseText); 
+                    alert('Error occurred while processing the request!');
+                }
+            });
+        });
+        ////////////////
+         $('#SignupForm').on('submit', function(e){
+        
+       
+       
+         event.preventDefault();
+
+        var codeValue = $('#code').val().trim();
+        var validationCode = $('#ValidationCode').val().trim();
+
+        if (codeValue === validationCode) { 
+            $('#SignupForm').unbind('submit').submit();
+        } else {
+          
+            alert('The code is incorrect. Try again.');
+        }
+    });
+    
+    /////////////
+    });
+</script>
+{% endblock %}
+	
+  
+</body>
+
+</html>

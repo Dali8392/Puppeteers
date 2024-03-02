@@ -6,6 +6,7 @@ use App\Repository\ActiviteRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert; 
 
 #[ORM\Entity(repositoryClass: ActiviteRepository::class)]
 class Activite
@@ -16,14 +17,27 @@ class Activite
     private ?int $id = null;
 
     #[ORM\Column(length: 20)]
+    #[Assert\NotBlank(message:"nom de la ville ne doit pas etre vide")] 
+    #[Assert\Length(max:20,maxMessage:"Le nom de la ville ne doit pas contenir plus que 20 caracteres")] 
     private ?string $ville = null;
 
+
+    #[Assert\NotBlank(message:"prix ne doit pas etre vide")] 
+    #[Assert\GreaterThanOrEqual(value:0, message:"Prix doit être au moins 0 €")]
+    #[Assert\LessThanOrEqual(value:100, message:"Prix ne peut pas dépasser 100 €")]
     #[ORM\Column(length: 255)]
     private ?string $prix = null;
 
+
+    #[Assert\NotBlank(message:"details ne doit pas etre vide")] 
+
     #[ORM\Column(length: 255)]
     private ?string $details = null;
-
+    #[Assert\NotBlank(message:"heure ne doit pas etre vide")] 
+    #[Assert\Regex(
+        pattern: '/^de\s+\d{1,2}h\s+a\s+\d{1,2}h$/i',
+        message: "Le format de l'heure doit être 'de xxh a xxh'"
+    )]  
     #[ORM\Column(length: 25)]
     private ?string $heure = null;
 

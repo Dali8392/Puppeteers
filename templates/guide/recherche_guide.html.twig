@@ -1,0 +1,42 @@
+{% extends 'baseAdmin.html.twig' %}
+
+{% block title %}Potential Guides{% endblock %}
+
+{% block body %}
+<div class="container" style="margin-top: 200px;">
+    <h1>Potential Guides</h1>
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Last Name</th>
+                <th>Email</th>
+                <th>CIN</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in users %}
+                {% if user.role == 'user' %}
+                    <tr>
+                        <td>{{ user.id }}</td>
+                        <td>{{ user.name }}</td>
+                        <td>{{ user.lastName }}</td>
+                        <td>{{ user.email }}</td>
+                        <td>{{ user.cin }}</td>
+                        <td>
+                            <form method="POST" action="{{ path('app_guide_make_guide', {'userId': user.id}) }}">
+                                <button type="submit" class="btn btn-primary">Make Guide</button>
+                            </form>
+                        </td>
+                    </tr>
+                {% endif %}
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+            <a href="{{ path('app_guide_index') }}" class="button-submit">Back to Guide List</a>
+
+{% endblock %}

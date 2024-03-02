@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -39,14 +40,21 @@ class User
     #[ORM\ManyToMany(targetEntity: Activite::class, mappedBy: 'participants')]
     private Collection $activites;
 
+    #[ORM\Column]
+    private ?DateTime $dateInscri = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $password = null;
+
     public function __construct()
     {
         $this->hebergements = new ArrayCollection();
         $this->events = new ArrayCollection();
         $this->activites = new ArrayCollection();
+        $this->role='user';
     }
 
-    public function getId(): ?int
+    public function getId(): ?string
     {
         return $this->id;
     }
@@ -196,6 +204,30 @@ class User
         if ($this->activites->removeElement($activite)) {
             $activite->removeParticipant($this);
         }
+
+        return $this;
+    }
+
+    public function getDateInscri(): ?DateTime
+    {
+        return $this->dateInscri;
+    }
+
+    public function setDateInscri(DateTime $dateInscri): static
+    {
+        $this->dateInscri = $dateInscri;
+
+        return $this;
+    }
+
+    public function getPassword(): ?string
+    {
+        return $this->password;
+    }
+
+    public function setPassword(string $password): static
+    {
+        $this->password = $password;
 
         return $this;
     }

@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Activite{% endblock %}
+
+
+
+{% block body %}
+    <div class="container" style="margin-top: 200px;">
+        <h1>Proposer une nouvelle Activite</h1>
+
+
+        {% if form is defined %}
+            {{ form_start(form, { 'attr':{'novalidate':'novalidate'  }}) }}
+
+           
+            
+            {{ form_end(form) }}
+        {% endif %}
+
+ <a href="{{ path('app_activite_index') }}" class="btn btn-rounded btn-danger mb-3">Back to List</a>    </div>
+{% endblock %}

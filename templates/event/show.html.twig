@@ -1,0 +1,214 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{% endblock %}
+
+{% block body %}
+    
+<link rel="stylesheet" type="text/css" href="/plugins/OwlCarousel2-2.2.1/owl.carousel.css">
+<link rel="stylesheet" type="text/css" href="/plugins/OwlCarousel2-2.2.1/owl.theme.default.css">
+<link rel="stylesheet" type="text/css" href="/plugins/OwlCarousel2-2.2.1/animate.css">
+<link rel="stylesheet" type="text/css" href="/styles/single_listing_styles.css">
+<link rel="stylesheet" type="text/css" href="/styles/single_listing_responsive.css">
+
+<script src="/js/jquery-3.2.1.min.js"></script>
+<script src="/styles/bootstrap4/popper.js"></script>
+<script src="/styles/bootstrap4/bootstrap.min.js"></script>
+<script src="/plugins/easing/easing.js"></script>
+<script src="/plugins/parallax-js-master/parallax.min.js"></script>
+<script src="/plugins/colorbox/jquery.colorbox-min.js"></script>
+<script src="/plugins/OwlCarousel2-2.2.1/owl.carousel.js"></script>
+<script src="/https://maps.googleapis.com/maps/api/js?v=3.exp&key=AIzaSyCIwF204lFZg1y4kPSIhKaHEXMLYxxuMhA"></script>
+<script src="/js/single_listing_custom.js"></script>
+<body>
+
+
+
+	
+	<div class="home">
+		<div class="home_background parallax-window" data-parallax="scroll" data-image-src="/images/single_background.jpg"></div>
+		<div class="home_content">
+			<div class="home_title">Event</div>
+		</div>
+	</div>
+
+
+
+
+<style>
+    .qr_code_section {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100%; /* Ensure the container takes up the full height */
+    }
+
+    #qr_code {
+        /* Add any additional styling for the QR code container */
+    }
+</style>
+<br></br>
+<div class="qr_code_section">
+    <div id="qr_code"></div>
+</div>
+
+
+
+<!-- QR Code Section -->
+<div class="qr_code_section">
+    <div id="qr_code">
+        {% if qrCode %}
+            {% for codeType, codeDataUri in qrCode %}
+                <img src="{{ codeDataUri }}" alt="QR Code - {{ codeType }}">
+            {% endfor %}
+        {% else %}
+            <p>No QR code available</p>
+        {% endif %}
+    </div>
+</div>
+
+
+
+
+
+
+
+		<!-- Single Listing -->
+
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-12">
+					<div class="single_listing">
+						
+						<!-- Hotel Info -->
+
+						<div class="hotel_info">
+
+							<!-- Title -->
+							<div class="hotel_title_container d-flex flex-lg-row flex-column">
+								<div class="hotel_title_content">
+									<h1 class="hotel_title">{{ event.getName() }}</h1>
+										<div class="hotel_location">Type : {{ event.getType() }}</div>
+									<div class="hotel_location">Location : {{ event.getEventLocation() }}</div>
+								</div>
+								<div class="hotel_title_button ml-lg-auto text-lg-right">
+									<div class="button book_button trans_200"><a href="#">Join WaitList<span></span><span></span><span></span></a></div>
+									<div class="hotel_map_link_container">
+										<div class="hotel_map_link">{% set duree = event.getDuree() %}
+{% if duree %}
+    {% set years = duree|date('Y')|trim('0') %}
+    {% set months = duree|date('m') %}
+    {% set days = duree|date('d') %}
+    {% set hours = duree|date('H')|trim('0')%}
+    {% set minutes = duree|date('i') %}
+    
+    {{ years > 0 ? years ~ ' Year(s)' ~ (years > 1 ? 's' : '') ~ ' ' : '' }}
+    {{ months > 0 ? months ~ ' Month(s)' ~ (months > 1 ? 's' : '') ~ ' ' : '' }}
+    {{ days > 0 ? days ~ ' Day(s)' ~ (days > 1 ? 's' : '') ~ ' ' : '' }}
+    {{ hours > 0 ? hours ~ ' Hour(s)' ~ (hours > 1 ? 's' : '') ~ ' ' : '' }}
+    {{ minutes > 0 ? minutes ~ ' Minute(s)' ~ (minutes > 1 ? 's' : '') : '' }}
+{% else %}
+    No duration available
+{% endif %}</div>
+									</div>
+								</div>
+							</div>
+
+							<!-- Listing Image -->
+
+							<div class="hotel_image">
+								
+								<div class="hotel_image">
+    <div id="map" style="height: 400px;"></div>
+    <script src="https://cdn.maptiler.com/maptiler-sdk-js/v1.2.0/maptiler-sdk.umd.min.js"></script>
+    <script>
+        maptilersdk.config.apiKey = '14EQpvvQYtCX1dWIjVmF';
+        const map = new maptilersdk.Map({
+            container: 'map',
+            style: maptilersdk.MapStyle.STREETS,
+            center: [{{ event.getEventLocation() }}],
+            zoom: 14,
+        });
+    </script>
+</div>
+<br></br>
+
+							</div>
+
+
+									
+									
+									
+
+						</div>
+
+						<!-- Reviews -->
+
+<div class="reviews">
+    <div class="reviews_title">Comments</div>
+    <div class="reviews_container">
+        <!-- Review -->
+        {% for comment in comments %}
+            {% if comment.getEvent().getId() == id %}
+                <div class="review">
+                    <div class="row">
+                        <div class="col-lg-1">
+                            <div class="review_image">
+                                <img src="/images/review_1.jpg" alt="Profile Image">
+                            </div>
+                        </div>
+                        <div class="col-lg-9">
+                            <div class="review_content">
+                                <div class="review_title_container">
+                                    <div class="review_title">"{{ comment.getContenu() }}"	</div>
+                                </div>
+                                <div class="review_name">{{ comment.getSender() }}</div>
+                                <div class="review_date">{{ comment.getDate() }}</div>
+                            </div>
+                        </div>
+                        <div class="col-lg-2">
+                            <!-- Update button -->
+                            <a href="{{ path('comment_edit', {'id': comment.getId()}) }}" method="post"class="btn btn-primary">Update</a>
+                            <!-- Delete form -->
+                            <form action="{{ path('comment_delete', {'id': comment.getId()}) }}" method="post" >
+                                <input type="hidden" name="_method" value="DELETE">
+                                <button type="submit" class="btn btn-danger">Delete</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+        {% endfor %}
+
+        {{ form_start(form, {'action': path('comment_index', {'id': id}), 'method': 'POST', 'attr': {'novalidate': 'novalidate'}}) }}
+    {{ form_row(form.sender) }}
+    {{ form_row(form.contenu) }}
+    {{ form_row(form.submit) }}
+{{ form_end(form) }}
+    </div>
+</div>
+
+		
+							<div class="travelix_map">
+								<div id="google_map" class="google_map">
+									<div class="map_container">
+										<div id="map"></div>
+									</div>
+								</div>
+							</div>
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>		
+	</div>
+
+
+
+</div>
+
+</body>
+
+</html>
+
+{% endblock %}

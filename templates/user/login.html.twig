@@ -1,0 +1,137 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
+    <title>hawesBiya-Sign up</title>
+
+    {% block stylesheets %}
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+        <link href={{ asset("styles/styleIsncription.css") }} rel="stylesheet" type="text/css" media="all" />
+        <style>
+            .center {
+                text-align: center;
+            }
+            .form-group {
+                display: inline-block;
+                text-align: left;
+            }
+        </style>
+    {% endblock %}
+</head>
+<body>
+    <div class="main center" id="main">
+        <h1>HawesBiya</h1>
+        <p style="text-align: center; color: #fff; font-weight: 600; padding: 0 0 30px;">
+           Enter your username and password to access your account
+        </p>
+
+        <div class="w3_agile_main_grids center">
+            <div id='progress'><div id='progress-complete'></div></div>
+              
+            {{ form_start(form, {'attr': {'id': 'SignupForm', 'class': 'agile_form','novalidate':'novalidate'}}) }}
+                
+                <h3>Login Account :</h3>
+                
+                <div class="form-group agileits_w3layouts_form w3_agileits_margin">
+                    <div class="wthree_input">
+                        <i class="fa fa-user" aria-hidden="true"></i>
+                        {{ form_row(form.id, {'attr': {'placeholder': 'ID'}, 'label': false, 'errors': false}) }}
+                        {{ form_errors(form.id) }}
+                    </div>
+                </div>
+               
+                <div class="form-group agileits_w3layouts_form">
+                    <div class="wthree_input">
+                       <i class="fas fa-lock"></i>
+                       {{ form_widget(form.password, {'attr': {'placeholder': 'Password'}, 'label': false}) }}
+                       {{ form_errors(form.password) }}
+                    </div>
+                </div>
+
+                <div class="clear"></div>
+                
+                <div class="clear"></div>
+                <p>
+                    <button type="button" id="loginface" class="btn btn-primary btn-lg " >face login</button>
+                </p>
+                {{ form_widget(form.sign_up, {
+                     'attr': {
+                      'class': 'btn btn-primary btn-lg submit',
+                      'id': 'SaveAccount'
+                     }
+                }) }}
+            
+            {{ form_end(form) }}
+        
+            <div class="agileits_copyright">
+                <p><a href="#">Back to Home</a></p>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+     {% block javascript %}
+<script src="{{ asset('js/jquery-3.2.1.min.js') }}"></script>
+<script>
+    jQuery(document).ready(function($) {
+        
+
+        
+        
+        $('#SignupForm').on('submit', function(e){
+            e.preventDefault();
+
+            $('#progress-complete').animate({ width: '25%' }, 200, function() {
+                $('#progress-complete').animate({ width: '50%' }, 200, function() {
+                    $('#progress-complete').animate({ width: '80%' }, 200, function() {
+                        $('#SignupForm')[0].submit();
+                    });
+                });
+            });
+        });
+        ///////////////////////
+        $('#loginface').click(function(){
+          
+               
+            $.ajax({
+                url: '{{ path('app_loginFace') }}',
+                type: 'POST',
+                data: { },
+                success: function(response){
+                   
+                 if(!response.success){
+                    alert("Facial recognition not detected. Please try again.");
+                   
+                  }else{
+                   
+                  
+                    $('#form_id').val(response.id);
+                    $('#form_password').val(response.password);
+                 
+                  $('#progress-complete').animate({ width: '25%' }, 200, function() {
+                    $('#progress-complete').animate({ width: '50%' }, 200, function() {
+                        $('#progress-complete').animate({ width: '80%' }, 200, function() {
+                            $('#SignupForm')[0].submit();
+                        });
+                    });
+                });
+                }
+               
+                   
+                },
+                error: function(xhr, status, error) {
+                    console.log(xhr.responseText); 
+                    alert('Error occurred while processing the request!');
+                }
+            });
+        });
+    });
+</script>
+{% endblock %}
+
+</body>
+</html>

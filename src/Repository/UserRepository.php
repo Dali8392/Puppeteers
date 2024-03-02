@@ -20,6 +20,34 @@ class UserRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, User::class);
     }
+    public function findByRegistrationDate(string $period): array
+    {
+        $qb = $this->createQueryBuilder('u')
+            ->where('u.dateInscri >= :startDate')
+            ->setParameter('startDate', $this->getStartDate($period));
+    
+        if ($period != 'all') {
+            $qb->andWhere('u.dateInscri <= :endDate')
+               ->setParameter('endDate', new \DateTime());
+        }
+    
+        return $qb->getQuery()->getResult();
+    }
+    
+
+    private function getStartDate(string $period): \DateTime
+    {
+        switch ($period) {
+            case 'last_7_days':
+                return new \DateTime('-7 days');
+                break;
+            case 'last_30_days':
+                return new \DateTime('-30 days');
+                break;
+            default:
+                return new \DateTime('2024-01-01'); // Mettez ici la date de début de votre choix
+        }
+    }
 
 //    /**
 //     * @return User[] Returns an array of User objects

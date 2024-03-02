@@ -6,6 +6,7 @@ use App\Repository\GuideRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: GuideRepository::class)]
 
@@ -15,25 +16,38 @@ class Guide
     #[ORM\Column(length: 10)]
     private ?string $id = null;
 
+    #[Assert\NotBlank(message: "Name cannot be empty")]
     #[ORM\Column(length: 20)]
-    private ?string $name = null;
 
+    private ?string $name = null;
+    #[Assert\NotBlank(message: "Last name cannot be empty")]
     #[ORM\Column(length: 20)]
+
+
     private ?string $lastName = null;
+
+    #[Assert\NotBlank(message: "Email cannot be empty")]
+    #[Assert\Email(message: "Invalid email format")]
 
     #[ORM\Column(length: 50)]
     private ?string $email = null;
 
+    #[Assert\NotBlank(message: "CIN cannot be empty")]
     #[ORM\Column(length: 8)]
     private ?string $cin = null;
+
+    #[Assert\NotBlank(message: "Role cannot be empty")]
     #[ORM\Column(length: 10)]
-    private ?string $role = null;
+    private ?string $role = "guide";
 
+    #[Assert\NotBlank(message: "Language cannot be empty")]
     #[ORM\Column(length: 20)]
-    private ?string $langue = null;
+    private ?string $langue = "vide";
 
+
+    #[Assert\NotBlank(message: "City name cannot be empty")]
     #[ORM\Column(length: 20)]
-    private ?string $ville = null;
+    private ?string $ville = "vide";
 
     #[ORM\OneToMany(targetEntity: Activite::class, mappedBy: 'guide')]
     private Collection $activites;
@@ -61,7 +75,7 @@ class Guide
         $this->email=$user->getEmail();
         $this->cin=$user->getCin();
     }
-    public function getId(): ?int
+    public function getId(): ?string
     {
         return $this->id;
     }

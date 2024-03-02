@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Display</title>
+  <script src="https://cdn.maptiler.com/maptiler-sdk-js/v1.2.0/maptiler-sdk.umd.min.js"></script>
+  <link href="https://cdn.maptiler.com/maptiler-sdk-js/v1.2.0/maptiler-sdk.css" rel="stylesheet" />
+  <style>
+    body { margin: 0; padding: 0; }
+    #map { position: absolute; top: 0; bottom: 0; width: 100%; }
+  </style>
+</head>
+<body>
+  <div id="map"></div>
+  <script>
+    maptilersdk.config.apiKey = '14EQpvvQYtCX1dWIjVmF';
+    const map = new maptilersdk.Map({
+        container: 'map',
+        style: maptilersdk.MapStyle.STREETS,
+        center: [10.189337708875295, 36.90234098629905],
+        zoom: 14,
+    });
+
+    map.on('click', function (event) {
+        const lngLat = event.lngLat;
+        console.log('Clicked coordinates:', lngLat);
+
+const url = "{{ path('event_edit', {'id': id, 'loc': 'COORDINATES'}) }}";
+        const coordinates = lngLat.lng + "," + lngLat.lat;
+        const finalUrl = url.replace('COORDINATES', coordinates);
+
+        const encodedUrl = encodeURI(finalUrl);
+
+        window.location.href = encodedUrl;
+    });
+</script>
+
+</body>
+</html>

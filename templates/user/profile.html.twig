@@ -1,0 +1,87 @@
+
+ {% extends 'base.html.twig' %}
+
+{% block body %}
+<div class="container" style="margin: 300px;">
+    <div class="row">
+        <div class="col-lg-4">
+            <div class="card profile-card contact">
+                <div class="card-body">
+                    <div class="user-profile">
+                        <div class="user-avatar">
+                            <img src="{{ asset("/persons/" ~ user.getId() ~ ".jpg") }}" alt="User Avatar" class="img-fluid">
+                        </div>
+                        <br>
+                        <br>
+                        <h5 class="user-name">{{ user.getName() }} {{ user.getLastName() }}</h5>
+                        <h6 class="user-email">{{ user.getEmail() }}</h6>
+                    </div>
+                    <div class="about">
+                        <h5>About</h5>
+                        <p>I'm {{ user.getName() }}. Member in HawesBiya family .</p>
+
+                        {# QR code #}
+
+
+                        <input id='code' value='' readonly hidden  >
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-8">
+            <div class="card profile-edit-card">
+                <div class="card-body contact_form_container">
+                    <h6 class="text-primary contact_title">Personal Details</h6>
+
+                    <div class="form-group row">
+                        <div class="col-6">
+                            <input id='idUser' name='idUser' value={{ user.getId() }} class='contact_form_subject input_field' placeholder='ID' readonly>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-6">
+                            <input name='name' value="{{ user.getName() }}" class='contact_form_subject input_field' placeholder='Name' readonly>
+                        </div>
+                        <div class="col-6">
+                            <input name='lastName' value="{{ user.getLastName() }}" class='contact_form_subject input_field' placeholder='Last Name' readonly>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-6">
+                            <input name='email' value="{{ user.getEmail() }}" class='contact_form_subject input_field' placeholder='E-mail' readonly>
+                        </div>
+                        <div class="col-6">
+                            <input name='cin' value="{{ user.getCin() }}" class='contact_form_subject input_field' placeholder='CIN' readonly>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-6">
+                            <input name='roleUser' value="{{ user.getRole() }}" class='contact_form_subject input_field' placeholder='Role' readonly>
+                        </div>
+                        <div class="col-6">
+                            <input name='DateInscrUser' value="{{ user.getDateInscri() ? user.getDateInscri().format('Y-m-d H:i:s') : '' }}" class='contact_form_subject input_field' placeholder='Date Inscri' readonly>
+                        </div>
+                    </div>
+                  
+                    <div class="form-group row">
+                        <div class="col-6">
+                            <a href="{{ path('modif_user', {'id': user.getId()}) }}" class='form_submit_button button'>Edit Profile</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block js %}
+<script>
+    // Définir le contenu du code QR
+    var qrCodeContent = "id: {{ user.getId() }}, Nom: {{ user.getName() }}, Email: {{ user.getEmail() }}";
+    
+    // Générer le code QR en utilisant qrcode.js
+    new QRCode(document.getElementById("qrcode"), qrCodeContent);
+</script>
+{% endblock %}
+
+
