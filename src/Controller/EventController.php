@@ -27,7 +27,7 @@ use Endroid\QrCode\Label\Label;
 use Endroid\QrCode\Logo\Logo;
 use Endroid\QrCode\Writer\PngWriter;
 use Endroid\QrCode\Label\Font\NotoSans;
-
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class EventController extends AbstractController
 {
@@ -40,7 +40,7 @@ class EventController extends AbstractController
         $this->managerRegistry = $managerRegistry;
     }
     #[Route('/event/index/{loc?}', name: 'event_index', methods: ['GET', 'POST'])]
-    public function index(EventRepository $eventRepository, $loc = null, Request $request): Response
+    public function index(EventRepository $eventRepository, $loc = null, Request $request,SessionInterface $session): Response
     {
         $countries = []; // Initialize an empty array to store countries
         $location = '';
@@ -75,13 +75,15 @@ class EventController extends AbstractController
         $form->handleRequest($request);
     
         if ($form->isSubmitted() && $form->isValid()) {
+            $event->setUserCreator($session->get('id'));
+
             $event->setStatus('Pending');
             $event->setEventLocation($location);
-    
+            
             $userRepository = $this->managerRegistry->getRepository(User::class);
             $user = $userRepository->find($event->getUserCreator());
             $event->addParticipant($user);
-    
+             
             $this->entityManager->persist($event);
             $this->entityManager->flush();
     
@@ -325,7 +327,7 @@ public function delete(Event $event, EntityManagerInterface $entityManager): Res
 }
 
     #[Route('/comment/{id}', name: 'comment_index', methods: ['GET', 'POST'])]
-public function indexComment(CommentRepository $commentRepository, Request $request, $id, EntityManagerInterface $entityManager): Response
+public function indexComment(CommentRepository $commentRepository, Request $request, $id, EntityManagerInterface $entityManager,SessionInterface $session): Response
 {
     // Retrieve event ID from the request parameters
     $eventId = (int) $id;
@@ -346,6 +348,7 @@ public function indexComment(CommentRepository $commentRepository, Request $requ
     $currentDate = new \DateTime();
     $formattedDate = $currentDate->format('Y-m-d H:i:s');
     $comment->setDate($formattedDate);
+    $comment->setSender($session->get('id'));
 
     $form = $this->createForm(CommentFormeType::class, $comment);
     $form->handleRequest($request);

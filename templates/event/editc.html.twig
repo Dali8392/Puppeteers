@@ -23,11 +23,11 @@
 
 					<div class="contact_form_container">
 						<div class="contact_title text-center">Edit Comment</div>
-<form action="{{ path('comment_edit', {'id': id}) }}" id="contact_form" class="contact_form text-center" method="POST" novalidate="novalidate">
-    {{ form_row(form.sender, {'attr': {'class': 'contact_form_name input_field', 'placeholder': 'Name', 'required': 'required', 'data-error': 'Name is required.'}}) }}
-    {{ form_row(form.contenu, {'attr': {'class': 'text_field contact_form_message', 'placeholder': 'Message', 'required': 'required', 'data-error': 'Please, write us a message.'}}) }}
-    <button type="submit" id="form_submit_button" class="form_submit_button button trans_200">send message<span></span><span></span><span></span></button>
-</form>
+						{{ form_start(form, {'id': 'contact_form', 'class': 'contact_form text-center', 'method': 'POST', 'attr': {'novalidate': 'novalidate'}}) }}
+						{{ form_row(form.contenu, {'attr': {'class': 'text_field contact_form_message', 'placeholder': 'Message', 'required': 'required', 'data-error': 'Please, write us a message.'}}) }}
+						{{ form_row(form.submit, {'attr': {'id': 'form_submit_button', 'class': 'form_submit_button button trans_200'}}) }}
+
+						{{ form_end(form) }} 
 				</div>
 
 				</div>

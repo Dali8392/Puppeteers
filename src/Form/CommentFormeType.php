@@ -13,10 +13,7 @@ class CommentFormeType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('date')
             ->add('contenu')
-            ->add('sender')
-            ->add('event')
             ->add('submit', SubmitType::class)
         ;
     }

@@ -101,7 +101,7 @@
 
                                     </div>
                                     <div class="col-6 text-end px-0">
-                                        <a href="#" class="btn-hover btn text-white py-2 px-4">Join Waitlist</a>
+                                      {#  <a href="{{ path('join_path', {'idUser': app.session.get('id'),'idEvent': event.getId() }) }}" class="btn-hover btn text-white py-2 px-4">Join Waitlist</a> #}
                                     </div>
                                 </div>
                             </div>
@@ -170,13 +170,7 @@
                                         </div>
                                     </td>
                                 </tr>
-                                <tr>
-                                    <td colspan="2">
-                                        <div class="form-floating">
-                                            {{ form_row(form.userCreator, {'label': 'Event Creator', 'attr': {'class': 'form-control bg-white border-0', 'placeholder': 'Event Creator'}}) }}
-                                        </div>
-                                    </td>
-                                </tr>
+                                
                             </tbody>
                         </table>
                     </div>

@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\CommentRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: CommentRepository::class)]
 class Comment
@@ -16,6 +17,7 @@ class Comment
     #[ORM\Column(length: 255)]
     private ?string $date = null;
 
+    #[Assert\NotBlank(message: "Context should not be blank")]
     #[ORM\Column(length: 255)]
     private ?string $contenu = null;
 

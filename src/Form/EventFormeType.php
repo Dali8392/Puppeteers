@@ -49,12 +49,7 @@ class EventFormeType extends AbstractType
                     new NotBlank(['message' => 'Budget Allocated is required.']),
                 ],
             ])
-            ->add('userCreator', TextType::class, [
-                'constraints' => [
-                    new NotBlank(['message' => 'Event Creator is required.']),
-                ],
-                'empty_data' => '',
-            ])
+            
             ;
     }
 
