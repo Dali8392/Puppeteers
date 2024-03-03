@@ -56,11 +56,21 @@ function getNbrReservationsVoyageByDate($date,$id){
     return $query->getSingleScalarResult();
    
 }
+function getDatesVoyage($id){
+    $em = $this->getEntityManager();
+    $dql = "SELECT rv.date FROM App\Entity\ReservationVoyage rv WHERE rv.voyageId= :id";
+    $query = $em->createQuery($dql);
+   
+    $query->setParameter('id', $id);
+    $dates = $query->getResult();
+    $datesArray = [];
+    foreach ($dates as $date) {
+        $datesArray[] = $date['date'];
+    }
 
-// function getTopVoyages(){
-//     $em= $this->getEntityManager();
-  
+    return $datesArray;
+}
 
-// }
+
 
 }

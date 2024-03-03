@@ -21,13 +21,13 @@ class VoyageFormeType extends AbstractType
             ->add('DateDep', DateType::class, array(
                 'widget' => 'single_text',
                 'format' => 'yyyy-MM-dd',
-                'data' => new \DateTime(),
+                // 'data' => new \DateTime(),
                 'attr' => array('class' => 'form-control', 'style' => 'line-height: 20px;')
             ))
             ->add('DateArr', DateType::class, array(
                 'widget' => 'single_text',
                 'format' => 'yyyy-MM-dd',
-                'data' => new \DateTime(),
+                // 'data' => new \DateTime(),
                 'attr' => array('class' => 'form-control', 'style' => 'line-height: 20px;')
             ))
             ->add('HeureDep', TimeType::class, [

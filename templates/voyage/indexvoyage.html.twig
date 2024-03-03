@@ -54,7 +54,7 @@
          
 
 			
-
+{% set myArray = ['Travel To Milan ! ', 'Travel To Madrid !', 'Travel To Istanbul !'] %}
             <!-- Slider Item -->
             {% for i in range(0, 2) %}
             <div class="owl-item home_slider_item">
@@ -69,8 +69,7 @@
                   data-animation-in="flipInX"
                   data-animation-out="animate-out fadeOut"
                 >
-                  <h1>Our</h1>
-                  <h1>Trends</h1>
+                  <h1>{{myArray[i]}}</h1>
                   <div class="button home_slider_button">
                     <div class="button_bcg"></div>
                     <a href="#"
@@ -210,7 +209,7 @@ input.addEventListener("input", (event) => {
 
 <div id="elements-container">
 {% if response is empty %}
-<h2> Our trips will be available soon. Stay Tuned !!</h2>
+<h2 style="color:black;font-size:25px;align-text:center;"> Our trips will be available soon. Stay Tuned !!</h2>
 {% else %}
 {% for t in response %}
 

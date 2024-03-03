@@ -181,6 +181,31 @@ class VoyageController extends AbstractController
 
 
 
+// #[Route('/detailsvoyage/{id}', name:'detailsVoyage')]
+// public function showDetails(int $id, VoyageRepository $repo,ReservationVoyageRepository $rvrepo, \Doctrine\Persistence\ManagerRegistry $mr,ChartBuilderInterface $chartBuilder): Response
+// {
+//    $v=$repo->find($id);
+   
+//    $endDate = new \DateTime();
+//    $startDate = (clone $endDate)->modify('-6 days');
+
+//    $chartlabels = [];
+//    $chartdata = [];
+//    $currentDate = $startDate;
+//    while ($currentDate <= $endDate) {
+//        $dateStr = $currentDate->format('Y-m-d');
+//        $chartlabels[] = $dateStr;
+//        $chartdata[] = $rvrepo->getNbrReservationsVoyageByDate($currentDate,$id);
+//        $currentDate->modify('+1 day');
+//    }
+
+    
+//    return $this->render('voyage/detailsvoyage.html.twig', [
+//     't' => $v,
+//     'labels'=>json_encode($chartlabels),
+//     'data'=>json_encode($chartdata),
+// ]);
+// }
 #[Route('/detailsvoyage/{id}', name:'detailsVoyage')]
 public function showDetails(int $id, VoyageRepository $repo,ReservationVoyageRepository $rvrepo, \Doctrine\Persistence\ManagerRegistry $mr,ChartBuilderInterface $chartBuilder): Response
 {
@@ -191,13 +216,21 @@ public function showDetails(int $id, VoyageRepository $repo,ReservationVoyageRep
 
    $chartlabels = [];
    $chartdata = [];
+   $listedates=$rvrepo->getDatesVoyage($id);
    $currentDate = $startDate;
+   $datesvalides=[];
    while ($currentDate <= $endDate) {
+       $nombrereservations=0;
        $dateStr = $currentDate->format('Y-m-d');
        $chartlabels[] = $dateStr;
-       $chartdata[] = $rvrepo->getNbrReservationsVoyageByDate($currentDate,$id);
+       foreach ($listedates as $date) {
+        if ($date->format('Y-m-d') == $dateStr) {
+            $nombrereservations=$nombrereservations+1;}
+        }
+      $chartdata[] = $nombrereservations;
        $currentDate->modify('+1 day');
    }
+
 
     
    return $this->render('voyage/detailsvoyage.html.twig', [
