@@ -76,7 +76,9 @@
     </table>
 
  <a href="{{ path('app_activite_user_index') }}" class="btn btn-rounded btn-danger mb-3">{{ 'Back To List'|trans }}</a>
-    <a href="{{ path('app_activite_subscribe', {'userId': 'aaa', 'activiteId': activite.id}) }}" class="btn btn-flat btn-success mb-3">{{'Subscribe to this activity'|trans }}</a>
+    <a href="{{ path('app_activite_subscribe', {'userId': app.session.get('id'), 'activiteId': activite.id}) }}" class="btn btn-flat btn-success mb-3">{{'Subscribe to this activity'|trans }}</a>
+    <a href="{{ path('generate_pdf', {'id': activite.id}) }}" class="btn btn-rounded btn-danger mb-3">Generate PDF</a>
+
     <a href="{{ path('app_activite_subscribed') }}" class="btn btn-flat btn-success mb-3">{{'Show list of subbed activities'|trans }}</a>
 </div>
 {% endblock %}

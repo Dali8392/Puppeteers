@@ -82,7 +82,7 @@
 
     <a href="{{ path('app_activite_index') }}" class="btn btn-rounded btn-danger mb-3">Back to List</a>
     <a href="{{ path('app_activite_subscribe', {'userId': 'aaa', 'activiteId': activite.id}) }}" class="btn btn-flat btn-success mb-3">Subscribe to this activity</a>
-<a href="{{ path('pdf_template', {'activiteId': activite.id}) }}" class="btn btn-rounded btn-danger mb-3">Generate PDF</a>
+    <a href="{{ path('generate_pdf', {'id': activite.id}) }}" class="btn btn-rounded btn-danger mb-3">Generate PDF</a>
     <a href="{{ path('app_activite_subscribed') }}" class="btn btn-flat btn-success mb-3">Show list of subbed activities</a>
    
 

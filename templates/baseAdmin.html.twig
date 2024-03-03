@@ -56,7 +56,7 @@
       <div class="sidebar-menu">
         <div class="sidebar-header">
           <div class="logo">
-            <a href={{ path("app_homeAdmine") }}
+            <a href={{ path("fetch_UserAdmin") }}
               ><img src={{ asset("assets/images/icon/logo.png") }} alt="logo"
             /></a>
           </div>
@@ -66,20 +66,15 @@
             <nav>
               <ul class="metismenu" id="menu">
                 <li class="active">
-                  <a href={{ path("app_homeAdmine") }} aria-expanded="true"
+                  <a href={{ path("fetch_UserAdmin") }} aria-expanded="true"
                     ><i class="ti-dashboard"></i><span>dashboard</span></a
                   >
                 </li>
                 <li>
-                  <a href="#" aria-expanded="true"
+                  <a href={{ path("fetch_UserAdmin") }} aria-expanded="true"
                     ><i class="fa fa-users"></i><span>User Management </span></a
                   >
-                  <ul class="collapse">
-                    <li><a href="#">Left Sidebar</a></li>
-                    <li>
-                      <a href="#">Horizontal Sidebar</a>
-                    </li>
-                  </ul>
+                 
                 </li>
                 <li>
                   <a href="#" aria-expanded="true"
@@ -87,8 +82,10 @@
                     ><span>Accommodation management </span></a
                   >
                   <ul class="collapse">
-                    <li><a href="#">hotels</a></li>
-                    <li><a href="#">houses</a></li>
+                    <li><a href={{ path("liste1") }}>list Accommodation</a></li>
+                    <li><a href={{ path("types") }}>Type of Accommodation</a></li>
+                    <li><a href={{ path("stats") }}>Statistics</a></li>
+
                   </ul>
                 </li>
                 <li>
@@ -97,8 +94,8 @@
                     ><span>Travel Management </span></a
                   >
                   <ul class="collapse">
-                    <li><a href="#">exmpl1</a></li>
-                    <li><a href="#">exempl2</a></li>
+                    <li><a href={{ path("VoyagesList") }}>list voyage</a></li>
+                    <li><a href={{ path("moyensList") }}>list moyens</a></li>
                   </ul>
                 </li>
                 <li>
@@ -107,8 +104,8 @@
                     ><span>Reservation management</span></a
                   >
                   <ul class="collapse">
-                    <li><a href="#">travel reservation </a></li>
-                    <li><a href="#">accommodation reservation </a></li>
+                    <li><a href={{ path("reservation_listv") }}>travel reservation </a></li>
+                    <li><a href={{ path("reservation_listh") }}>accommodation reservation </a></li>
                   </ul>
                 </li>
                 <li>
@@ -116,8 +113,8 @@
                     ><i class="fa fa-map"></i> <span>Event management </span></a
                   >
                   <ul class="collapse">
-                    <li><a href="#">exmpl1</a></li>
-                    <li><a href="#">exempl2</a></li>
+                    <li><a href={{ path("event_show_back") }}>list event </a></li>
+                    
                   </ul>
                 </li>
 
@@ -127,8 +124,17 @@
                     <span>Activity management​</span></a
                   >
                   <ul class="collapse">
-                    <li><a href="#">exempl</a></li>
-                    <li><a href="#">exempl2</a></li>
+                    <li><a href={{ path("app_activite_index") }}>Activity List</a></li>
+                    <li><a href={{ path("app_activite_accepter") }}>Pending activities</a></li>
+                  </ul>
+                </li>
+                <li>
+                  <a href="#" aria-expanded="true"
+                    ><i class="fa fa-calendar-minus-o"></i>
+                    <span>Guide management​</span></a
+                  >
+                  <ul class="collapse">
+                    <li><a href={{ path("app_guide_recherche") }}>Make into Guide</a></li>
                   </ul>
                 </li>
               </ul>
@@ -367,7 +373,7 @@
               <div class="breadcrumbs-area clearfix">
                 <h4 class="page-title pull-left">Dashboard</h4>
                 <ul class="breadcrumbs pull-left">
-                  <li><a href="index.html">Home</a></li>
+                  <li><a href={{ path("fetch_UserAdmin") }}>Home</a></li>
                   <li><span>Dashboard</span></li>
                 </ul>
               </div>
@@ -383,8 +389,7 @@
                   {{ app.session.get('name') }} {{ app.session.get('lastName') }} <i class="fa fa-angle-down"></i>
                 </h4>
                 <div class="dropdown-menu">
-                  <a class="dropdown-item" href="#">Message</a>
-                  <a class="dropdown-item" href="#">Settings</a>
+                  
                   <a class="dropdown-item" href={{ path("logout_user") }}>Log Out</a>
                 </div>
               </div>
@@ -431,7 +436,7 @@
                 <a
                   type="button"
                   class="btn btn-primary btn-flat btn-lg mt-3"
-                  href="#"
+                  href={{ path("choice") }}
                   >Click</a
                 >
               </div>

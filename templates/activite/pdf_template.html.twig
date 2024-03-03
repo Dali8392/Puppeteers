@@ -1,70 +1,201 @@
-{% extends 'base.html.twig' %}
-
-
-{% block body %}
-<div class="container" style="margin-top: 200px;">
-    <div id="pdfContent">
-        <img src="/images/logo.png" style="width: 100px; height: auto;" alt="Logo">
-        <h1>HawesBiya.tn</h1>
-        <ul>
-            <li><strong>Ville:</strong> {{ activite.ville }}</li>
-            <li><strong>Prix:</strong> {{ activite.prix }}</li>
-            <li><strong>Details:</strong> {{ activite.details }}</li>
-            <li><strong>Heure:</strong> {{ activite.heure }}</li>
-        </ul>
-        
-        <!-- Weather information -->
-        <h2>Weather Forecast for {{ activite.ville }}</h2>
-        {% if weatherData is defined and weatherData.forecast.forecastday is defined %}
-            <div class="weather-forecast">
-                {% for forecastDay in weatherData.forecast.forecastday %}
-                    {% if forecastDay.day is defined %}
-                        <div class="weather-day">
-                            <p class="date">{{ forecastDay.date }}</p>
-                            <p class="weather-condition">{{ forecastDay.day.condition.text }}</p>
-                            <img src="{{ forecastDay.day.condition.icon }}" alt="{{ forecastDay.day.condition.text }}" class="weather-icon">
-                            <p class="temperature">Max: {{ forecastDay.day.maxtemp_c }}°C, Min: {{ forecastDay.day.mintemp_c }}°C</p>
-                        </div>
-                    {% endif %}
-                {% endfor %}
-            </div>
-        {% else %}
-            <p>No weather information available</p>
-        {% endif %}
-    </div>
-
-    <button id="generatePdfBtn">Generate PDF</button>
-</div>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
-
-<script>
-  window.jsPDF = window.jspdf.jsPDF;
-
-  const image = document.getElementById('pdfContent').querySelector('img'); // Get the image element
-
-  image.onload = function() {
-    // Image has loaded, proceed with PDF generation
-    const generatePdf = function() {
-      const pdf = new jsPDF();
-      pdf.html(document.getElementById('pdfContent'), {
-        callback: function(pdf) {
-          setTimeout(function() {
-            pdf.save('hawesbiya_pdf.pdf');
-          }, 1000);
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Booking Details</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            color: #333;
+            margin: 0;
+            padding: 0;
         }
-      });
-    };
 
-    if (image.complete) { // Check if image is fully loaded before generating PDF
-      generatePdf();
-    } else {
-      // Handle potential errors or delays in image loading (optional)
-      console.warn("Image not fully loaded yet, waiting...");
-      image.addEventListener('load', generatePdf); // Add event listener for delayed loading
+        #content {
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+        }
+
+        #title {
+            background-color: rgba(138, 43, 226, 0.1);
+            color: #333;
+            padding: 20px;
+            text-align: center;
+            margin-top: 0;
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        #print-content {
+            margin-bottom: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+            color: #333; 
+        }
+
+        #contact {
+            background-color: rgba(138, 43, 226, 0.1); 
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+            border-bottom-left-radius: 10px;
+            border-bottom-right-radius: 10px;
+        }
+
+        .contact-info {
+            margin-bottom: 10px;
+        }
+
+        .contact-info p {
+            margin: 5px 0;
+            color: #333; 
+        }
+
+        .message {
+            margin-top: 20px;
+            font-style: italic;
+            font-size: 14px;
+            line-height: 1.5;
+            color: #333; 
+            text-align: center;
+        }
+
+        .thank-you {
+            margin-top: 20px;
+            text-align: center;
+            font-weight: bold;
+            color: #333; 
+        }
+
+        .title-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .title-content h1 {
+            margin: 0;
+            flex-grow: 1;
+        }
+
+        .title-content p {
+            margin: 0;
+        }
+
+        /* Footer Styles */
+        footer {
+            text-align: center;
+            margin-top: 20px;
+            color: #333; 
+        }
+
+        #google_translate_element {
+            display: inline-block;
+            color: #333; 
+        }
+    </style>
+</head>
+<body>
+
+<div id="content">
+    <div id="title">
+        <div class="title-content">
+            <h1>HawesBiya Travel Agency</h1>
+        </div>
+        <p style="font-size: 16px;">Thank you for choosing our travel agency for your upcoming activity.</p>
+    </div>
+    <br>
+    <br>
+    <br>
+    <p class="message">These are the details of your activity. Please keep it for any future reference.</p>
+    <br>
+    <br>
+
+    <div id="print-content">
+        <table>
+            <tr>
+                <th>Activity</th>
+                
+            <tr>
+                <th>Ville</th>
+                <td>{{ activite.ville }}</td>
+            </tr>
+            <tr>
+                <th>Prix</th>
+                <td>{{ activite.prix }}</td>
+            </tr>
+            <tr>
+                <th>Details</th>
+                <td>{{ activite.details }}</td>
+            </tr>
+            <tr>
+                <th>Heure</th>
+                <td>{{ activite.heure }}</td>
+            </tr>
+            <th>Weather</th>
+<td>
+    {% if weatherData is defined and weatherData.forecast.forecastday is defined %}
+        <h3>Weather Forecast for {{ activite.ville }}</h3>
+        <div class="weather-forecast">
+            {% for forecastDay in weatherData.forecast.forecastday %}
+                {% if forecastDay.day is defined %}
+                    <div class="weather-day">
+                        <p class="date">{{ forecastDay.date }}</p>
+                        <p class="weather-condition">{{ forecastDay.day.condition.text }}</p>
+                        <p class="temperature">Max: {{ forecastDay.day.maxtemp_c }}°C, Min: {{ forecastDay.day.mintemp_c }}°C</p>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+    {% else %}
+        <p>No weather information available</p>
+    {% endif %}
+</td>
+        </table>
+    </div>
+    <br>
+    <br>
+    <p class="message">If you have any questions or need further assistance, feel free to contact us. We're here to help make your activity as enjoyable as possible.</p>
+    <div id="contact">
+        <h2>Contact</h2>
+        <div class="contact-info">
+            <p>Cite el ghazela ariana Tunisie 2083</p>
+            <p>71 969 969</p>
+            <p>hawesBiya@gmail.com</p>
+            <p>www.hawesBiya.com</p>
+        </div>
+    </div>
+    <p class="thank-you">Thank you again for your trust and enjoy your activity!</p>
+</div>
+
+<!-- Footer -->
+<footer>
+    <div id="google_translate_element"></div>
+</footer>
+<!-- End Footer -->
+
+<script type="text/javascript">
+    function googleTranslateElementInit() {
+        new google.translate.TranslateElement({pageLanguage: 'fr', includedLanguages: 'en,es,ar', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');
     }
-  };
-
-  // Additional code (e.g., button click event listener) remains the same
 </script>
-{% endblock %}
+<script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
+</body>
+</html>

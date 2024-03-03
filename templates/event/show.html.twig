@@ -154,7 +154,7 @@
                     <div class="row">
                         <div class="col-lg-1">
                             <div class="review_image">
-                                <img src="/images/review_1.jpg" alt="Profile Image">
+                                <img src="{{ asset("/persons/" ~ comment.getSender() ~ ".jpg") }}" alt="Profile Image">
                             </div>
                         </div>
                         <div class="col-lg-9">
@@ -166,7 +166,7 @@
                                 <div class="review_date">{{ comment.getDate() }}</div>
                             </div>
                         </div>
-                        <div class="col-lg-2">
+                        {#<div class="col-lg-2">
                             <!-- Update button -->
                             <a href="{{ path('comment_edit', {'id': comment.getId()}) }}" method="post"class="btn btn-primary">Update</a>
                             <!-- Delete form -->
@@ -174,16 +174,40 @@
                                 <input type="hidden" name="_method" value="DELETE">
                                 <button type="submit" class="btn btn-danger">Delete</button>
                             </form>
+                        </div>#}
+                        <div class="col-lg-2">
+                            <!-- Update button -->
+                            <a href="{{ path('comment_edit', {'id': comment.getId()}) }}" class="btn btn-primary btn-sm">Update</a>
+                            <!-- Delete form -->
+                            <form action="{{ path('comment_delete', {'id': comment.getId()}) }}" method="post" class="d-inline">
+                                <input type="hidden" name="_method" value="DELETE">
+                                <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                            </form>
                         </div>
+                        
                     </div>
                 </div>
             {% endif %}
         {% endfor %}
 
-        {{ form_start(form, {'action': path('comment_index', {'id': id}), 'method': 'POST', 'attr': {'novalidate': 'novalidate'}}) }}
+      {#  {{ form_start(form, {'action': path('comment_index', {'id': id}), 'method': 'POST', 'attr': {'novalidate': 'novalidate'}}) }}
     {{ form_row(form.contenu) }}
     {{ form_row(form.submit) }}
+{{ form_end(form) }} #}
+{{ form_start(form, {'attr': {'class': 'form-horizontal', 'novalidate': 'novalidate'}}) }}
+    <div class="form-group">
+        {{ form_row(form.contenu, {'attr': {'class': 'form-control', 'placeholder': 'Votre commentaire'}}) }}
+        <!-- Utilisation de la classe "form-control" pour styliser le champ de contenu -->
+    </div>
+    <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-10">
+            {{ form_row(form.submit, {'attr': {'class': 'btn btn-primary'}}) }}
+            <!-- Utilisation de la classe "btn" et "btn-primary" pour styliser le bouton de soumission -->
+        </div>
+    </div>
 {{ form_end(form) }}
+
+
     </div>
 </div>
 

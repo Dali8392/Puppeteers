@@ -41,12 +41,10 @@ public function __construct(SessionInterface $session,)
 }
 
 
-
-    #[Route('/', name: 'app_home')]
-    public function home(Request $request,EntityManagerInterface $entityManager):Response {
+#[Route('/', name: 'app_home')]
+public function home(Request $request,EntityManagerInterface $entityManager):Response {
         
-         
-         $vistor= new Visitor();
+        $vistor= new Visitor();
          $vistor->setIpAddress($this->getClienIp());
          $vistor->setDateInscri(new DateTime('now', new DateTimeZone(date_default_timezone_get())));
          $entityManager->persist($vistor);
@@ -58,8 +56,15 @@ public function __construct(SessionInterface $session,)
        
     }
     #[Route('/dashboard', name: 'app_homeAdmine')]
-    public function homeAdmine():Response {
-            return $this->render('baseAdmin.html.twig');
+       public function homeAdmine():Response {
+        if($this->session->has('id')){
+            if($this->session->get('role') == 'admin'){
+                
+                return $this->render('baseAdmin.html.twig');
+            }
+            return $this->redirectToRoute('app_home');
+        }
+      return $this->redirectToRoute('login_user');
     }
 
     ////////thez li inscription wa fi nafes wa9et ta3mel add fel base wa tab3eth mail welcom
@@ -143,11 +148,18 @@ public function __construct(SessionInterface $session,)
     #[Route('/userAdmin', name: 'fetch_UserAdmin')]
     public function fetch(Request $request): Response
     {
+        if($this->session->has('id')){
+            if($this->session->get('role') == 'admin'){
         $result = $this->getDoctrine()->getRepository(User::class)->findAll();
     
         return $this->render('user/backoffice.html.twig', [
             'list' => $result,
         ]);
+    }
+        return $this->redirectToRoute('app_home');
+
+    }
+    return $this->redirectToRoute('login_user');
     }
     /////////tfase5 user
     #[Route('/user/delete/{id}', name: 'delet_user')]
@@ -207,10 +219,11 @@ public function __construct(SessionInterface $session,)
         return new Response('Admin role deleted successfully');
     }
      ////////modif user 
-    #[Route('/user/modif/{id}', name: 'modif_user')]
-    public function modif($id , Request $request,ManagerRegistry $managerRegistry): Response
-    {
-        
+    #[Route('/user/modif', name: 'modif_user')]
+    public function modif( Request $request,ManagerRegistry $managerRegistry): Response
+    {  
+        if($this->session->has('id')){
+          $id=$this->session->get('id');
         $user = $managerRegistry->getManager()->getRepository(User::class)->findOneBy(['id' => $id]);
         $user->setPassword($this->decrypterMotDePasse($user->getPassword()));
         $form = $this->createForm(UserFormeType::class, $user);
@@ -221,13 +234,16 @@ public function __construct(SessionInterface $session,)
             $user->setPassword($this->crypterMotDePasse($user->getPassword()));
            $managerRegistry->getManager()->persist($user);
             $managerRegistry->getManager()->flush();
-            return $this->redirectToRoute('profile_user', ['id' => $user->getId()]);
+            return $this->redirectToRoute('profile_user');
              
         }
         return $this->render('user/editProfile.html.twig', [
             'form' => $form->createView(),
             'user' => $user,
         ]);
+      }
+      return $this->redirectToRoute('login_user');
+
     }
      ////////reset password
 
@@ -313,13 +329,18 @@ public function __construct(SessionInterface $session,)
     }
 
     /////////////////profile 
-    #[Route('/user/profile/{id}', name: 'profile_user')]
-    public function profileUser($id,Request $request,ManagerRegistry $managerRegistry): Response
-            {
-             
+    #[Route('/user/profile', name: 'profile_user')]
+    public function profileUser(Request $request,ManagerRegistry $managerRegistry): Response
+            { 
+                if($this->session->has('id')){
+                  $id=$this->session->get('id');
                 return $this->render('user/profile.html.twig', [
                 'user' => $managerRegistry->getManager()->getRepository(User::class)->findOneBy(['id' => $id]),
-            ]);
+              ]);
+
+              }
+            return $this->redirectToRoute('login_user');
+
             }
 
              /////////////////logout

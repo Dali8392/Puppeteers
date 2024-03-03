@@ -14,26 +14,35 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Form\FormError;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 #[Route('/guide')]
 class GuideController extends AbstractController
 {
+    private $session;
+    function __construct(SessionInterface $sessionInterface) {
+       $this->session=$sessionInterface;
+    }
 
    
     #[Route('/', name: 'app_guide_index', methods: ['GET'])]
 
     public function index(GuideRepository $guideRepository): Response
     {
+        
         return $this->render('guide/index.html.twig', [
             'guides' => $guideRepository->findAll(),
         ]);
+  
     }
     #[Route('/recherche', name: 'app_guide_recherche', methods: ['GET'])]
     public function recherche(UserRepository $userRepository): Response
     {
+        
         return $this->render('guide/recherche_guide.html.twig', [
             'users' => $userRepository->findAll(),
         ]);
+   
     }
 
  

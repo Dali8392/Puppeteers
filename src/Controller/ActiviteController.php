@@ -13,23 +13,20 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Dompdf\Dompdf;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[Route('/activite')]
 class ActiviteController extends AbstractController
 { 
-    #[Route('/pdf/{activiteId}', name: 'pdf_template', methods: ['GET'])]
-
-    public function pdfTemplate($activiteId,EntityManagerInterface $entityManager): Response
-    {
-        $activity = $entityManager->find(Activite::class, $activiteId);
-
-        return $this->render('activite/pdf_template.html.twig', [
-            'activite' => $activity,
-        ]);
+    private $session;
+    function __construct(SessionInterface $sessionInterface) {
+       $this->session=$sessionInterface;
     }
+    
 
 
 
@@ -40,8 +37,10 @@ class ActiviteController extends AbstractController
     
 
     #[Route('/subscribe/{userId}/{activiteId}', name: 'app_activite_subscribe', methods: ['GET'])]
-    public function subscribe($userId, $activiteId, EntityManagerInterface $entityManager): Response
-    {   $userId="aaa";
+    public function subscribe($userId, $activiteId, EntityManagerInterface $entityManager,): Response
+    {   
+        
+            
         $user = $entityManager->find(User::class, $userId);
         $activite = $entityManager->find(Activite::class, $activiteId);
 
@@ -54,14 +53,16 @@ class ActiviteController extends AbstractController
         } else {
             return new Response('User or Activite not found', Response::HTTP_NOT_FOUND);
         }
+    
     }
 
 
 
     #[Route('/subscribed', name: 'app_activite_subscribed', methods: ['GET'])]
     public function subscribed(EntityManagerInterface $entityManager): Response
-    {
-        $userId = "aaa";
+    {     
+       
+        $userId = $this->session->get('id');
 
         $user = $entityManager->find(User::class, $userId);
 
@@ -75,6 +76,7 @@ class ActiviteController extends AbstractController
         } else {
             return new Response('User not found', Response::HTTP_NOT_FOUND);
         }
+    
     }
 
 
@@ -82,6 +84,9 @@ class ActiviteController extends AbstractController
     #[Route('/userindex', name: 'app_activite_user_index', methods: ['GET'])]
     public function userindex(ActiviteRepository $activiteRepository, Request $request)
 {
+   
+
+    
     $searchTerm = $request->query->get('search');
 
     $activities = $activiteRepository->findAll();
@@ -97,10 +102,12 @@ class ActiviteController extends AbstractController
         'search' => $searchTerm,
         'totalActivities' => $totalActivities,
     ]);
+     
 }
     #[Route('/', name: 'app_activite_index', methods: ['GET'])]
     public function index(ActiviteRepository $activiteRepository, Request $request)
 {
+   
     $searchTerm = $request->query->get('search');
 
     $activities = $activiteRepository->findAll();
@@ -116,19 +123,24 @@ class ActiviteController extends AbstractController
         'search' => $searchTerm,
         'totalActivities' => $totalActivities,
     ]);
+      
+
 }
     #[Route('/accepter', name: 'app_activite_accepter', methods: ['GET'])]
     public function accepter(ActiviteRepository $activiteRepository): Response
     {
+       
         return $this->render('activite/review_activite_form.html.twig', [
             'activites' => $activiteRepository->findAll(),
         ]);
+       
     }
 
     #[Route('/{id}/valider', name: 'app_activite_valider', methods: ['GET'])]
 
     public function valider(Request $request, $id)
     {
+        
         $activite = $this->getDoctrine()->getRepository(Activite::class)->find($id);
     
         if (!$activite) {
@@ -143,6 +155,7 @@ class ActiviteController extends AbstractController
         $this->addFlash('success', 'Activite accepted successfully!');
     
         return $this->redirectToRoute('app_activite_accepter'); 
+   
     }
 
 
@@ -150,6 +163,7 @@ class ActiviteController extends AbstractController
     #[Route('/{id}/edit', name: 'app_activite_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Activite $activite, EntityManagerInterface $entityManager): Response
     {
+        
         $form = $this->createForm(ActiviteFormeType::class, $activite);
         $form->handleRequest($request);
 
@@ -172,6 +186,8 @@ class ActiviteController extends AbstractController
     #[Route('/new', name: 'app_activite_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
+        if($this->session->has('id') ){
+            if($this->session->get('role') == 'admin' || $this->session->get('role') == 'guide' ){
         $activite = new Activite();
         $form = $this->createForm(ActiviteFormeType::class, $activite);
         $form->handleRequest($request);
@@ -188,6 +204,10 @@ class ActiviteController extends AbstractController
             'activite' => $activite,
             'form' => $form,
         ]);
+    }
+    return $this->redirectToRoute('app_home');
+     }
+     return $this->redirectToRoute('login_user');
     }
 
 
@@ -271,7 +291,39 @@ public function searchAcitivit(Request $request, ActiviteRepository $activiteRep
    
     
    return new JsonResponse(['list' =>  $formattedActivities]);
-}
+   }
+
+   #[Route('/{id}/generate_pdf', name: 'generate_pdf')]
+    public function generatePdf($id,HttpClientInterface $httpClient): Response
+    {
+        $activite = $this->getDoctrine()->getRepository(Activite::class)->find($id);
+        $city = $activite->getVille(); 
+    
+        $apiKey = '578c0c1b9c6e4b93806150546242502';
+        $response = $httpClient->request('GET', 'http://api.weatherapi.com/v1/forecast.json?key=' . $apiKey . '&q=' . urlencode($city) . '&days=7');
+    
+        $weatherData = $response->toArray();
+        // Vérifier si le paiement existe
+        if (!$activite) {
+            throw $this->createNotFoundException('L activite avec l\'identifiant '.$id.' n\'existe pas.');
+        }
+
+        $dompdf = new Dompdf();
+
+        $html = $this->renderView('activite/pdf_template.html.twig', [
+            'activite' => $activite,
+            'weatherData' => $weatherData,
+
+        ]);
+        $dompdf->loadHtml($html);
+
+        $dompdf->render();
+
+        return new Response($dompdf->output(), 200, [
+            'Content-Type' => 'application/pdf',
+        ]);
+    }
+
 
 
 
