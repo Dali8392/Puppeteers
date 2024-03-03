@@ -114,9 +114,10 @@ margin-top: 50px;
     font-weight: 600;
     transition: scale 500ms ease-in-out;
     margin-bottom: 50px;
+    margin-top: 150px;
  }
  #book-btn:hover{
-    /* background:  linear-gradient(to right, #8d4fff, #fa9e1b); */
+    background:  linear-gradient(to right, #8d4fff, #fa9e1b);
     scale: 1.2;
     cursor: pointer;
  }
