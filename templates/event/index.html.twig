@@ -35,12 +35,35 @@
 
 
 
+
+				    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('#searchInput').on('input', function() {
+            var query = $(this).val().toLowerCase();
+            $('.packages-item').each(function() {
+                var location = $(this).find('.fa-map-marker-alt').next().text().toLowerCase();
+                var name = $(this).find('h5').text().toLowerCase(); // Add this line to get event name
+                var type = $(this).find('.text-uppercase').text().toLowerCase(); // Add this line to get event type
+                if (location.includes(query) || name.includes(query) || type.includes(query)) { // Modify condition to include name and type
+                    $(this).show();
+                } else {
+                    $(this).hide();
+                }
+            });
+        });
+    });
+</script>
+
+
+
             <!-- Packages Start -->
             <div class="container-fluid packages py-5">
                 <div class="container py-5">
                     <div class="mx-auto text-center mb-5" style="max-width: 900px;">
                         <h5 class="section-title px-3">Packages</h5>
                         <h1 class="mb-0">Custom Packages</h1>
+  <input type="text" id="searchInput" placeholder="Search..." style="font-size: 20px; width: 300px;">
                     </div>
                     <div class="packages-carousel owl-carousel">{% for event in events %}
                         <div class="packages-item">
