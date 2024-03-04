@@ -45,4 +45,13 @@ class EventRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
+    public function findEntitiesByString($name)
+{   $em= $this->getEntityManager();
+    $qb= $em->createQueryBuilder();
+    $qb->select("h")
+    ->from(Event::class,"h")
+        ->where('h.neame LIKE :name')
+        ->setParameter('name', '%' . $name . '%');
+        return $qb->getQuery()->getResult();
+}
 }
