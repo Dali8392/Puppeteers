@@ -436,5 +436,49 @@ public function addParticipant(int $idEvent, string $idUser, EntityManagerInterf
 }
 
 
+#[Route('/search', name: 'search')]
+public function searchAction(Request $request, EventRepository $eventRepository)
+{
+    // Obtenez le paramètre de recherche de la requête
+    $requestString = $request->get('q');
+
+    // Recherchez des événements qui correspondent à la chaîne de recherche
+    $events = $eventRepository->findBySearchString($requestString);
+
+    // Initialisez le tableau de résultats
+    $result = [];
+
+    if (!$events) {
+        $result['events']['error'] = "Aucun événement trouvé 🙁 ";
+    } else {
+        // Convertissez les événements en un format utilisable pour la réponse JSON
+        $result['events'] = $this->getRealEntities($events);
+    }
+
+    // Retournez la réponse JSON
+    return new JsonResponse($result);
+}
+public function getRealEntities($events)
+{
+    $realEntities = [];
+
+    foreach ($events as $event) {
+        // Construisez une structure de données contenant les détails de l'événement
+        $realEntities[$event->getId()] = [
+            'name' => $event->getName(),
+            'type' => $event->getType(),
+            'date_debut' => $event->getDateDebut()->format('Y-m-d'),
+            'date_fin' => $event->getDateFin()->format('Y-m-d'),
+            'event_location' => $event->getEventLocation(),
+            'duree' => $event->getDuree()->format('Y-m-d H:i:s'),
+            'max_participants' => $event->getMaxParticipants(),
+            'budget_allocated' => $event->getBudgetAllocated(),
+            'status' => $event->getStatus(),
+            // Ajoutez d'autres champs d'événement que vous souhaitez inclure
+        ];
+    }
+
+    return $realEntities;
+}
 
 }
