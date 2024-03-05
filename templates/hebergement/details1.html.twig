@@ -174,6 +174,29 @@
                 font-size: 14px;
             }
         }
+        #button-container{
+            width: 100%;
+            display: flex;
+            justify-content: center;
+         }
+         #book-btn{
+           background:  linear-gradient(to right, #fa9e1b, #8d4fff, #fa9e1b);
+           width: 350px;
+           height: 65px;
+            border-radius: 27px;
+            font-size: 20px;
+        
+            font-weight: 600;
+            transition: scale 500ms ease-in-out;
+            margin-bottom: 50px;
+            margin-top: 150px;
+         }
+         #book-btn a{color:white}
+         #book-btn:hover{
+            background:  linear-gradient(to right, #8d4fff, #fa9e1b);
+            scale: 1.2;
+            cursor: pointer;
+         }
 	</style>
  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/rateYo/2.3.2/jquery.rateyo.min.css">
 {% endblock %}
@@ -220,6 +243,11 @@
     <button id="likeB" class="like-button" data-button="like"  data-action="add" data-id="{{ hebergement.id }}">Like</button>
     <button id="dislikeB" class="dislike-button" data-button="dislike" data-action="add" data-id="{{ hebergement.id }}">Dislike</button>
 </div>
+<div id="button-container">
+
+    <button id="book-btn"> <a href={{ path('reservation_hebergement_new' , {'id' : hebergement.id})}}> Book Now ! </a> </button>
+    
+    </div>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
     $(document).ready(function() {

@@ -250,15 +250,16 @@ public function showFront(EventRepository $eventRepository, Request $request, En
 #[Route('/event/showBack', name: 'event_show_back')]
 public function showBack(EventRepository $eventRepository): Response
 {
-    $country=null;
+    $countries = []; // Initialize an empty array to store countries
     $events = $eventRepository->findAll();
     // Fetching country information for each event
     foreach ($events as $event) {
         $eventLocation = $event->getEventLocation();
         $coordinates = explode(',', $eventLocation);
 
-        // Check if coordinates are valid before accessing
-        if (count($coordinates) >= 2) {
+        foreach ($events as $event) {
+            $eventLocation = $event->getEventLocation();
+            $coordinates = explode(',', $eventLocation);
             $latitude = (float) $coordinates[1];
             $longitude = (float) $coordinates[0];
 
@@ -269,18 +270,18 @@ public function showBack(EventRepository $eventRepository): Response
             if ($response !== false) {
                 $data = json_decode($response, true);
                 if (isset($data['results'][0]['components']['country'])) {
-                    $country = $data['results'][0]['components']['country'];
+                    $countries[] = $data['results'][0]['components']['country']; // Store country in the array
                 }
             }
         }
-    }
+
 
     return $this->render('event/back.html.twig', [
         'events' => $events,
-        'country' => $country ?? null // Initialize country in case no valid data is found
+        'country' => $countries// Initialize country in case no valid data is found
     ]);
 }
-
+}
     #[Route('/event/edit/{id}/{loc}', name: 'event_edit')]
     public function edit(Request $request, Event $event, $loc): Response
     {

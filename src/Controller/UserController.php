@@ -314,6 +314,7 @@ public function home(Request $request,EntityManagerInterface $entityManager):Res
                     $this->session->set('role', $user->getRole());
                     if($user->getRole() == "user"){return $this->redirectToRoute('app_home');}
                     else if ($user->getRole() == "admin"){return $this->redirectToRoute('app_homeAdmine');}
+                    else if ($user->getRole() == "guide"){return $this->redirectToRoute('app_activite_new');}
                  
             }else{
                 $form->get('id')->addError(new FormError('Something is wrong!! Incorrect ID or password'));

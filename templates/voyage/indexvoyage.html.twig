@@ -31,7 +31,7 @@
     />
     <link rel="stylesheet" type="text/css" href={{ asset("styles/main_styles.css") }} />
     <link rel="stylesheet" type="text/css" href={{ asset("styles/responsive.css" ) }}/>
-    <link rel="stylesheet" href="styles/indexvoyage.css"/>
+    <link rel="stylesheet" href="/styles/indexvoyage.css"/>
     
      {% endblock %}
 
@@ -213,7 +213,9 @@ input.addEventListener("input", (event) => {
 {% else %}
 {% for t in response %}
 
+
 <div class="voyage">
+   <a href={{ path('detailsVoyage',{'id' : t.id})}}> 
 <img class="destination-image" src="{{ asset('assets/images/destinations/' ~ t.destination ~'/voyage.jpeg') }}">
 
 <div class="trip-infos">
@@ -226,6 +228,7 @@ input.addEventListener("input", (event) => {
 <h2> {{t.prix}} TND </h2>
 </div>
 </div>
+</a>
 </div>
 {% endfor %}
 {% endif %}
